@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>1st Mortgage</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>2nd Mortgage</fullName>
+        <default>false</default>
+    </customValue>
+    <masterLabel>Property Type</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

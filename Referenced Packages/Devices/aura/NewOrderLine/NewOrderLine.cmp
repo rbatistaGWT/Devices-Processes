@@ -1,0 +1,76 @@
+<aura:component controller="greatwave2.NewOrderLineController">
+    <aura:attribute name="inventoryOrderId" type="String" access="global"/>
+    <aura:attribute name="requestedQuantity" type="Integer" default="1" access="global"/>
+    <aura:attribute name="saveDisabled" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="saveAddDisabled" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="variant" type="String" default="brand" access="global"/>
+    <aura:attribute name="maxQuantity" type="String" default="" access="global"/>
+    <aura:attribute name="minQuantity" type="String" default="1" access="global"/>
+    <aura:attribute name="productFilters" type="String" default="" access="global"/>
+    <aura:attribute name="infoMessage" type="String" access="global"/>
+    <aura:attribute name="showMessage" type="String" default="false" access="global"/>
+    <aura:attribute name="iconName" type="String" access="global"/>
+    <aura:attribute name="productErrors" type="List" access="global"/>
+    <aura:attribute name="inventoryOrder" type="greatwave2__Inventory_Order__c" access="global"/>
+    <aura:attribute name="selectedProduct" type="greatwave2.ResultSet" access="global"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div aura:id="container" class="slds">
+        <div class="slds-p-bottom_x-large">
+            <header class="slds-modal__header">
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate slds-align_absolute-center">New Order Line</h2>
+            </header>
+        </div>
+        
+        <aura:if isTrue="{!v.showMessage}">
+            <div class="slds-align_absolute-center slds-p-bottom_small">
+                <lightning:icon iconName="{!v.iconName}" alternativeText="info" size="xx-small"/>
+                <span class="slds-m-left_x-small">{!v.infoMessage}</span>
+            </div>
+        </aura:if>
+        <div class="slds-modal__content slds-p-left_x-large slds-p-bottom_x-large slds-p-right_x-large">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control slds-size_2-of-3">
+                    <lightning:input aura:id="inventoryOrderField" label="Order Name" name="inventoryOrderField" type="text" required="true" disabled="true" placeholder="{!v.inventoryOrder.Name}"/>
+                </div>
+            </div>
+            
+            <div class="slds-form-element slds-p-top_small">
+                <div class="slds-form-element__control slds-size_3-of-3">
+                    <greatwave2:TypeAhead aura:id="productField" label="Select Product" name="selectedProduct" objectName="Product2" displayField="Name" fullSearch="false" filters="{!v.productFilters}" placeholder="Product Name" selectedRecord="{!v.selectedProduct}" required="true" errorList="{!v.productErrors}" iconName="standard:product"/>
+                </div>
+            </div>
+            
+            <div class="slds-form-element slds-p-top_small">
+                <div class="slds-form-element__control slds-size_2-of-3">
+                    <lightning:input aura:id="quantityField" label="Requested Quantity" type="number" name="requestedQuanity" value="{!v.requestedQuantity}" min="{!v.minQuantity}" max="{!v.maxQuantity}" required="true"/>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="slds-modal__footer">
+            <div class="slds-align_absolute-center">
+                <lightning:button iconName="utility:save" variant="{!v.variant}" class="slds-size--1-of-2" onclick="{!c.save}" disabled="{!v.saveDisabled}">Save
+                    <aura:if isTrue="{!v.saveDisabled}">
+                        <lightning:spinner variant="brand" size="small"/>
+                    </aura:if>
+                </lightning:button>
+            </div>
+            
+            <div class="slds-align_absolute-center slds-m-top_x-small">
+                <lightning:button variant="{!v.variant}" onclick="{!c.saveAndNew}" class="slds-size--1-of-2" disabled="{!v.saveAddDisabled}">
+                    <lightning:icon iconName="utility:save" alternativeText="Save" size="xx-small" variant="inverse"/>&nbsp;&nbsp;Save &amp; New
+                    <aura:if isTrue="{!v.saveAddDisabled}">
+                        <lightning:spinner variant="brand" size="small"/>
+                    </aura:if>
+                </lightning:button>
+            </div>
+            
+            <div class="slds-align_absolute-center slds-m-top_x-small">
+                <lightning:button variant="neutral" label="Cancel" class="slds-size--1-of-2" onclick="{!c.goToInventoryOrder}"/>
+            </div>
+            
+        </footer>
+    </div>
+</aura:component>

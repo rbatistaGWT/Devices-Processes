@@ -1,0 +1,54 @@
+<aura:component controller="greatwave2.PhysicalInventoryController" implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <aura:attribute name="scanButtonName" type="String" default="Scan" access="global"/>
+    <aura:attribute name="code" type="String" access="public"/>
+    <aura:attribute name="physicalInventory" type="greatwave2__PIR__c" access="public"/>
+    <aura:attribute name="showHandlingComponent" type="Boolean" default="false" access="private"/>
+    <aura:attribute name="isScanDisabled" type="Boolean" default="false" access="private"/>
+    <aura:attribute name="isFinishDisabled" type="Boolean" default="false" access="private"/>
+    <aura:attribute name="handlingComponentAttributes" type="Map" access="private"/>
+    <aura:attribute name="iconName" type="String" default="action:info" access="private"/>
+    <aura:attribute name="infoMessage" type="String" access="private"/>
+    
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="infoMessageEvent" event="greatwave2:PIInfoMessageEvent" action="{!c.handleInfoMessageEvent}"/>
+    <aura:handler name="stopLoading" event="greatwave2:PIStopLoadingEvent" action="{!c.handleStopLoadingEvent}"/>
+    
+    <div aura:id="spinner" class="slds-align_absolute-center">
+        <lightning:spinner variant="brand"/>
+    </div>
+        
+    <div aura:id="content" class="slds hideContent">
+        <div style="height: 15%;">
+            <header class="slds-modal__header">
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate slds-align_absolute-center">Physical Inventory Scan</h2>
+            </header>
+        </div>
+        
+        <div style="height: 70%;">
+            <div class="slds-align_absolute-center slds-grid slds-grid_align-space slds-p-around_large slds-p-left_x-large slds-theme_default">
+                <div class="slds-col">
+                    <aura:if isTrue="{!v.showHandlingComponent}"> 
+                        <greatwave2:PhysicalInventoryHandler physicalInventory="{!v.physicalInventory}" code="{!v.code}"/>
+                        <aura:set attribute="else">
+                            <lightning:icon iconName="{!v.iconName}" alternativeText="info" size="xx-small"/>
+                            <span class="slds-m-left_x-small">{!v.infoMessage}</span>
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </div>
+        </div>
+        
+        <footer style="height: 15%;" class="slds-modal__footer">
+            <div class="slds-align_absolute-center">
+                <greatwave2:Scan name="{!v.scanButtonName}" isDisabled="{!v.isScanDisabled}" class="slds-size--1-of-2" handlingComponent="greatwave2:PhysicalInventory" handlingComponentAttributes="{!v.handlingComponentAttributes}"/>
+            </div>
+            <div class="slds-align_absolute-center slds-m-top_x-small">
+                <lightning:button variant="brand" label="Finish" onclick="{!c.finishScan}" class="slds-size--1-of-2" disabled="{!v.isFinishDisabled}"/>
+            </div>
+            <div class="slds-align_absolute-center slds-m-top_x-small">
+                <lightning:button variant="neutral" label="Cancel" onclick="{!c.cancel}" class="slds-size--1-of-2"/>
+            </div>
+        </footer>
+    </div>
+</aura:component>

@@ -1,0 +1,59 @@
+<apex:page standardController="greatwave2__Course__c" extensions="greatwave2.NewCourse_extn">
+    <apex:sectionHeader title="Course Edit" subtitle="{!IF(courseId !=null,objCourse.Name,'New Course')}"/>
+    <apex:form >
+        <apex:pageBlock mode="Edit" title="Course Edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!onsave}"/>
+                <apex:commandButton value="Save & New" action="{!onSaveAndNew}"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+            <apex:pageBlockSection collapsible="false" title="Information">
+                <apex:inputField value="{!objCourse.Name}" required="true"/>
+                <apex:inputField value="{!objCourse.greatwave2__Required_Frequency__c}" required="true"/>
+                <apex:inputField value="{!objCourse.greatwave2__Exam_Required__c}" />
+                <apex:inputField value="{!objCourse.greatwave2__Course_Cost__c}"/>
+                <apex:inputField value="{!objCourse.greatwave2__Length__c}" />
+                <apex:inputField value="{!objCourse.greatwave2__Additional_Supplies_Cost__c}"/>
+                <apex:inputField value="{!objCourse.greatwave2__Length_Units__c}"/>
+            </apex:pageBlockSection>            
+            <apex:pageBlockSection title="Roles" columns="2">
+                <apex:outputPanel id="rolePnlId">
+                    <apex:actionRegion >
+                        <apex:variable value="{!0}" var="index"/>
+                        <apex:pageBlockTable value="{!roleWrapper}" var="rw" style="width:100%;">
+                            <apex:column headerValue="Role">
+                                <apex:selectList value="{!rw.objJD.greatwave2__Role__c}" size="1">
+                                    <apex:selectOption itemLabel="<None Specified>" itemValue="" />
+                                    <apex:selectOptions value="{!rw.allRoles1}"/>
+                                </apex:selectList>
+                            </apex:column>
+                            <!--apex:column headerValue="Category">
+                                <apex:inputField value="{!rw.objJD.Category__c}"/>
+                            </apex:column-->
+                            <apex:column headerValue="Action">
+                                <apex:outputPanel rendered="{!IF(roleWrapper.size != 1,true,false)}">
+                                    <apex:commandLink value="Remove" action="{!onRemove}" reRender="rolePnlId" status="ajaxRemoveId">
+                                        <apex:param value="{!index}" name="inx" assignTo="{!index1}"/>
+                                    </apex:commandLink>
+                                </apex:outputPanel>
+                                <apex:variable value="{!index+1}" var="index"/>
+                            </apex:column>
+                        </apex:pageBlockTable><br/> 
+                        <apex:outputPanel style="float:right;"> 
+                            <apex:actionStatus startText="Removing Role...." id="ajaxRemoveId" ></apex:actionStatus>&nbsp;&nbsp;
+                            <apex:actionStatus startText="Adding Role...." id="ajaxId" ></apex:actionStatus>&nbsp;&nbsp;
+                            <apex:commandButton value="Add More"  action="{!addMore}" reRender="rolePnlId" status="ajaxId"/>                                                  
+                        </apex:outputPanel> 
+                        <apex:actionFunction action="{!onRemove}" name="onRemove1" reRender="rolePnlId" >
+                            <apex:param value="{!index}" name="inx" assignTo="{!index1}"/>
+                        </apex:actionFunction>                      
+                    </apex:actionRegion>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" title="Description">
+                <apex:inputField value="{!objCourse.greatwave2__Course_Description__c}"/>
+            </apex:pageBlockSection>            
+        </apex:pageBlock>        
+    </apex:form>
+</apex:page>

@@ -1,0 +1,44 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="Global"
+        		controller="greatwave2.Signature_Ctrl">    
+    <ltng:require scripts="{!join(',', $Resource.greatwave2__gwt_esignature + '/jquery.min.js', 
+                           $Resource.greatwave2__gwt_esignature + '/jquery_signaturepad.js',
+                           $Resource.greatwave2__gwt_esignature + '/json2.min.js')}" 
+                  afterScriptsLoaded="{!c.scriptsLoaded}"/>
+    
+    <aura:attribute name="parentRecordId" required="true" default="" type="String" description="Stores the Id of the Record for which the user will be signing." access="global"/>
+    <aura:attribute name="unableToSignMessage" type="String" description="Stores the base phrase the user will be presented if sign validation fails" access="global"/>
+    <aura:attribute name="storeSignatureField" required="true" default="" type="String" description="signature field API name value where it need to store signature." access="global"/>
+    <aura:attribute name="validateField" type="String" description="Stores the ApiName of the Required field validations will run against" access="global"/>
+    <aura:attribute name="validSignField" type="String" description="Stores the ApiName of the field signature validations will run against" access="global"/>
+    <aura:attribute name="validSignValues" type="String" description="Stores a comma separated string of valid values that allows the user to proceed with the signature process" access="global"/>
+    <aura:attribute name="errorMessage" type="String[]" description="Popup error messages of the validation on component" access="public"/> 
+    <aura:attribute name="signatureValue" type="String" description="Stores the base64 of the signature value"  />  
+    <aura:attribute name="parentRecordName" type="String" description="Stores parent record Name to show on component" access="private"/>
+    <aura:attribute name="useHandlingComponent" type="Boolean" default="false" description="" access="global"/>
+    <aura:attribute name="handlingComponent" type="String" description="Stores the APIName including the namespace of the component which will handle the storage of the signature" access="global"/>
+    <aura:attribute name="baseQueryField" type="string" access="global" default="Id, Name"/>
+                    
+    <div class="sigPad" > 
+		<center>       
+            <div>
+                <b>Record Name:&nbsp;</b> <ui:outputURL value="{!'/one/one.app?#/sObject/'+ v.parentRecordId + '/view'}" label="{!v.parentRecordName}"/>
+            </div> 
+            <aura:if isTrue="{!v.errorMessage.length > 0}">
+                <div style="text-align: center;color: red;margin-top: 5px;">
+                    <ol style="list-style: inside !important;">
+                        <aura:iteration var="msg" items="{!v.errorMessage}">
+                            <li>{!msg.value}</li>
+                        </aura:iteration>
+                    </ol>
+                </div>
+            </aura:if>
+            <br/>
+            <div> 
+                <canvas class="pad" width="500" height="200" style="border:1px solid grey;"></canvas>  
+                <input type="hidden" name="output-2" class="output"/>
+            </div> 
+            <ui:button aura:id="confirmSignaturebtn" buttonTitle="Click to upload signature" class="button slds-button_brand gwt_buttons_confirm" label="Confirm Signature" press="{!c.confirmSignature}"/><br/>
+            <a class="clearButton gwt_buttons_cancel" onclick="{!c.clearSignature}">Clear</a> <!-- href="#clear" -->
+        </center>  
+    </div>
+</aura:component>

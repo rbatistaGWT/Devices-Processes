@@ -1,0 +1,58 @@
+<apex:page controller="greatwave2.Setup_Ctrl" LightningStylesheets="true">
+    <style>
+        input[type="text"]{
+            width:300px;
+        }
+    </style>
+    
+    <apex:sectionHeader title="Device Wave Setup" subtitle="Global Settings"/>
+    <apex:form >
+    
+        <table style="width: 100%;">
+            <tr>
+                <td style="width:60%">
+                    <apex:outputPanel >
+                        <apex:pageBlock id="setupPanel" title="Device Wave Setup">
+                            <apex:pageBlockSection columns="1">
+                                <apex:inputField id="sfInstance" value="{!dsSetup.greatwave2__Salesforce1_URL__c}" required="true"/>
+                                <apex:inputField id="vfInstance" value="{!dsSetup.greatwave2__Visualforce_URL__c}" required="true"/>
+                                <apex:inputField id="sfMasterEmail" value="{!dsSetup.greatwave2__Master_Email__c}" required="true" />
+                                <apex:inputField id="vfPdf" value="{!dsSetup.DBRF_PDF_Page__c }" required="true" />
+                                <apex:inputField id="vfcon" value="{!dsSetup.GS1_Config__c }" required="true" />
+                                <apex:inputField id="vfReg" value="{!dsSetup.GS1_RegEx__c }" required="true" />
+                                <apex:inputField id="vfScn" value="{!dsSetup.greatwave2__Scanner_Configuration__c}" required="true" />
+                                <apex:pageBlockSectionItem > 
+                                    <label>Email PIR Request</label>
+                                    <apex:inputField value="{!dsSetup.greatwave2__emailPIRRequest__c}" required="true" />
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem > 
+                                    <label>PIR Daily Notification</label>
+                                    <apex:inputField value="{!dsSetup.greatwave2__pirDailyNotification__c}" required="true" />
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem > 
+                                    <label>PIR Nightly Notification</label>
+                                    <apex:inputField value="{!dsSetup.greatwave2__pirNightlyNotification__c}" required="true" />
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem > 
+                                    <label>Profiles Allowed To Confirm An Order</label>
+                                    <apex:inputField value="{!dsSetup.greatwave2__Profiles_Allowed_to_Confirm_an_Order__c}" required="true" />
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                            <apex:pageBlockButtons location="bottom">
+                                <apex:commandButton action="{!save}" id="saveButton" value="Save" />
+                                <apex:commandButton action="{!onPopulateDetails}" value="Populate Details" immediate="true" rendered="{!IF(dsSetup.greatwave2__DBRF_PDF_Page__c != null,false,true)}"/>
+                            </apex:pageBlockButtons>
+                        </apex:pageBlock>
+                    </apex:outputPanel>
+                </td>
+                <td style="width: 40%;" >
+                    <apex:pageBlock id="helpPanel" title="Get Help">
+                        <a href="#">Device Wave User Guide</a><br/><br/>
+                        <a href="mailto:admin@greatwavetech.com">Need Support?</a><br/><br/>
+                        <a href="mailto:admin@greatwavetech.com">Contact Us</a>
+                    </apex:pageBlock>
+                </td>
+            </tr>
+        </table>
+    </apex:form>
+</apex:page>

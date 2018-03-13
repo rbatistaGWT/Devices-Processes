@@ -1,0 +1,101 @@
+<apex:page standardController="greatwave2__Order_Line__c" extensions="greatwave2.NewOrderLine_extn">
+  <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.css')}"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-1.8.js')}"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.js')}"/>
+    <style type="text/css">
+        .ui-autocomplete-loading {
+            background: white url("{!$Resource.greatwave2__ajaxLoad}") right center no-repeat;
+        }
+        .autocomplete{
+            width: 234px !important;
+        }
+    </style>
+    <apex:form id="frmId">
+        <apex:sectionHeader title="Order Line Edit" subtitle="New Order Line"/>
+        <apex:pageBlock title="Order Line Edit" mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!sf_save}"/>
+                <apex:commandButton value="Save & New" action="{!saveAndNew}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:pageBlockSection title="Information" collapsible="false" >
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Order"/>
+                    <apex:inputField id="orderInput" value="{!greatwave2__Order_Line__c.greatwave2__Order__c}" styleClass="autocomplete" taborderhint="3"/>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                  </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Select Product"/>
+                    <apex:inputField value="{!greatwave2__Order_Line__c.greatwave2__Product__c}" id="autocomplete_textbox" styleClass="autocomplete" taborderhint="1" required="true"/>
+                </apex:pageBlockSectionItem>
+             <!--   <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Description"/>
+                    <apex:inputField value="{!Order_Line__c.Description__c}" styleClass="autocomplete"/>
+
+                </apex:pageBlockSectionItem>
+           -->     <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Quantity"/>
+                    <apex:inputField value="{!greatwave2__Order_Line__c.greatwave2__Quantity__c}" styleClass="autocomplete" taborderhint="2" required="true"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <script type="text/javascript">
+            //To remove conflicts with other versions of jQuery
+            var j$ = jQuery.noConflict();
+            j$(document).ready(function() {
+
+                //Auto complete textbox component
+                var autoCompleteTextBoxId = "input[id$='autocomplete_textbox']";
+                var queryTerm;
+                //auto complete method
+                j$(autoCompleteTextBoxId).autocomplete({
+                    minLength: 2,
+                    source: function(request, response) {
+                                queryTerm = request.term;
+                                var sObjects;
+                                var searchText = j$(autoCompleteTextBoxId).val();
+                                greatwave2.NewOrderLine_extn.getRecords(searchText,function(result, event){
+                                    if(event.type == 'exception') {
+                                          alert(event.message);
+                                    } else {
+                                         sObjects = result;
+                                         response(sObjects);
+                                    }
+                                });
+                           },
+                    focus: function( event, ui ) {
+                            j$(autoCompleteTextBoxId).val( htmlDecode(ui.item.Name.split('~')[0]) );
+                            return false;
+                            },
+                    select: function( event, ui ) {
+                                j$(autoCompleteTextBoxId).val( htmlDecode(ui.item.Name.split('~')[0]) );
+                                j$("input[id$='searchId']").val(ui.item.Id);
+                                return false;
+                            },
+                 })
+                 .data( "autocomplete" )._renderItem = function( ul, item ) {
+                    var entry = "<a>" + item.Name;
+                    j$.each("".split(",") , function(key, value) {
+                        if(entry==null) {
+                            entry="No match Found in ";
+                        } else {
+                            entry=entry.split('~')[0]+" "+entry.split('~')[1];
+                        }
+                    });
+                    entry = entry + "</a>";
+                    entry = entry.replace(queryTerm, "<b>" + queryTerm + "</b>");
+                    return j$( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( entry )
+                        .appendTo( ul );
+                };
+            });
+            function htmlDecode(input){
+            	// Deprecated
+            	return input;
+            }
+        </script>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email Alert Template - Student Invitation Notification</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Email Alert Template - Student Invitation Notification</name>
+    <style>none</style>
+    <subject>Congratulation you have been invited to Class: {!Student__c.Course_Title__c}</subject>
+    <textOnly>You have been invited to Class: {!Class__c.Name}
+https://login.salesforce.com/apex/greatwave2__StudentInvitationConfirmation?id={!Student__c.Id}.</textOnly>
+    <type>custom</type>
+</EmailTemplate>

@@ -1,0 +1,3 @@
+Order Number {!Inventory_Order__c.Name} has been created.  Status has been set as  "{!Inventory_Order__c.Status__c}". 
+
+{!Inventory_Order__c.Link}

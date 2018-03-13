@@ -1,0 +1,34 @@
+<aura:component >
+    <aura:attribute name="orderLine" type="greatwave2__Order_Line__c"/>
+    <aura:attribute name="lotNumber" type="String"/>
+    <aura:attribute name="serialNumber" type="String"/>
+    <!--aura:attribute name="namespace" type="String" default="greatwave2__"/-->
+    <aura:attribute name="isLotControlled" type="Boolean"/>
+    
+    <div class="slds-grid slds-grid_align-space slds-p-around_large slds-p-left_small slds-theme_default">
+        <div class="slds-col slds-m-right_xx-large">
+            <span class="slds-form-element__label">Order Line</span>
+            <div class="slds-form-element__control">
+                <span class="slds-form-element__static">{!v.orderLine.Name}</span>
+            </div>
+            <span class="slds-form-element__label">Product</span>
+            <div class="slds-form-element__control">
+                <span class="slds-form-element__static">{!v.orderLine.greatwave2__Product_Name__c}</span>
+            </div>
+        </div>
+        <div class="slds-col">
+            <aura:if isTrue="{!v.isLotControlled}">
+                <span class="slds-form-element__label">Lot Number</span>
+                <div class="slds-form-element__control">
+                    <span class="slds-form-element__static">{!v.lotNumber}</span>
+                </div>
+                <aura:set attribute="else">
+                    <span class="slds-form-element__label">Serial Number</span>
+                    <div class="slds-form-element__control">
+                        <span class="slds-form-element__static">{!v.serialNumber}</span>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

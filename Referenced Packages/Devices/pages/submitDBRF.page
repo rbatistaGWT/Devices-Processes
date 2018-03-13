@@ -1,0 +1,69 @@
+<apex:page standardController="greatwave2__DBRF__c" extensions="greatwave2.submitDBRF" showHeader="false" sidebar="false">
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-1.8.js')}"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.js')}"/>
+    <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.css')}"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
+
+
+    <script>
+        var j$ = jQuery.noConflict();
+        j$('document').ready(function(){
+            //if(isValid()){ Mo commented this code to remove required fields validation
+                greatwave2.submitDBRF.submitDBRF('{!JSENCODE(greatwave2__DBRF__c.Id)}',function(resut,event){
+                        if (event.status) {
+                            toDBRF();
+                        } else if (event.type === 'exception') {
+                            location.hash="#unableToSubmit";
+                            document.getElementById("errorMessage").innerHTML = event.message;
+                        } else {
+                            location.hash="#unableToSubmit";
+                            document.getElementById("errorMessage").innerHTML = event.message;
+                        }
+                    },
+                    {escape:true}
+                )
+            //}else
+            //    location.hash="#unableToSubmit";
+        })
+
+        function getRetId() {
+           // retId=getParameterByName(('id'));
+           //if(retId.length==18) retId=retId.substring(0,15);
+           // return retId; 
+            return '{!JSENCODE(DBRF__c.Id)}';
+        }
+        function toDBRF() {
+            if( (typeof sforce != 'undefined') && (sforce != null) ) {
+                sforce.one.navigateToSObject(getRetId());
+                sforce.one.navigateToSObject(getRetId().substring(0, 15));
+            } else {
+                window.open("/"+getRetId(),"_self");
+            }
+        }
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+        
+    </script>
+    <div data-role="page" id="home">
+        <div data-role="header">
+            <h1>Working...</h1>
+        </div>
+        <div data-role="content">
+            <center><apex:image value="{!$Resource.greatwave2__loading}" /></center>
+        </div>
+    </div>
+    <div data-role="page" id="unableToSubmit">
+        <div data-role="header">
+            <h1>Unable to Submit</h1>
+        </div>
+        <div data-role="content">
+            <center><apex:image value="/img/msg_icons/error32.png" /><p id="errorMessage" style="font-weight:bold;"></p> </center>
+        </div>
+    </div>
+
+</apex:page>

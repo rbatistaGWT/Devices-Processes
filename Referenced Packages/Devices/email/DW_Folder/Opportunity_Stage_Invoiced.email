@@ -1,0 +1,7 @@
+The following Opportunity {!Opportunity.Link} has been toggled to Invoiced Status: {!Opportunity.Name}.
+
+Opportunity Owner: {!Opportunity.OwnerFullName}
+Close Date: {!Opportunity.CloseDate}
+Account Name: {!Opportunity.Account}
+Description: {!Opportunity.Description}
+Invoice Total: {!Opportunity.Invoice_Total__c}

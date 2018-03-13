@@ -1,0 +1,22 @@
+<apex:page standardController="greatwave2__Inventory_Order__c" tabStyle="greatwave2__Inventory_Order__c" extensions="greatwave2.NewOrderLineController">
+    <apex:includeLightning />
+    <div class="slds-scope">
+        <div id="lightning" />
+    </div>
+    <script>
+        var inventoryOrderId;
+        var inventoryOrderParam = location.search.split('id=')[1]
+        if(inventoryOrderParam != undefined){
+            inventoryOrderId = inventoryOrderParam.split('&')[0];
+        }
+        $Lightning.use("{!Namespace}:NewPurchaseOrderLineApp", function() {
+            $Lightning.createComponent("{!Namespace}:NewOrderLine",
+                                       {"inventoryOrderId": inventoryOrderId,
+                                       "containerClass": "classicContainer"},
+                                       "lightning",
+                                       function(cmp) {
+                                       });
+        });
+    </script>
+    
+</apex:page>

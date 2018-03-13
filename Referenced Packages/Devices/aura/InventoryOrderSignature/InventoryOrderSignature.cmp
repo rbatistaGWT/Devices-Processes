@@ -1,0 +1,9 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId">
+    <aura:attribute name="recordId" type="String"/>
+	<greatwave2:Sign parentRecordId="{!v.recordId}" 
+            validateField="greatwave2__Comments__c" 
+            storeSignatureField="greatwave2__Signature__c" 
+            validSignField="greatwave2__Status__c" 
+            validSignValues="Submitted,Shipped" 
+            unableToSignMessage="Only Submitted,Shipped Order can be signed."/>
+</aura:component>

@@ -1,0 +1,4 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" >
+    <aura:attribute name="recordId" type="String"/>
+    <greatwave2:NewOrderLine inventoryOrderId="{!v.recordId}" minQuantity="1" productFilters="isActive = TRUE"/>
+</aura:component>

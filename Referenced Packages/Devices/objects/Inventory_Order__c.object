@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Close_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Close Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Comments__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Comments</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Confirmed_DateTime__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Confirmed DateTime</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Confirmed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Confirmed</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>From_Location__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>From Location</label>
+        <referenceTo>Inventory_Location__c</referenceTo>
+        <relationshipLabel>Inventory Orders (From)</relationshipLabel>
+        <relationshipName>Inventory_Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Inventory_Location__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Inventory Location</label>
+        <referenceTo>Inventory_Location__c</referenceTo>
+        <relationshipLabel>Orders</relationshipLabel>
+        <relationshipName>Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Order_Type__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Order Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Trunk Stock Replenishment</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Transfer</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Return</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Purchase Order</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Photo__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Photo</label>
+        <length>131072</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Return_Comments__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Notes or  comments about the return</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter any notes related to the overall return cause.</inlineHelpText>
+        <label>Return Comments</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Return_Reason__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Describes the main reason for the Products being return.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Describes the main reason for the Products being return.</inlineHelpText>
+        <label>Return Reason</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Customer Decision</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Damaged On Arrival</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Malfunction</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Signature__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Signature</label>
+        <length>131072</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>New</fullName>
+                    <default>true</default>
+                </value>
+                <value>
+                    <fullName>Submitted</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Shipped</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Received</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Pending Transfer</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>To_Location__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>To Location</label>
+        <referenceTo>Inventory_Location__c</referenceTo>
+        <relationshipLabel>Inventory Orders (To)</relationshipLabel>
+        <relationshipName>Inventory_Orders1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Track__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(Tracking_Number__c != null, 
+  HYPERLINK( UPS_URL__c , &apos;Click here&apos;), 
+  &apos;&apos;)</formula>
+        <label>Track</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tracking_Number_Sent__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Carrier tracking number sent to Sales Rep. for Order.</description>
+        <externalId>false</externalId>
+        <label>Tracking Number Sent</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Tracking_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <description>UPS Shipment Tracking Number</description>
+        <externalId>false</externalId>
+        <label>Tracking Number</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Transfer_To__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Transfer To</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>UPS_URL__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>UPS URL</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Vendor__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Vendor</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Inventory Orders</relationshipLabel>
+        <relationshipName>Inventory_Orders</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Inventory Order</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Status__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>All1</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>All_Transfers</fullName>
+        <columns>NAME</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>Confirmed__c</columns>
+        <columns>Confirmed_DateTime__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Order_Type__c</field>
+            <operation>equals</operation>
+            <value>Transfer</value>
+        </filters>
+        <label>Transfers - All</label>
+    </listViews>
+    <listViews>
+        <fullName>All_Trunk</fullName>
+        <columns>NAME</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <columns>Status__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Order_Type__c</field>
+            <operation>equals</operation>
+            <value>Trunk Stock Replenishment</value>
+        </filters>
+        <label>Trunk - All</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Orders_All</fullName>
+        <columns>NAME</columns>
+        <columns>Order_Type__c</columns>
+        <columns>Tracking_Number__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>Status__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <filterScope>Mine</filterScope>
+        <label>My Orders - All</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Orders_Transfer</fullName>
+        <columns>NAME</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>Order_Type__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>Status__c</columns>
+        <columns>Confirmed__c</columns>
+        <columns>Confirmed_DateTime__c</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>Order_Type__c</field>
+            <operation>equals</operation>
+            <value>Transfer</value>
+        </filters>
+        <label>My Orders - Transfer</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Orders_Trunk</fullName>
+        <columns>NAME</columns>
+        <columns>Tracking_Number__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Status__c</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>Order_Type__c</field>
+            <operation>equals</operation>
+            <value>Trunk Stock Replenishment</value>
+        </filters>
+        <label>My Orders - Trunk</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Orders_Trunk_New</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>Order_Type__c</field>
+            <operation>equals</operation>
+            <value>Trunk Stock Replenishment</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>New</value>
+        </filters>
+        <label>My Orders Trunk - New</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Orders_Trunk_Received</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>Order_Type__c</field>
+            <operation>equals</operation>
+            <value>Trunk Stock Replenishment</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Received</value>
+        </filters>
+        <label>My Orders Trunk - Received</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Orders_Trunk_Shipped</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>Tracking_Number__c</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>Order_Type__c</field>
+            <operation>equals</operation>
+            <value>Trunk Stock Replenishment</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Shipped</value>
+        </filters>
+        <label>My Orders Trunk - Shipped</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Orders_Trunk_Submitted</fullName>
+        <columns>NAME</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>Order_Type__c</field>
+            <operation>equals</operation>
+            <value>Trunk Stock Replenishment</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Submitted</value>
+        </filters>
+        <label>My Orders Trunk - Submitted</label>
+    </listViews>
+    <listViews>
+        <fullName>Trunk_New</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Order_Type__c</field>
+            <operation>equals</operation>
+            <value>Trunk Stock Replenishment</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>New</value>
+        </filters>
+        <label>Trunk - New</label>
+    </listViews>
+    <listViews>
+        <fullName>Trunk_Received</fullName>
+        <columns>NAME</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Order_Type__c</field>
+            <operation>equals</operation>
+            <value>Trunk Stock Replenishment</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Received</value>
+        </filters>
+        <label>Trunk - Received</label>
+    </listViews>
+    <listViews>
+        <fullName>Trunk_Shipped</fullName>
+        <columns>NAME</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>Tracking_Number__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Order_Type__c</field>
+            <operation>equals</operation>
+            <value>Trunk Stock Replenishment</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Shipped</value>
+        </filters>
+        <label>Trunk - Shipped</label>
+    </listViews>
+    <listViews>
+        <fullName>Trunk_Submitted</fullName>
+        <columns>NAME</columns>
+        <columns>Status__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Order_Type__c</field>
+            <operation>equals</operation>
+            <value>Trunk Stock Replenishment</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Submitted</value>
+        </filters>
+        <label>Trunk - Submitted</label>
+    </listViews>
+    <nameField>
+        <displayFormat>O-{000000}</displayFormat>
+        <label>Inventory Order Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Inventory Orders</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Purchase_Order</fullName>
+        <active>true</active>
+        <label>Purchase Order</label>
+        <picklistValues>
+            <picklist>Order_Type__c</picklist>
+            <values>
+                <fullName>Purchase Order</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trunk Stock Replenishment</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Return_Reason__c</picklist>
+            <values>
+                <fullName>Customer Decision</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Damaged On Arrival</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Malfunction</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>New</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Pending Transfer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Received</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Shipped</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Return</fullName>
+        <active>true</active>
+        <description>Use for Return processes.</description>
+        <label>Return</label>
+        <picklistValues>
+            <picklist>Order_Type__c</picklist>
+            <values>
+                <fullName>Return</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Return_Reason__c</picklist>
+            <values>
+                <fullName>Customer Decision</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Damaged On Arrival</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Malfunction</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>New</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Received</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Transfer</fullName>
+        <active>true</active>
+        <label>Transfer</label>
+        <picklistValues>
+            <picklist>Order_Type__c</picklist>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trunk Stock Replenishment</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Return_Reason__c</picklist>
+            <values>
+                <fullName>Customer Decision</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Damaged On Arrival</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Malfunction</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Pending Transfer</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Received</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Trunk_Stock_Replenishment</fullName>
+        <active>true</active>
+        <label>Trunk Stock Replenishment</label>
+        <picklistValues>
+            <picklist>Order_Type__c</picklist>
+            <values>
+                <fullName>Purchase Order</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trunk Stock Replenishment</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Return_Reason__c</picklist>
+            <values>
+                <fullName>Customer Decision</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Damaged On Arrival</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Malfunction</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>New</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Pending Transfer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Received</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Shipped</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submitted</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>Inventory_Location__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Tracking_Number__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Status__c</customTabListAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <validationRules>
+        <fullName>Order_Status_New</fullName>
+        <active>false</active>
+        <description>Sales Rep is not allowed to change Order Status from another stage back to &quot;new&quot;.</description>
+        <errorConditionFormula>AND(OR( 
+ISCHANGED(Status__c), ISNEW() ),OR( 
+ISPICKVAL(Status__c, &apos;Shipped&apos; ) ,
+ISPICKVAL(Status__c, &apos;Received&apos; ) , 
+ISPICKVAL(Status__c , &apos;Submitted&apos;) , 
+ISPICKVAL(Status__c , &apos;In Process&apos;)), 
+$Profile.Name != &apos;System Administrator&apos;)</errorConditionFormula>
+        <errorMessage>Sales user is not able to change status back to new from another stage.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Order_Type_Cannot_Be_None</fullName>
+        <active>false</active>
+        <description>Prevent Order Type from being &quot;None&quot;</description>
+        <errorConditionFormula>TEXT(Order_Type__c) == &apos;&apos;</errorConditionFormula>
+        <errorDisplayField>Order_Type__c</errorDisplayField>
+        <errorMessage>Please Select a valid Order Type.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Close</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Close</masterLabel>
+        <openType>sidebar</openType>
+        <page>StatusClose</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Confirm_Order</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Confirm Order</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>window.open(&apos;/apex/greatwave2__OrderConfirmation?id={!Inventory_Order__c.Id}&apos;);</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Scan</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Scan</masterLabel>
+        <openType>replace</openType>
+        <page>ScanBarcodeOnOrder</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Submit</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Submit</masterLabel>
+        <openType>sidebar</openType>
+        <page>StatusSubmit</page>
+        <protected>false</protected>
+    </webLinks>
+</CustomObject>

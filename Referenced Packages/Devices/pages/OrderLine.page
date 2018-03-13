@@ -1,0 +1,80 @@
+<apex:page standardController="greatwave2__Inventory_Order__c" extensions="greatwave2.OrderLine_Extension">
+
+    <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.css')}"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-1.8.js')}"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.js')}"/>
+    <style type="text/css">
+        .ui-autocomplete-loading {
+            background: white url("{!$Resource.greatwave2__ajaxLoad}") right center no-repeat;
+        }
+        .autocomplete{
+            width: 234px !important;
+        }
+    </style>
+    <apex:form id="frmId">
+        <apex:sectionHeader title="Order Line Edit" subtitle="New Order Line"/>
+            <apex:pageBlock title="Order Line Edit" mode="edit">
+                <apex:pageBlockButtons >
+
+
+                    <apex:commandButton value="Cancel" action="{!cancel}"/>
+                </apex:pageBlockButtons>
+
+            </apex:pageBlock>
+            <apex:pageMessages ></apex:pageMessages>
+
+
+      <script type="text/javascript">
+            //To remove conflicts with other versions of jQuery
+            var j$ = jQuery.noConflict();
+            j$(document).ready(function() {
+                //Auto complete textbox component
+                var autoCompleteTextBoxId = "input[id$='autocomplete_textbox']";
+                var queryTerm;
+                //auto complete method
+                j$(autoCompleteTextBoxId).autocomplete({
+                    minLength: 2,
+                    source: function(request, response) {
+                                queryTerm = request.term;
+                                var sObjects;
+                                var searchText = j$(autoCompleteTextBoxId).val();
+                                NewOrderLine_extn.getRecords(searchText,function(result, event){
+                                    if(event.type == 'exception') {
+                                          alert(event.message);
+                                    } else {
+                                         sObjects = result;
+                                         response(sObjects);
+                                    }
+                                });
+                           },
+                    focus: function( event, ui ) {
+                            j$(autoCompleteTextBoxId).val( ui.item.Name );
+                            return false;
+                            },
+                    select: function( event, ui ) {
+                                j$(autoCompleteTextBoxId).val( ui.item.Name );
+                                j$("input[id$='searchId']").val(ui.item.Id);
+                                //alert(j$(autoCompleteTextBoxId).val());  //returns value of selected item
+                                //alert(ui.item.Id);  //returns item.id from SFDC
+
+                                return false;
+                            },
+                 })
+                 .data( "autocomplete" )._renderItem = function( ul, item ) {
+                    var entry = "<a>" + item.Name;
+                    j$.each("".split(",") , function(key, value) {
+                        entry = entry + " <b> Product </b>";
+                    });
+                    entry = entry + "</a>";
+                    entry = entry.replace(queryTerm, "<b>" + queryTerm + "</b>");
+                    return j$( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( entry )
+                        .appendTo( ul );
+                };
+            });
+        </script>
+    </apex:form>
+
+
+</apex:page>

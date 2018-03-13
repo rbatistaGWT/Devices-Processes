@@ -1,0 +1,89 @@
+<aura:component controller="greatwave2.GenericItemScanController" access="Global">
+	<aura:attribute name="parentRecordId" type="String" description="Stores the Id of the Parent Record for which the line was scanned." access="global"/>
+    <aura:attribute name="code" type="String" description="Stores the decoded barcode value." access="global"/>
+    <aura:attribute name="object" type="String" default="greatewave2__Inventory_Item__c" description="Stores the apiName of the object on which to search the barcode value in." access="global"/>
+    <aura:attribute name="searchField" type="String" default="greatwave2__Scanned_Barcode__c" description="Stores the API name of the driving field for the SOQL WHERE clause." access="global"/>
+    <aura:attribute name="scanAction" type="String" description="Stores a String value with the action intended by the scan." access="global"/>
+    <aura:attribute name="setActionField" type="String" default="greatwave2__LastScannedAction__c" description="Stores the API Name of the field to be updated with the {!v.scanAction} value." access="global"/>
+    <aura:attribute name="scanRelatedTo" type="String" default="greatwave2__Inventory_Order__c" description="Stores the API Name of the field on which the {!v.parentRecordId} will be stored." access="global"/>
+    <aura:attribute name="parentObjectName" type="String" description="Stores the API name of the parent record object." access="global"/>
+    <aura:attribute name="notFoundMessage" type="String" default="This Item does not exists in the system" description="Stores the base error message for when the item is not found in the system" access="global"/>
+    <aura:attribute name="notInExpectedLocation" type="String" default="The Item was not in the expected location" description="Stores the base error message for when the item is found in the system but no in the expected location" access="global"/>
+    <aura:attribute name="errorMessage" type="String" default="" access="global"/>
+    <aura:attribute name="scanLockMessage" type="String" default="Scan feature is locked for this Item, please contact your System Admin" access="global"/>
+    <aura:attribute name="scanLockClassImpl" type="String" default="" description="Stores the Implementation Class Name that execute the scan validation." access="global"/>
+
+    <aura:attribute name="reviewOrderDisabled" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="scanAnotherDisabled" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="headerName" type="String" default="Scan To Transfer" access="global"/>
+	<aura:attribute name="parentRecordObject" type="SObject" access="global"/>
+    <aura:attribute name="baseQueryFields" type="string" default="Id,Name" access="global" />
+
+    <aura:attribute name="scannedRecord" type="SObject" access="private"/>
+    <aura:attribute name="product" type="Product2" access="private"/>
+    <aura:attribute name="parsedCode" type="Map" access="private"/>
+    <aura:attribute name="showErrorInsteadOfInfo" type="Boolean" default="false" access="private"/>
+    <aura:attribute name="attributes" type="Map" access="private"/>
+    <aura:attribute name="showParentName" type="Boolean" access="private" default="false"/>
+        
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div aura:id="container" class="slds">
+        <header class="slds-modal__header" >
+            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate slds-align_absolute-center">{!v.headerName}</h2>
+        </header>
+        
+        <aura:if isTrue="{!!v.showErrorInsteadOfInfo}">
+            <div class="slds-grid slds-grid_align-space slds-p-around_large slds-p-left_x-large slds-theme_default">
+                <div class="slds-col">
+                    <aura:if isTrue="{!v.showParentName}">
+                        <span class="slds-form-element__label">Parent Name</span>
+                        
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">{!v.parentRecordObject.Name}</span>
+                        </div>
+                    </aura:if>
+                    <span class="slds-form-element__label">Product</span>
+                    <div class="slds-form-element__control">
+                        <span class="slds-form-element__static">{!v.product.Name}</span>
+                    </div>
+                </div>
+                <div class="slds-col">
+                    <aura:if isTrue="{!v.parsedCode.isLotControlled}">
+                        <span class="slds-form-element__label">Lot Number</span>
+                        <div class="slds-form-element__control">
+                            <span class="slds-form-element__static">{!v.parsedCode.lotNumber}</span>
+                        </div>
+                        <aura:set attribute="else">
+                            <span class="slds-form-element__label">Serial Number</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static">{!v.parsedCode.serialNumber}</span>
+                            </div>
+                        </aura:set>
+                    </aura:if>
+                </div>
+            </div>
+            
+            <aura:set attribute="else">
+                <div class="errorMessage">
+                    <lightning:icon iconName="action:close" alternativeText="info" size="xx-small"/>
+                    <span class="slds-m-left_x-small">{!v.errorMessage}</span>
+                </div>
+            </aura:set>
+        </aura:if>
+        
+        <footer class="slds-modal__footer">
+            <div class="slds-align_absolute-center">
+                <lightning:button variant="brand" label="Review Order" onclick="{!c.goToInventoryOrder}" disabled="{!v.reviewOrderDisabled}"/>
+            </div>
+            
+            <div class="slds-align_absolute-center slds-m-top_x-small" onclick="{!c.scanAnotherLine}">
+                <greatwave2:Scan aura:id="scanner" name="Scan Another Line" isDisabled="{!v.scanAnotherDisabled}" class="slds-size--1-of-2" handlingComponent="greatwave2:GenericItemScan" handlingComponentAttributes="{!v.attributes}"/>
+            </div>
+            
+            <div class="slds-align_absolute-center slds-m-top_x-small">
+                <lightning:button variant="neutral" label="Cancel" onclick="{!c.cancel}"/>
+            </div>
+        </footer>
+    </div>
+</aura:component>

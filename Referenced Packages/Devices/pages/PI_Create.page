@@ -1,0 +1,47 @@
+<apex:page standardController="greatwave2__PIC__c" extensions="greatwave2.PI_Create" action="{!init}">
+    <apex:form >
+        <apex:pageMessages ></apex:pageMessages>
+        <apex:pageBlock title="Physical Inventory Count" mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Submit" action="{!Submit}" />
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="PI Details" columns="2">
+                <apex:inputField required="true" value="{!greatwave2__PIC__c.greatwave2__Request_Date__c}" />
+                <apex:inputField value="{!greatwave2__PIC__c.greatwave2__First_Notification__c}" />     
+                <apex:inputField required="true" value="{!greatwave2__PIC__c.greatwave2__Start_Date__c}" />
+                <apex:inputField value="{!greatwave2__PIC__c.greatwave2__Second_Notification__c}" />    
+                <apex:inputField required="true" value="{!greatwave2__PIC__c.greatwave2__Due_Date__c}" />
+                <apex:inputField value="{!greatwave2__PIC__c.greatwave2__Third_Notification__c}" />
+                <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+                <apex:inputField value="{!greatwave2__PIC__c.greatwave2__Fourth_Notification__c}" />        
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="PIR Details" columns="2">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel />
+                    <!--apex:outputLabel for="inventoryLocation">Inventory Location</apex:outputLabel-->
+                    <c:MultiSelectPicklist leftLabel="Inventory Locations"
+                                           leftOption="{!allLocations}"
+                                           rightLabel="Selected Locations"
+                                           rightOption="{!selectedLocations}"
+                                           size="14"
+                                           width="175px"
+                                           id="inventoryLocation"
+                                           />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel />
+                    <!--apex:outputLabel for="products">Products</apex:outputLabel-->
+                    <c:MultiSelectPicklist leftLabel="Available Products"
+                                           leftOption="{!allProducts}"
+                                           rightLabel="Selected Products"
+                                           rightOption="{!selectedProducts}"
+                                           size="14"
+                                           width="175px"
+                                           id="products"
+                                           />
+                </apex:pageBlockSectionItem>            
+            </apex:pageBlockSection>
+        </apex:pageBlock>   
+    </apex:form>
+</apex:page>

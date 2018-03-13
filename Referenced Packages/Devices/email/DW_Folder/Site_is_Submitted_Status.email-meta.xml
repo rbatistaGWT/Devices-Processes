@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Site status has changed to &quot;Submitted&quot; and needs to be approved.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Site is &quot;Submitted&quot; Status</name>
+    <style>none</style>
+    <subject>Site Status: Submitted</subject>
+    <type>text</type>
+</EmailTemplate>

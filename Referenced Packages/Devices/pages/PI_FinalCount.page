@@ -1,0 +1,45 @@
+<apex:page controller="greatwave2.PI_FinalCount_Ctrl" action="{!init}">
+    <apex:form >
+    <apex:pageMessages ></apex:pageMessages>
+    <apex:pageBlock title="{!piName} Final Count" mode="edit">
+        <apex:pageBlockButtons >
+            <apex:commandButton value="Submit PI Attachment" action="{!Submit}" />  
+            <apex:commandButton value="Cancel" action="{!cancel}"/>  
+        </apex:pageBlockButtons>
+        <apex:pageBlockTable value="{!DisplayList}" var="d">
+            <apex:column >
+                <apex:facet name="header">Location</apex:facet>
+                {!d.loc}
+            </apex:column>  
+            <apex:column >
+                <apex:facet name="header">Product Code</apex:facet>
+                {!d.prod}
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Lot/SN</apex:facet>
+                {!d.lotSN}
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">Expected Count</apex:facet>
+                {!d.exp}
+            </apex:column>
+            <apex:column >
+                <apex:facet name="header">SFDC Scanned Count</apex:facet>
+                {!d.scan}
+            </apex:column>
+            <!--apex:column >
+                <apex:facet name="header">Variance (Expected - Scanned)</apex:facet>
+                {!d.var}
+            </apex:column-->
+            <!-- apex:column >
+                <apex:facet name="header">QAD Total Quantity</apex:facet>
+                {!d.tot}
+            </apex:column>          
+            <apex:column >
+                <apex:facet name="header">QAD Total Adjusted Quantity</apex:facet>
+                {!d.adj}
+            </apex:column--> 
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

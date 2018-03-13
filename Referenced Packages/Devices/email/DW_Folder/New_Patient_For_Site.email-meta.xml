@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>New Patient For Site</name>
+    <style>none</style>
+    <subject>New Patient For {!Patient__c.Site__c}</subject>
+    <textOnly>Attn:
+ {!Patient__c.SiteOwner__c}   A new Patient has been log in the system for the site {!Patient__c.Site__c}. Below are some details of the Patient: {!Patient.Link}
+
+Patient Record: Patient Name:    {!Patient__c.FirstName__c}{!Patient__c.LastName__c} Patient DOB:       {!Patient__c.Patient_DOB__c} Patient Gender:  {!Patient__c.Patient_Gender__c}
+
+For detail information please click here
+Regards,
+{!Organization.Name}</textOnly>
+    <type>custom</type>
+</EmailTemplate>

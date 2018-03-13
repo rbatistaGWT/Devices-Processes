@@ -1,0 +1,11 @@
+<apex:page standardController="greatwave2__Inventory_Order__c">
+<script>
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+    document.write("<p>Parent:"+ESAPI.encoder().encodeForJavaScript(ESAPI.encoder().encodeForHTML(document.referrer)+"<br/>Location:"+ESAPI.encoder().encodeForJavaScript(ESAPI.encoder().encodeForHTML(document.location)+"</p>");
+</script>
+</apex:page>

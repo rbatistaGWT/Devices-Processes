@@ -1,0 +1,17 @@
+Dear {!Patient__c.SiteOwner__c}
+</br>
+</br>
+A new Patient has been logged in the system for the site {!Patient__c.Site__c}. Below are some details of the Patient: {!Patient.Link} 
+<br/>
+<br/>
+Patient Record:
+Patient Name:    {!Patient__c.FirstName__c}{!Patient__c.LastName__c}
+Patient DOB:       {!Patient__c.Patient_DOB__c}
+Patient Gender:  {!Patient__c.Patient_Gender__c}
+<br/>
+<br/>
+For detail information please <a href="https://login.salesforce.com/{!Patient__c.Id}">click here</a>
+</br>
+<br/>
+Regards, <br/>
+{!Organization.Name}

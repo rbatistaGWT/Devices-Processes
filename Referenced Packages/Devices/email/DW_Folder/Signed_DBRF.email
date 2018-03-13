@@ -1,0 +1,5 @@
+Hello {!DBRF__c.Signer__c},
+
+{!DBRF__c.Name} for  {!DBRF__c.Site_Name__c}, related to patient {!DBRF__c.Patient__c}, has been signed by {!DBRF__c.Signer__c} on {!DBRF__c.Sign_Date__c}.
+
+Admin System.

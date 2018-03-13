@@ -1,0 +1,11 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId">
+    <aura:attribute name="recordId" type="String"/>
+    <greatwave2:GenericItemScan parentRecordId="{!v.recordId}" 
+                       object="greatwave2__Inventory_Item__c" 
+                       searchField="greatwave2__Scanned_Barcode__c" 
+                       scanAction="Transfer" 
+                       setActionField="greatwave2__LastScannedAction__c" 
+                       scanRelatedTo="greatwave2__Inventory_Order__c" 
+                       parentObjectName="greatwave2__Inventory_Order__c"
+                       />
+</aura:component>

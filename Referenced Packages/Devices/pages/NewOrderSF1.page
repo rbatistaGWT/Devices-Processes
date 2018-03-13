@@ -1,0 +1,206 @@
+<apex:page standardController="greatwave2__Inventory_Order__c" extensions="greatwave2.NewOrderSF1_extn" id="pgId" showHeader="false" standardStylesheets="true" cache="false" doctype="html-5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-1.8.js')}"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.js')}"/>
+    <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.css')}"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
+    <style>
+        .ui-icon-loading{
+            display:none !important;
+        }
+        .dateFormat{
+             display:none !important;
+        }
+        .ui-link{
+            display:none !important;
+
+        }
+        .errorMsg{
+            color:red !important;
+        }
+    </style>
+
+    <apex:form >
+    <div id="browserViewId" style="display:none;">
+        <div data-role="header" >
+            <a class="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-delete" onclick="backConsole();">Cancel</a><h1>New Order</h1>
+            <!--button class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check" onclick="saveRec();">Save</button-->
+            <apex:commandLink styleclass="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check" action="{!onSave}" value="Save"
+            />
+        </div>
+        <div style="padding: 5px;">
+            <apex:pageMessages ></apex:pageMessages>
+            <!--label for="In-s">Inventory Order Name:</label>
+            <apex:inputfield value="{!Inventory_Order__c.Name}" required="true" html-name="In-s" />
+            <label for="st-s">Status</label>
+            <apex:inputfield value="{!Inventory_Order__c.Status__c}"  html-name="st-s" html-data-mini="true"/>
+            <label for="cc-s">Currency</label>
+            -->
+            <label for="ot-s">Order Type</label>
+            <apex:inputfield value="{!greatwave2__Inventory_Order__c.greatwave2__Order_Type__c}" id="otId" html-name="ot-s" html-data-mini="true" onchange="onSelectOrderType(this.value);"/>
+            
+            <label for="ot-tf" class="transferInput">Transfer From</label>
+            <apex:inputField value="{!greatwave2__Inventory_Order__c.greatwave2__From_Location__c}" html-name="ot-tf" html-data-mini="true" styleClass="transferInput" id="autocomplete_textbox" />
+            
+            <label for="ot-tf" class="vendorInput">Vendor</label>
+            <apex:inputField value="{!greatwave2__Inventory_Order__c.greatwave2__Vendor__c}" html-name="ot-tf" html-data-mini="true" styleClass="vendorInput" id="vendor_textbox" />
+            
+            <label for="ot-tf" class="shipToInput">Ship-To</label>
+            <apex:inputField value="{!greatwave2__Inventory_Order__c.greatwave2__Inventory_Location__c}" html-name="ot-tf" html-data-mini="true" styleClass="shipToInput" id="shipTo_textbox" />
+            
+            <label for="ot-s">Comments</label>
+            <apex:inputfield value="{!greatwave2__Inventory_Order__c.greatwave2__Comments__c}"  html-name="ot-s" html-data-mini="true"/>
+            <apex:inputHidden value="{!greatwave2__Inventory_Order__c.greatwave2__From_Location__c}" id="autocomplete_textbox121"/>
+            <apex:inputHidden value="{!greatwave2__Inventory_Order__c.greatwave2__Vendor__c}" id="vendor_hidden_textbox"/>
+            <apex:inputHidden value="{!greatwave2__Inventory_Order__c.greatwave2__Inventory_Location__c}" id="shipTo_hidden_textbox"/>
+
+        <script type="text/javascript">
+            var j$ = jQuery.noConflict();
+
+            j$(document).ready(function() {
+                var orderType = j$('[id$="otId"]').val();
+                onSelectOrderType(orderType);
+                
+                //Auto complete textbox
+                autoComplete(j$('[id$=autocomplete_textbox]'), j$('[id$=autocomplete_textbox121]'), 'User');
+                autoComplete(j$('[id$=vendor_textbox]'), j$('[id$=vendor_hidden_textbox]'), 'Account');
+                autoComplete(j$('[id$=shipTo_textbox]'), j$('[id$=shipTo_hidden_textbox]'),'Inventory Order');
+            });
+            function htmlDecode(input){
+                // Deprecated
+                return input;
+            }
+            
+            function autoComplete(autoCompleteTextBoxId, hiddenTextBox, objectName){
+                //auto complete method
+                var queryTerm;
+                j$(autoCompleteTextBoxId).autocomplete({
+                    minLength: 2,
+                    source: function(request, response) {
+                        queryTerm = request.term;
+                        var sObjects;
+                        var searchText = j$(autoCompleteTextBoxId).val();
+                        if(objectName == 'User'){
+                            greatwave2.NewOrderSF1_extn.getRecords(searchText,function(result, event){
+                                if(event.type == 'exception') {
+                                      alert(event.message);
+                                } else {
+                                     sObjects = result;
+                                     response(sObjects);
+                                }
+                            });
+                        } else if(objectName == 'Account'){
+                            greatwave2.NewOrderSF1_extn.getVendors(searchText,function(result, event){
+                                if(event.type == 'exception') {
+                                      alert(event.message);
+                                } else {
+                                     sObjects = result;
+                                     response(sObjects);
+                                }
+                            });
+                        } else if(objectName == 'Inventory Order'){
+                            greatwave2.NewOrderSF1_extn.getShipToRecords(searchText,function(result, event){
+                                if(event.type == 'exception') {
+                                      alert(event.message);
+                                } else {
+                                     sObjects = result;
+                                     response(sObjects);
+                                }
+                            });
+                        }
+                        
+                   },
+                    focus: function( event, ui ) {
+                        j$(autoCompleteTextBoxId).val(htmlDecode(ui.item.Name) );
+                        return false;
+                    },
+                    select: function( event, ui ) {
+                        hiddenTextBox.val(ui.item.Id);
+                        autoCompleteTextBoxId.val(ui.item.Id); 
+                        autoCompleteTextBoxId.val(ui.item.Name);      
+                        return false;
+                    },
+                 })
+                 .data( "autocomplete" )._renderItem = function( ul, item ) {
+                    var entry = "<a>" + item.Name;
+                    j$.each("".split(",") , function(key, value) {
+                        entry = (entry == null?"No match Found in ":entry) + " <b> " + objectName +" </b>";
+                    });
+                    entry = entry + "</a>";
+                    entry = entry.replace(queryTerm, "<b>" + queryTerm + "</b>");
+                    return j$( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( entry )
+                        .appendTo( ul );
+                };
+            
+            }
+            
+
+        </script>
+    </div>
+    <!--apex:commandButton html-data-theme="b" styleClass="ui-btn-left ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-left ui-icon-check" value="Save & New" action="{!onSaveAndNew}"
+    oncomplete="saveandnew();"/-->
+    </div>
+    <script>
+        function onSelectOrderType(otval){
+            if(otval == 'Transfer'){
+                hideField('.vendorInput', 'vendor_textbox');
+                hideField('.shipToInput', 'shipTo_textbox');
+                showField('.transferInput', 'autocomplete_textbox');
+            } else if(otval == 'Purchase Order'){
+                showField('.vendorInput', 'vendor_textbox');
+                showField('.shipToInput', 'shipTo_textbox');
+                hideField('.transferInput', 'autocomplete_textbox');
+            } else{
+                hideField('.vendorInput', 'vendor_textbox');
+                hideField('.shipToInput', 'shipTo_textbox');
+                hideField('.transferInput', 'autocomplete_textbox');
+                //j$('[id$="inventoryItemId-input"]').val('');
+                j$('.errorMsg').hide();
+            }
+        }
+        function initOt(){
+            onSelectOrderType(j$('[id$="otId"]').val());
+        }
+
+        function showField(className, inputId){
+            j$(className).show();
+            j$('[id$="' + inputId + '"]').parent().show();
+        }
+
+        function hideField(className, inputId){
+            j$(className).hide();
+            j$('[id$="' + inputId + '"]').parent().hide();
+        }
+  </script>
+    <script>
+        var j$ = jQuery.noConflict();
+        function navigate() {
+            if ( (typeof sforce != 'undefined') && (sforce != null) )  {
+                if(j$('#browserViewId').css('display') == 'none'){
+                    j$('#browserViewId').show();
+                }
+            }else{
+                window.location.href ="/apex/NewOrder";//?retURL=%2Fa0c%2Fo" ;
+            }
+        }
+        navigate();
+        function saveandnew(){
+            if ( (typeof sforce != 'undefined') && (sforce != null) )  {
+                sforce.one.navigateToURL('/apex/NewOrderSF1');//?retURL=%2Fa0c%2Fo');
+            }else{
+                alert('Illegal Access!');
+            }
+        }
+        function backConsole(){
+            if ( (typeof sforce != 'undefined') && (sforce != null) )  {
+                sforce.one.back();
+            }else{
+                alert('Illegal Access!');
+            }
+        }
+    </script>
+</apex:form>
+</apex:page>

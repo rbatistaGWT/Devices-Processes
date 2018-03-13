@@ -1,0 +1,5 @@
+<aura:component >
+    <aura:attribute name="errorMessage" type="String" access="global"/>
+	<h2 style="color:red;">Error!</h2>
+    <p>{!v.errorMessage}</p>	
+</aura:component>

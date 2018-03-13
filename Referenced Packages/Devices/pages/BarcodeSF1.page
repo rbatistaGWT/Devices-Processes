@@ -1,0 +1,153 @@
+<apex:page showHeader="false" standardStylesheets="false" cache="false" doctype="html-5.0" controller="greatwave2.BarcodeSF1Ctrl"> 
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1"/> 
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+<meta http-equiv="pragma" content="no-cache" />
+</head>
+        <apex:stylesheet value="{!URLFOR($Resource.greatwave2__alertify, 'alertify.js-0.3.11/themes/alertify.core.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.greatwave2__alertify, 'alertify.js-0.3.11/themes/alertify.default.css')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.greatwave2__alertify, 'alertify.js-0.3.11/lib/alertify.min.js')}"/>
+        
+        <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-1.8.js')}"/>
+        <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.js')}"/>    
+        <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.css')}"/>
+        <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQueryMobile,'/jquery.mobile/jquery.mobile-1.4.4.min.js')}"/>
+        <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQueryMobile,'/jquery.mobile/jquery.mobile-1.4.4.min.css')}"/>
+        
+    <div data-role="page" data-theme="a" id="homePage">
+        <div data-role="header" data-position="fixed">
+            <h1>Barcode Search</h1>
+        </div><!-- /header -->  
+        <div data-role="content">
+        <!-- <a href="#homePage" data-role="button" data-icon="plus" onclick="scan();">Scan</a>-->
+        <input type="button" data-role="button" data-icon="plus" onclick="scan();" value="Scan"/>
+        </div><!-- /content -->
+    </div><!-- /app main page -->
+    <div data-role="page" data-theme="a" id="resultsPage">
+        <div data-role="header" data-position="fixed">
+            <h1>Lookup Record</h1>
+        </div><!-- /header -->  
+        <div data-role="content">
+            <a href="" style="visibility:hidden;" data-role="button" data-icon="forward" id="openSF1" onclick="navigate();">Go to record</a>  
+            <a href="" data-role="button" data-icon="grid" onclick="cancel();">Cancel</a>
+            <!-- <a href="#homePage" data-role="button" data-icon="grid" onclick="window.location = window.location.href.split('?')[0].split('#')[0];">Reset</a> -->  
+        </div><!-- /content -->
+    </div><!-- /app results page --> 
+    <div data-role="page" data-theme="a" id="blankPage">
+    
+    </div>
+        
+    <script>
+    var inSF1=false;
+    var sfInstance = [];
+    sfInstance[0]="{!JSENCODE($Setup.greatwave2__DeviceWave_Settings__c.greatwave2__Visualforce_URL__c)}"; // Visual Force
+    sfInstance[1]="{!JSENCODE($Setup.greatwave2__DeviceWave_Settings__c.greatwave2__Salesforce1_URL__c)}"; // one.app
+    var barcodeCfg="{!JSENCODE($Setup.greatwave2__DeviceWave_Settings__c.greatwave2__Scanner_Configuration__c)}";
+    
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+    function gup( name, url ) {
+        if (!url) url = location.href
+        name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+        var regexS = "[\\?&]"+name+"=([^&#]*)";
+        var regex = new RegExp( regexS );
+        var results = regex.exec( url );
+        return results == null ? null : results[1];
+    }
+    function getRetId() {
+        retId=getParameterByName('id');
+        if(retId.length==18) retId=retId.substring(0,15);
+        return retId;
+    }
+    function scan() {
+        if(barcodeCfg!="") {
+            // Use in browser scanner
+            window.top.location='/apex/BarcodeJS?ret='+ encodeURIComponent('/apex/BarcodeSF1');
+        } else {
+            if(navigator.userAgent.toLowerCase().indexOf("android") > -1) {
+                scanUrl="zxing://scan/?ret=https%3A%2F%2F{!Instance}%2Fapex%2FBarcodeSF1%3Fcode%3D%7BRAWCODE%7D";//&SCAN_FORMATS=CODE_128";
+                window.top.location=scanUrl;
+            } else {
+                scanUrl = "ilu://x-callback-url/scanner-go?x-source=salesforce1";
+                if(inSF1) {         
+                    scanUrl += "&x-success=https://{!Instance}/apex/BarcodeSF1";
+                    scanUrl += "&sg-result=code&sg-history=NO";
+                    //scanUrl += "&x-cancel=salesforce1://sObject/"+getRetId()+"/view";
+                    //scanUrl += "&x-error=salesforce1://sObject/"+getRetId()+"/view";
+                    sforce.one.back();
+                    window.open(scanUrl);
+                } else {
+                    scanUrl += "&x-success=https://"+sfInstance[0]+"/apex/BarcodeSF1";
+                    scanUrl += "&sg-result=code&sg-history=NO";
+                    scanUrl += "&x-cancel=https://"+sfInstance[1]+"/one/one.app";
+                    scanUrl += "&x-error=https://"+sfInstance[1]+"/one/one.app";
+                    location.hash="#blankPage";
+                    window.top.location=scanUrl;
+                }
+            }
+        }
+    }
+
+    function openClose(uri){
+        /*location.hash="#blankPage";
+        var anchor = document.createElement('a');
+        anchor.setAttribute('href', uri);
+        
+        var dispatch = document.createEvent('HTMLEvents')
+        dispatch.initEvent('click', true, true);
+        
+        anchor.dispatchEvent(dispatch);
+        */
+        //window.open(uri); 
+        var win = window.open('','_self');
+        win.close();
+        
+        //sforce.one.navigateToURL("javascript:window.close();");
+    }   
+
+    function navigate() {
+        if(inSF1) {
+            openClose("salesforce1://sObject/"+recordId+"/view");
+        } else {
+            window.location="https://"+sfInstance[1]+"/one/one.app#/sObject/"+recordId+"/view";
+        }
+    }
+    function cancel() {     
+        if(inSF1) {
+            openClose("salesforce1://sObject/"+getRetId()+"/view");
+        } else {
+            window.location="https://"+sfInstance[1]+"/one/one.app";
+        }
+    }
+    function recordRetrieved(result, event) {       
+        if ( (!event) || (event.status) ) {
+            if (-1!=result.toLowerCase().indexOf('error')) {
+                alertify.error(result);
+            } else {
+                alertify.success("Found Asset");
+                document.querySelector("#openSF1").style.visibility='visible';
+                recordId=result;
+            }
+        } else if (event.type === 'exception') {
+            alertify.error(result);
+        }
+    }
+            
+    var code="";
+    var recordId="";
+    $( document ).ready(function() {
+        code=gup("code",location.search);//getParameterByName("code").toUpperCase();
+        if(code!=null&&code!="") {
+            location.hash="#resultsPage";
+            greatwave2.BarcodeSF1Ctrl.getRecordFromBarcode(code, recordRetrieved, {escape: false});
+        }
+    });
+    </script> 
+</apex:page>

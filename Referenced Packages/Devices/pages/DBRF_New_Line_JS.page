@@ -1,0 +1,643 @@
+<apex:page standardController="greatwave2__DBRF__c" extensions="greatwave2.DBRF_NewLine_Extension" applyHtmlTag="false" showheader="false" sidebar="false" docType="HTML-5.0">
+    <style>
+        img.lookupIcon{display:none;}
+    </style>
+    <apex:remoteObjects >
+        <apex:remoteObjectModel name="greatwave2__Inventory_Item__c" jsShorthand="inventoryItem"
+            fields="Name,Id,greatwave2__SerialNumber__c">
+        </apex:remoteObjectModel>
+    </apex:remoteObjects>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <head>
+        <title>BarcodeReader</title>
+        <apex:stylesheet value="{!URLFOR($Resource.greatwave2__alertify, 'alertify.js-0.3.11/themes/alertify.core.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.greatwave2__alertify, 'alertify.js-0.3.11/themes/alertify.default.css')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.greatwave2__alertify, 'alertify.js-0.3.11/lib/alertify.min.js')}"/>
+        <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-1.8.js')}"/>
+        <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.js')}"/>
+        <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.css')}"/>
+        <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQueryMobile,'/jquery.mobile/jquery.mobile-1.4.4.min.js')}"/>
+        <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQueryMobile,'/jquery.mobile/jquery.mobile-1.4.4.min.css')}"/>
+    </head>
+    <apex:form >
+
+    <apex:inputText value="{!retryCount}" id="retryCount" style="display:none;"/>
+    <apex:inputText value="{!decodedString}" id="decodedString" style="display:none;"/>
+    <apex:inputText value="{!inventoryItemId}" id="inventoryItemId-input" style="display:none;"  />
+    <apex:inputText value="{!useTypeHidden}" id="useTypeHidden" style="display:none;"/>
+    <apex:actionFunction name="incrementRetry" action="{!incrementRetry}"/>
+    <apex:actionFunction name="reset" action="{!reset}"/>
+    <apex:actionFunction name="sendMismatchEmail" action="{!sendMismatchEmail}" reRender="nothing"/>
+    <apex:ActionFunction name="addDBRFLine" action="{!addNewLine}" reRender="msgs,msgs1" oncomplete="navigate();" />
+
+    <body>
+        <div data-role="page" data-theme="a" id="homePage">
+            <div data-role="header" data-position="fixed">
+                <h1>Barcode Input</h1>
+            </div>
+            <div data-role="content">
+                <a href="#decodePage" data-role="button" data-icon="plus" onclick="j$('#Take-Picture').click();">Scan</a>
+                <!--<a href="#manualEntry" data-role="button" data-icon="plus">Manual Entry</a>-->
+                <div style="display:none;"><input id="Take-Picture" type="file" accept="image/*" capture="camera" onchange="readURL(this);" style="display:none;"/></div>
+            </div>
+        </div>
+        <div data-role="page" data-theme="a" id="decodePage">
+            <div data-role="header" data-position="fixed">
+                <h1>Lookup Record</h1>
+            </div>
+            <div data-role="content">
+                <img width="320" height="240" src="" id="Image" style="border:1px groove silver;display:block;margin:auto;"/>
+                <a href="#decodePage" data-role="button" data-icon="grid" onclick="Decode();">Decode</a>
+                <a href="#homePage" data-role="button" data-icon="grid" onclick="">Reset</a>
+            </div>
+        </div>
+        <div data-role="page" data-theme="a" id="resultsPage">
+            <apex:pageMessages id="msgs1"></apex:pageMessages>
+            <div data-role="header" data-position="fixed">
+                <h1>Lookup Record</h1>
+            </div>
+            <div data-role="content">
+                <canvas width="320" height="240" id="picture"></canvas>
+                <p id="textbit"></p>
+                <p id="Result"></p>
+                <p id="productName"></p>
+                <p id="serialNumber"></p>
+                <label for="useType"><strong>Use Type</strong></label>
+                <span id="useType"><apex:inputField value="{!currentLine.greatwave2__Use_Type__c}" id="scanUseType" required="true" label="Use Type" onchange="jQuery('[id$=useTypeHidden]').val(jQuery(this).val());jQuery('[id$=manualEntryUseType]').val(jQuery(this).val())"/></span>
+                <br/><br/>
+                <a href="#" id="addLine" data-role="button" data-icon="forward" onclick="addDBRFLine();">Add Line</a>
+                <a href="#homePage" data-role="button" data-icon="grid" onclick="">Reset</a>
+            </div>
+        </div>
+        <div data-role="page" data-theme="a" id="productNotFound">
+            <div data-role="header" data-position="fixed">
+                <h1>No Record Found</h1>
+            </div>
+            <a href="#homePage" data-role="button" data-icon="grid" onclick="incrementRetry();return false;" id="retryScan">Retry</a>
+            <a href="#homePage" data-role="button" data-icon="grid" onclick="reset();return false;" id="scanAnothercode" style="visibility:hidden">Scan another code</a>
+        </div>
+        <div data-role="page" data-theme="a" id="manualEntry">
+            <apex:pageMessages id="msgs" />
+            <div data-role="header" data-position="fixed">
+                <h1>Manual Entry</h1>
+            </div>
+            <div data-role="content">
+                <label for="selectProduct"><strong>Select Product</strong></label>
+                <span id="selectProduct"><apex:inputField value="{!tempObj.greatwave2__Inventory_Item__c}" id="autocomplete_textbox"/></span>
+                <label for="useType"><strong>Use Type</strong></label>
+                <span id="useType"><apex:inputField value="{!currentLine.greatwave2__Use_Type__c}" id="manualEntryUseType" required="true" label="Use Type" onchange="jQuery('[id$=useTypeHidden]').val(jQuery(this).val());jQuery('[id$=scanUseType]').val(jQuery(this).val())"/></span>
+                <a href="#" id="addLine" data-role="button" data-icon="forward" onclick="addDBRFLine();">Add Line</a>
+            </div>
+
+        </div>
+        <div data-role="page" data-theme="a" id="cannotAddNewLines" data-rel="dialog">
+            <div data-role="header" data-position="fixed">
+                <h1>DBRF has been {!greatwave2__DBRF__c.greatwave2__Status__c}</h1>
+            </div>
+            <div data-role="content">
+                <p align="center">The DBRF has been already {!greatwave2__DBRF__c.greatwave2__Status__c}, no new lines can be added</p><br/>
+                <a href="#" data-role="button" data-icon="grid" onclick="navigate();" id="goBack" >Back to DBRF</a>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var j$ = jQuery.noConflict();
+            j$( document ).ready(function() {
+                if('{!JSENCODE(greatwave2__DBRF__c.greatwave2__Status__c)}' != 'New' &&
+                   '{!JSENCODE(greatwave2__DBRF__c.greatwave2__Status__c)}' != 'Draft')
+                    location.hash='#cannotAddNewLines';
+            });
+
+            j$( document ).on( "pageinit", "#manualEntry", function() {
+
+                //alert('autoCompleteInit')
+                //Auto complete textbox component
+                var autoCompleteTextBoxId = j$('[id$=autocomplete_textbox]');
+                //alert(autoCompleteTextBoxId.val())
+                var queryTerm;
+
+                //auto complete method
+                j$(autoCompleteTextBoxId).autocomplete({
+                    minLength: 2,
+                    source: function(request, response) {
+                                queryTerm = request.term;
+                                var sObjects;
+                                var searchText = JSENCODE(j$(autoCompleteTextBoxId).val());
+                                DBRF_NewLine_Extension.getRecords(searchText,function(result, event){
+                                    if(event.type == 'exception') {
+                                          alert(event.message);
+                                    } else {
+                                         sObjects = result;
+                                         response(sObjects);
+                                    }
+                                });
+                           },
+                    focus: function( event, ui ) {
+                            j$(autoCompleteTextBoxId).val( ui.item.Name );
+                            return false;
+                            },
+                    select: function( event, ui ) {
+                                j$(autoCompleteTextBoxId).val( ui.item.Name );
+                                j$('[id$=inventoryItemId-input]').val(ui.item.Id);
+                                //alert(j$(autoCompleteTextBoxId).val());  //returns value of selected item
+                                //alert(ui.item.Id);  //returns item.id from SFDC
+                                //alert(j$('[id$=inventoryItemId-input]').val());
+                                InventoryItemId = ui.item.Id;
+                                return false;
+                            },
+                 })
+                 .data( "autocomplete" )._renderItem = function( ul, item ) {
+                    var entry = "<a>" + item.Name;
+                    j$.each("".split(",") , function(key, value) {
+                        entry = entry + " <b> Product </b>";
+                    });
+                    entry = entry + "</a>";
+                    entry = entry.replace(queryTerm, "<b>" + queryTerm + "</b>");
+                    return j$( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( entry )
+                        .appendTo( ul );
+                };
+            });
+
+        </script>
+        <!--- START JOSHIAS CODE-->
+         <script type="text/javascript">
+JOB = {
+    Config : {
+        // Set to false if the decoder should look for one barcode and then stop. Increases performance.
+        Multiple : true,
+
+        // The formats that the decoder will look for.
+        DecodeFormats : ["Code128","Code93","Code39","EAN-13", "2Of5", "Inter2Of5", "Codabar"],
+
+        // ForceUnique just must makes sure that the callback function isn't repeatedly called
+        // with the same barcode. Especially in the case of a video stream.
+        ForceUnique: true,
+
+        // Set to true if information about the localization should be recieved from the worker.
+        LocalizationFeedback: false,
+
+        // Set to true if checking orientation of the image should be skipped.
+        // Checking orientation takes a bit of time for larger images, so if
+        // you are sure that the image orientation is 1 you should skip it.
+        SkipOrientation : false
+    },
+    SupportedFormats : ["Code128","Code93","Code39","EAN-13", "2Of5", "Inter2Of5", "Codabar"],// Don't touch.
+    ScanCanvas : null, // Don't touch the canvas either.
+    ScanContext : null,
+    SquashCanvas : document.createElement("canvas"),
+    ImageCallback : null, // Callback for the decoding of an image.
+    StreamCallback : null, // Callback for the decoding of a video.
+    LocalizationCallback : null, // Callback for localization.
+    Stream : null, // The actual video.
+    DecodeStreamActive : false, // Will be set to false when StopStreamDecode() is called.
+    Decoded : [], // Used to enfore the ForceUnique property.
+    DecoderWorker : new Worker("{!URLFOR($Resource.JOB, 'DecoderWorker.js')}"),
+    OrientationCallback : null,
+    // Always call the Init().
+    Init : function() {
+        JOB.ScanCanvas = JOB.FixCanvas(document.createElement("canvas"));
+        JOB.ScanCanvas.width = 640;
+        JOB.ScanCanvas.height = 480;
+        JOB.ScanContext = JOB.ScanCanvas.getContext("2d");
+        var script  = document.createElement('script');
+        script.src  = "{!URLFOR($Resource.JOB, 'exif.js')}";
+        script.type = 'text/javascript';
+        document.getElementsByTagName('head').item(0).appendChild(script);
+    },
+
+    // Value should be true or false.
+    SetRotationSkip : function(value) {
+        JOB.Config.SkipOrientation = value;
+    },
+    // Sets the callback function for the image decoding.
+    SetImageCallback : function(callBack) {
+        JOB.ImageCallback = callBack;
+    },
+
+    // Sets the callback function for the video decoding.
+    SetStreamCallback : function(callBack) {
+        JOB.StreamCallback = callBack;
+    },
+
+    // Sets callback for localization, the callback function should take one argument.
+    // This will be an array with objects with format.
+    // {x, y, width, height}
+    // This represents a localization rectangle.
+    // The rectangle comes from a 320, 240 area i.e the search canvas.
+    SetLocalizationCallback : function(callBack) {
+        JOB.LocalizationCallback = callBack;
+        JOB.Config.LocalizationFeedback = true;
+    },
+
+    // Set to true if LocalizationCallback is set and you would like to
+    // receive the feedback or false if
+    SwitchLocalizationFeedback : function(bool) {
+        JOB.Config.LocalizationFeedback = bool;
+    },
+
+    // Switches for changing the Multiple property.
+    DecodeSingleBarcode : function() {
+        JOB.Config.Multiple = false;
+    },
+    DecodeMultiple : function() {
+        JOB.Config.Multiple = true;
+    },
+
+    // Sets the formats to decode, formats should be an array of a subset of the supported formats.
+    SetDecodeFormats : function(formats) {
+        JOB.Config.DecodeFormats = [];
+        for(var i = 0; i < formats.length; i++) {
+            if(JOB.SupportedFormats.indexOf(formats[i]) != -1) {
+                JOB.Config.DecodeFormats.push(formats[i]);
+            }
+        }
+        if(JOB.Config.DecodeFormats.length == 0) {
+            JOB.Config.DecodeFormats = JOB.SupportedFormats.slice();
+        }
+    },
+
+    // Removes a list of formats from the formats to decode.
+    SkipFormats : function(formats) {
+        for(var i = 0; i < formats.length; i++) {
+            var index = JOB.Config.DecodeFormats.indexOf(formats[i]);
+            if(index >= 0) {
+                JOB.Config.DecodeFormats.splice(index,1);
+            }
+        }
+    },
+
+    // Adds a list of formats to the formats to decode.
+    AddFormats : function(formats) {
+        for(var i = 0; i < formats.length; i++) {
+            if(JOB.SupportedFormats.indexOf(formats[i]) != -1) {
+                if(JOB.Config.DecodeFormats.indexOf(formats[i]) == -1) {
+                    JOB.Config.DecodeFormats.push(formats[i]);
+                }
+            }
+        }
+    },
+
+    // The callback function for image decoding used internally by JOB.
+    JOBImageCallback : function(e) {
+        if(e.data.success == "localization") {
+            if(JOB.Config.LocalizationFeedback) {
+                JOB.LocalizationCallback(e.data.result);
+            }
+            return;
+        }
+        if(e.data.success == "orientationData") {
+            JOB.OrientationCallback(e.data.result);
+            return;
+        }
+        var filteredData = [];
+        for(var i = 0; i < e.data.result.length; i++) {
+            if(JOB.Decoded.indexOf(e.data.result[i].Value) == -1 || JOB.Config.ForceUnique == false) {
+                filteredData.push(e.data.result[i]);
+                if(JOB.Config.ForceUnique) JOB.Decoded.push(e.data.result[i].Value);
+            }
+        }
+        JOB.ImageCallback(filteredData);
+        JOB.Decoded = [];
+    },
+
+    // The callback function for stream decoding used internally by JOB.
+    JOBStreamCallback : function(e) {
+        if(e.data.success == "localization") {
+            if(JOB.Config.LocalizationFeedback) {
+                JOB.LocalizationCallback(e.data.result);
+            }
+            return;
+        }
+        if(e.data.success && JOB.DecodeStreamActive) {
+            var filteredData = [];
+            for(var i = 0; i < e.data.result; i++) {
+                if(JOB.Decoded.indexOf(e.data.result[i].Value) == -1 || JOB.ForceUnique == false) {
+                    filteredData.push(e.data.result[i]);
+                    if(JOB.ForceUnique) JOB.Decoded.push(e.data.result[i].Value);
+                }
+            }
+            if(filteredData.length > 0) {
+                JOB.StreamCallback(filteredData);
+            }
+        }
+        if(JOB.DecodeStreamActive) {
+            JOB.ScanContext.drawImage(JOB.Stream,0,0,JOB.ScanCanvas.width,JOB.ScanCanvas.height);
+            JOB.DecoderWorker.postMessage({
+                scan : JOB.ScanContext.getImageData(0,0,JOB.ScanCanvas.width,JOB.ScanCanvas.height).data,
+                scanWidth : JOB.ScanCanvas.width,
+                scanHeight : JOB.ScanCanvas.height,
+                multiple : JOB.Config.Multiple,
+                decodeFormats : JOB.Config.DecodeFormats,
+                cmd : "normal",
+                rotation : 1,
+            });
+
+        }
+        if(!JOB.DecodeStreamActive) {
+            JOB.Decoded = [];
+        }
+    },
+
+    // The image decoding function, image is a data source for an image or an image element.
+    DecodeImage : function(image) {
+        if(image instanceof Image || image instanceof HTMLImageElement) {
+            image.exifdata = false;
+            if(image.complete) {
+                if(JOB.Config.SkipOrientation) {
+                    JOB.JOBDecodeImage(image,1,"");
+                } else {
+                    EXIF.getData(image, function(exifImage) {
+                        var orientation = EXIF.getTag(exifImage,"Orientation");
+                        var sceneType = EXIF.getTag(exifImage,"SceneCaptureType");
+                        if(typeof orientation != 'number') orientation = 1;
+                        JOB.JOBDecodeImage(exifImage,orientation,sceneType);
+                    });
+                }
+            } else {
+                var img = new Image();
+                img.onload = function() {
+                    if(JOB.Config.SkipOrientation) {
+                        JOB.JOBDecodeImage(img,1,"");
+                    } else {
+                        EXIF.getData(this, function(exifImage) {
+                            var orientation = EXIF.getTag(exifImage,"Orientation");
+                            var sceneType = EXIF.getTag(exifImage,"SceneCaptureType");
+                            if(typeof orientation != 'number') orientation = 1;
+                            JOB.JOBDecodeImage(exifImage,orientation,sceneType);
+                        });
+                    }
+                };
+                img.src = image.src;
+            }
+        } else {
+            var img = new Image();
+            img.onload = function() {
+                if(JOB.Config.SkipOrientation) {
+                    JOB.JOBDecodeImage(img,1,"");
+                } else {
+                    EXIF.getData(this, function(exifImage) {
+                        var orientation = EXIF.getTag(exifImage,"Orientation");
+                        var sceneType = EXIF.getTag(exifImage,"SceneCaptureType");
+                        if(typeof orientation != 'number') orientation = 1;
+                        JOB.JOBDecodeImage(exifImage,orientation,sceneType);
+                    });
+                }
+            };
+            img.src = image;
+        }
+    },
+
+    // Starts the decoding of a stream, the stream is a video not a blob i.e it's an element.
+    DecodeStream : function(stream) {
+        JOB.Stream = stream;
+        JOB.DecodeStreamActive = true;
+        JOB.DecoderWorker.onmessage = JOB.JOBStreamCallback;
+        JOB.ScanContext.drawImage(stream,0,0,JOB.ScanCanvas.width,JOB.ScanCanvas.height);
+        JOB.DecoderWorker.postMessage({
+            scan : JOB.ScanContext.getImageData(0,0,JOB.ScanCanvas.width,JOB.ScanCanvas.height).data,
+            scanWidth : JOB.ScanCanvas.width,
+            scanHeight : JOB.ScanCanvas.height,
+            multiple : JOB.Config.Multiple,
+            decodeFormats : JOB.Config.DecodeFormats,
+            cmd : "normal",
+            rotation : 1,
+        });
+    },
+
+    // Stops the decoding of a stream.
+    StopStreamDecode : function() {
+        JOB.DecodeStreamActive = false;
+        JOB.Decoded = [];
+    },
+
+    JOBDecodeImage : function (image,orientation,sceneCaptureType) {
+        if(orientation == 8 || orientation == 6) {
+            if(sceneCaptureType == "Landscape" && image.width > image.height) {
+                orientation = 1;
+                JOB.ScanCanvas.width = 640;
+                JOB.ScanCanvas.height = 480;
+            } else {
+                JOB.ScanCanvas.width = 480;
+                JOB.ScanCanvas.height = 640;
+            }
+        } else {
+            JOB.ScanCanvas.width = 640;
+            JOB.ScanCanvas.height = 480;
+        }
+        JOB.DecoderWorker.onmessage = JOB.JOBImageCallback;
+        JOB.ScanContext.drawImage(image,0,0,JOB.ScanCanvas.width,JOB.ScanCanvas.height);
+        JOB.Orientation = orientation;
+        JOB.DecoderWorker.postMessage({
+            scan : JOB.ScanContext.getImageData(0,0,JOB.ScanCanvas.width,JOB.ScanCanvas.height).data,
+            scanWidth : JOB.ScanCanvas.width,
+            scanHeight : JOB.ScanCanvas.height,
+            multiple : JOB.Config.Multiple,
+            decodeFormats : JOB.Config.DecodeFormats,
+            cmd : "normal",
+            rotation : orientation,
+            postOrientation : JOB.PostOrientation
+        });
+    },
+
+    DetectVerticalSquash : function (img) {
+        var ih = img.naturalHeight;
+        var canvas = JOB.SquashCanvas;
+        canvas.width = 1;
+        canvas.height = ih;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        try {
+            var data = ctx.getImageData(0, 0, 1, ih).data;
+        } catch (err) {
+            console.log("Cannot check verticalSquash: CORS?");
+            return 1;
+        }
+        var sy = 0;
+        var ey = ih;
+        var py = ih;
+        while (py > sy) {
+            var alpha = data[(py - 1) * 4 + 3];
+            if (alpha === 0) {
+                ey = py;
+            } else {
+                sy = py;
+            }
+            py = (ey + sy) >> 1;
+        }
+        var ratio = (py / ih);
+        return (ratio===0)?1:ratio;
+    },
+
+    FixCanvas : function (canvas)
+    {
+        var ctx = canvas.getContext('2d');
+        var drawImage = ctx.drawImage;
+        ctx.drawImage = function(img, sx, sy, sw, sh, dx, dy, dw, dh)
+        {
+            var vertSquashRatio = 1;
+            if (!!img && img.nodeName == 'IMG')
+            {
+                vertSquashRatio = JOB.DetectVerticalSquash(img);
+                sw || (sw = img.naturalWidth);
+                sh || (sh = img.naturalHeight);
+            }
+            if (arguments.length == 9)
+                drawImage.call(ctx, img, sx, sy, sw, sh, dx, dy, dw, dh / vertSquashRatio);
+            else if (typeof sw != 'undefined')
+                drawImage.call(ctx, img, sx, sy, sw, sh / vertSquashRatio);
+            else
+                drawImage.call(ctx, img, sx, sy);
+        };
+        return canvas;
+    }
+};
+
+        </script>
+        <script type="text/javascript">
+            var takePicture = document.querySelector("#Take-Picture"),
+            showPicture = document.createElement("img");
+            Result = document.querySelector("#textbit");
+            var canvas =document.getElementById("picture");
+            var ctx = canvas.getContext("2d");
+            JOB.Init();
+            JOB.SetImageCallback(function(result) {
+                if(result.length > 0){
+                    var tempArray = [];
+                    for(var i = 0; i < result.length; i++) {
+                        tempArray.push(result[i].Format+" : "+result[i].Value);
+                        DBRF_NewLine_Extension.getRecordFromBarcode(result[i].Format+" : "+result[i].Value , recordRetrieved, {escape: false})
+                    }
+                    Result.innerHTML=tempArray.join("<br />");
+                    jQuery('[id$=decodedString]').val(Result.innerHTML);
+                    location.hash="#resultsPage";
+                }else{
+                    if(result.length === 0) {
+                        Result.innerHTML="Decoding failed.";
+                    }
+                }
+            });
+            JOB.PostOrientation = true;
+            JOB.OrientationCallback = function(result) {
+                canvas.width = result.width;
+                canvas.height = result.height;
+                var data = ctx.getImageData(0,0,canvas.width,canvas.height);
+                for(var i = 0; i < data.data.length; i++) {
+                    data.data[i] = result.data[i];
+                }
+                ctx.putImageData(data,0,0);
+            };
+            JOB.SwitchLocalizationFeedback(true);
+            JOB.SetLocalizationCallback(function(result) {
+                ctx.beginPath();
+                ctx.lineWIdth = "2";
+                ctx.strokeStyle="red";
+                for(var i = 0; i < result.length; i++) {
+                    ctx.rect(result[i].x,result[i].y,result[i].width,result[i].height);
+                }
+                ctx.stroke();
+            });
+            if(takePicture && showPicture) {
+                takePicture.onchange = function (event) {
+                    location.hash="#resultsPage";
+                    var files = event.target.files;
+                    if (files && files.length > 0) {
+                        file = files[0];
+                        try {
+                            var URL = window.URL || window.webkitURL;
+                            showPicture.onload = function(event) {
+                                Result.innerHTML="";
+                                JOB.DecodeImage(showPicture);
+                                URL.revokeObjectURL(showPicture.src);
+                            };
+                            showPicture.src = URL.createObjectURL(file);
+                        }
+                        catch (e) {
+                            try {
+                                var fileReader = new FileReader();
+                                fileReader.onload = function (event) {
+                                    showPicture.onload = function(event) {
+                                        Result.innerHTML="";
+                                        console.log("filereader");
+                                        JOB.DecodeImage(showPicture);
+                                    };
+                                    showPicture.src = event.target.result;
+                                };
+                                fileReader.readAsDataURL(file);
+                            }
+                            catch (e) {
+                                Result.innerHTML = "Neither createObjectURL or FileReader are supported";
+                            }
+                        }
+                    }
+                };
+            }
+        <!--- END JOSHIAS CODE --->
+            function recordRetrieved(result, event) {
+                if ( (!event) || (event.status) )
+                {
+                    if (-1!=result.indexOf('Error'))
+                    {
+
+                        var rCount = jQuery('[id$=retryCount]').val();
+                        if(rCount >= 1){
+                            document.querySelector("#scanAnothercode").style.visibility='visible';
+                            document.querySelector("#retryScan").style.visibility='hidden';
+                            sendMismatchEmail();
+                        }
+                        location.hash="#productNotFound";
+                    }
+                    else
+                    {
+                        // notify the user and render the button
+                        alertify.success("Found Asset");
+                        document.querySelector("#addLine").style.visibility='visible';
+                        recordId=result;
+                        InventoryItemId=result;
+                        fetchInventoryItems();
+                        location.hash="#resultsPage";
+                    }
+                }
+                else if (event.type === 'exception')
+                {
+                    alertify.error(result);
+                }
+            }
+
+
+            function fetchInventoryItems(){
+                // Create a new Remote Object
+                var invItem= new SObjectModel.inventoryItem();
+
+                // Use the Remote Object to query for 10 warehouse records
+                invItem.retrieve({ where: { Id: {eq:InventoryItemId} }}, function(err, records, event){
+                    if(err) {
+                        alert(err.message);
+                    }
+                    else {
+                        records.forEach(function(record) {
+                            // Build the text for a warehouse line item
+                            jQuery('#productName').text("Product Name: "+record.get("Name"));
+	                        jQuery('#serialNumber').text("Serial Number: "+record.get("SerialNumber__c"));
+                            jQuery('[id$=inventoryItemId-input]').val(InventoryItemId);
+                        });
+                    }
+                });
+            };
+
+            function navigate(){
+            	var dbrfId = '{!JSENCODE(parentDBRF)}';
+                if(jQuery('[id$=msgs1]').html() != '' && jQuery('[id$=msgs]').html() != '')
+                    return;
+                else if( (typeof sforce != 'undefined') && (sforce != null) )  {
+                    sforce.one.navigateToSObject(dbrfId);
+                    sforce.one.navigateToSObject(dbrfId.substring(0, 15));
+                } else {
+                    window.location="/" + dbrfId ;
+                }
+            }
+        </script>
+    </body>
+    </apex:form>
+</apex:page>

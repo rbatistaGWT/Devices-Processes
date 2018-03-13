@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Property and Valuation  Collateral</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>First Contacts  Loan Application</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Information Collection (this might go to Loan Application or Data Integrity – Mike will let us know)</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>File Review (Mike will give us the official naming convention)</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Information Integrity  Data Integrity</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Borrower Credit History</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Underwriting; TRID</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Initial Disclosures</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Loan Closing</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Liquid Assets</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Non-Liquid Assets</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Assets from Third Parties</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Salaried Applicants</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Self-Employed Applicants</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Other Income</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Delivery</fullName>
+        <default>false</default>
+    </customValue>
+    <masterLabel>Question Category</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

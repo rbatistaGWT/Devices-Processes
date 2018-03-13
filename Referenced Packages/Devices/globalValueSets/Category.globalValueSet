@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Property &amp; Valuation</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>First Contacts</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Information Collection</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>File Review</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Information Integrity</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Borrower Credit History</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Marketing</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Manufacturing</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Management</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Information Technology</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Human Resource</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Finance</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Engineering</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Salaried Applicants</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Underwritin</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Self-Employed Applicants</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Security</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Sales</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Purchasing</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>QA</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <masterLabel>Category</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

@@ -1,0 +1,49 @@
+<apex:page standardController="greatwave2__Inventory_Order__c" extensions="greatwave2.StatusUpdate_ctrl" cache="true" id="pageId" showheader="false" sidebar="false">
+    <head>
+        
+        <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js"></script>
+        <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-1.8.js')}"/>
+        <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.js')}"/>
+
+        <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.css')}"/>
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
+        
+        <style>
+            
+            .ui-header  h1{margin:0 !important;}
+        </style>
+     </head>
+    <apex:pageMessages ></apex:pageMessages>  
+    <apex:form >
+    <!-- <apex:actionFunction name="cancel" action="{!cancel}"/>
+    <apex:actionFunction name="submit" action="{!submit}"/>-->
+        <div data-role="page" data-theme="a" id="homePage">
+            <div data-role="header" data-position="fixed" data-theme="b">
+                    <h1 style="display:{!IF(Inventory_Order__c.Status__c == 'New' || Inventory_Order__c.Status__c == 'Pending Transfer', 'block', 'none')}">Are you sure you want to submit this Order?</h1>
+                    <h1 style="display:{!IF(NOT(Inventory_Order__c.Status__c == 'New' || Inventory_Order__c.Status__c == 'Pending Transfer'), 'block', 'none')}">This Order has been submitted</h1>
+            </div>
+            <apex:pageMessages id="msgId"/>
+            <div data-role="content">
+                <apex:commandLink action="{!submit}" value="Submit" html-data-role="button" rendered="{!greatwave2__Inventory_Order__c.greatwave2__Status__c == 'New' || greatwave2__Inventory_Order__c.greatwave2__Status__c == 'Pending Transfer'}"/>
+                <apex:commandLink action="{!cancel}" value="Cancel" html-data-role="button" rendered="{!greatwave2__Inventory_Order__c.greatwave2__Status__c == 'New' || greatwave2__Inventory_Order__c.greatwave2__Status__c == 'Pending Transfer'}"/>
+                <apex:commandLink action="{!cancel}" value="Return to Record" html-data-role="button" rendered="{!NOT(greatwave2__Inventory_Order__c.greatwave2__Status__c == 'New' || greatwave2__Inventory_Order__c.greatwave2__Status__c == 'Pending Transfer')}"/>
+                <!--<input type="button" data-role="button" data-icon="plus" onclick="submit();" value="Submit"/>
+                <input type="button" data-role="button" data-icon="minus" onclick="cancel();" value="Cancel"/-->
+            </div>
+        </div>
+        <!-- 
+        <center style="padding: 0px !important;">
+            <apex:pageMessage severity="info" strength="3">
+                <strong>Are you sure you want to submit this Order?</strong><br/><br/>
+            </apex:pageMessage> 
+            <apex:commandButton action="{!submit}" value="Submit" styleClass="ui-input-btn"/>
+            <apex:commandButton action="{!cancel}" value="Cancel" styleClass="ui-input-btn"/>
+        </center>
+        -->
+    </apex:form>
+    <script>
+        $(document).ready(function(){
+            $('.ui-header  h1').css( 'margin', '0');
+        });
+    </script>
+</apex:page>

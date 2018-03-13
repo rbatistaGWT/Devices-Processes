@@ -1,0 +1,60 @@
+<apex:page standardController="greatwave2__Audit_Plan__c" extensions="greatwave2.NewAudit_ctrl">
+    <head>
+        <title>New Audit Plan</title>
+    </head>
+    <apex:sectionHeader title="Audit Plan Edit" subtitle="{!IF(auditId != null,objAuditPlan.Name,'New Audit Plan')}"/>
+    <apex:form >
+        <apex:pageBlock mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!Save}"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+                <apex:commandButton value="Generate Checklist" action="{!onGenerateChecklist}" rendered="{!IF(AND(auditId != null,StatusMap[objAuditPlan.greatwave2__Status__c] == 0),true,false)}"/>
+                <apex:commandButton value="Score" action="{!onScore}" rendered="{!IF(AND(auditId != null,StatusMap[objAuditPlan.greatwave2__Status__c] == 1),true,false)}"/>
+                <apex:commandButton value="New CAPA" action="{!onNewCAPA}" rendered="{!IF(AND(auditId != null,StatusMap[objAuditPlan.greatwave2__Status__c] > 1),true,false)}"/>  
+                <apex:commandButton value="Close" action="{!onClose}" rendered="{!IF(AND(auditId != null,StatusMap[objAuditPlan.greatwave2__Status__c] == 2),true,false)}"/>              
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+            <apex:pageBlockSection title="General Information" collapsible="false">
+            
+                <apex:OutputField value="{!objAuditPlan.greatwave2__Status__c}"/>
+                <apex:repeat value="{!$ObjectType.greatwave2__Audit_Plan__c.fieldSets.greatwave2__AuditPlanFieldGI}" var="f">
+                <apex:inputField value="{!greatwave2__Audit_Plan__c[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                
+                <!--apex:inputField value="{!objAuditPlan.Subject__c}" required="true"/>
+                <apex:inputField value="{!objAuditPlan.gw_Category__c}" required="true"/>
+                <apex:inputField value="{!objAuditPlan.gw_Location__c}" required="true"/>
+                <apex:inputField value="{!objAuditPlan.gw_Department__c}" required="true"/>
+                <apex:inputField value="{!objAuditPlan.Generate_Checklit_By__c}" required="true"/>
+                <apex:inputField value="{!objAuditPlan.Start_Date_Time__c}"/>
+                <apex:inputField value="{!objAuditPlan.End_Date_Time__c}"/-->
+                </apex:repeat>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1">
+                <!--apex:inputField value="{!objAuditPlan.Notes__c}"/-->
+                <apex:repeat value="{!$ObjectType.greatwave2__Audit_Plan__c.fieldSets.greatwave2__AuditPlanFieldNotes}" var="f">
+                <apex:inputField value="{!greatwave2__Audit_Plan__c[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                </apex:repeat>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Standard" collapsible="false">
+            <apex:repeat value="{!$ObjectType.greatwave2__Audit_Plan__c.fieldSets.greatwave2__AuditPlanFieldStandard}" var="f">
+                <apex:inputField value="{!greatwave2__Audit_Plan__c[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                </apex:repeat>
+                <!--apex:inputField value="{!objAuditPlan.gw_Standard__c}"/-->
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Score" collapsible="false" columns="1" rendered="{!IF(AND(auditId != null,OR(objAuditPlan.greatwave2__Status__c == 'Scored',objAuditPlan.greatwave2__Status__c == 'Closed')),true,false)}">
+            <apex:repeat value="{!$ObjectType.greatwave2__Audit_Plan__c.fieldSets.greatwave2__AuditPlanFieldScore}" var="f">
+                <apex:inputField value="{!greatwave2__Audit_Plan__c[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                </apex:repeat>
+                <!--apex:inputField value="{!objAuditPlan.Score_Type__c}"/>
+                <apex:inputField value="{!objAuditPlan.Score_Comment__c}"/--> 
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Closure" collapsible="false" columns="1" rendered="{!IF(AND(auditId != null,objAuditPlan.greatwave2__Status__c == 'Closed'),true,false)}">                
+                <apex:repeat value="{!$ObjectType.greatwave2__Audit_Plan__c.fieldSets.greatwave2__AuditPlanFieldClosure}" var="f">
+                <apex:inputField value="{!greatwave2__Audit_Plan__c[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                </apex:repeat>
+                <!--apex:inputField value="{!objAuditPlan.Closure_Date__c}"/>
+                <apex:inputField value="{!objAuditPlan.Closure_Comments__c}"/-->
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

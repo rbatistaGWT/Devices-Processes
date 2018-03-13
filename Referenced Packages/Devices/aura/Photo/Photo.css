@@ -1,0 +1,70 @@
+.THIS .gwt_buttons_cancel{
+    position: relative;
+    display: inline-block;
+    padding: 0;
+    background: transparent;
+    background-clip: border-box;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    line-height: 1.875rem;
+    text-decoration: none;
+    color: #0070d2;
+    -webkit-appearance: none;
+    white-space: normal;
+    user-select: none;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #dddbda;
+    transition: border 0.15s linear;
+    border-color: #dddbda;
+    background-color: white;
+    margin: 7px;
+    width: 40%;
+}
+
+.THIS .gwt_buttons_cancel:hover, .THIS .gwt_buttons_cancel:focus {
+    background-color: #f4f6f9;
+}
+
+.THIS .gwt_buttons_confirm{
+    position: relative;
+    display: inline-block;
+    padding: 0;
+    background: transparent;
+    background-clip: border-box;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    line-height: 1.875rem;
+    text-decoration: none;
+    color: #0070d2;
+    -webkit-appearance: none;
+    white-space: normal;
+    user-select: none;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #dddbda;
+    transition: border 0.15s linear;
+    background-color: #0070d2;
+    border-color: #0070d2;
+    color: white;
+    margin: 7px;
+    width: 40%;
+}
+
+.THIS .gwt_buttons_confirm:hover, .THIS .gwt_buttons_confirm:focus {
+    background-color: #005fb2;
+    border-color: #005fb2;
+    color: white;
+}
+
+.THIS .disableUploadPhotoBtn {
+    pointer-events: none;
+    cursor: default;
+    background-color: #949393;
+    border: 1px solid grey;
+    color: #d0d0d0;
+}

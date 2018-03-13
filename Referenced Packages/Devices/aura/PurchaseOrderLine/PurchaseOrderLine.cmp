@@ -1,0 +1,62 @@
+<aura:component controller="greatwave2.PurchaseOrderLineController">
+	<aura:attribute name="parentRecordId" type="String" access="Global" description="Stores the Id of the Parent Record for which the line was scanned."/>
+    <aura:attribute name="scanLockMessage" type="String" access="Global" default="Scanned quantity exceeds the requested quantity for the Order Line"/>
+    <aura:attribute name="scanLockClassImpl" type="String" access="Global" default="OrderLineQuantityScanLockImpl"/>
+    <aura:attribute name="code" type="String" access="public" description="Stores the decoded barcode value."/>
+    <aura:attribute name="parsedCode" type="Map" access="private"/> 
+    <aura:attribute name="orderLine" type="greatwave2__Order_Line__c" access="private"/>   
+    <aura:attribute name="showContent" type="Boolean" default="false" access="private"/>
+    <aura:attribute name="scanButtonName" type="String" default="Scan" access="private"/>
+    <aura:attribute name="infoMessage" type="String" access="private"/>
+    <aura:attribute name="iconName" type="String" default="action:info" access="private"/>
+    <aura:attribute name="attributes" type="Map" access="private"/>
+    <aura:attribute name="headerName" type="String" default="Scan To Receive" access="private"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div aura:id="spinner" class="slds-align_absolute-center">
+        <lightning:spinner variant="brand"/>
+    </div>
+    
+    <div aura:id="content" class="slds hideContent">
+        <div>
+            <header class="slds-modal__header">
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate slds-align_absolute-center">{!v.headerName}</h2>
+            </header>
+        </div>
+        
+        <div>
+            <div class="slds-align_absolute-center slds-grid slds-grid_align-space slds-p-around_large slds-p-left_x-large slds-theme_default">
+                <aura:if isTrue="{!v.showContent}">
+                    <greatwave2:PurchaseOrderLineContent orderLine="{!v.orderLine}" lotNumber="{!v.parsedCode.lotNumber}" serialNumber="{!v.parsedCode.serialNumber}" isLotControlled="{!v.parsedCode.isLotControlled}"/>
+                    <aura:set attribute="else">
+                        <lightning:icon iconName="{!v.iconName}" alternativeText="info" size="xx-small"/>
+                        <span class="slds-m-left_x-small">{!v.infoMessage}</span>
+                    </aura:set>
+                </aura:if>
+            </div>
+        </div>
+        
+        <footer class="slds-modal__footer">
+            <aura:if isTrue="{!v.showContent}">
+                <div class="slds-align_absolute-center">
+                    <lightning:button variant="brand" label="Review Order" onclick="{!c.goToInventoryOrder}" class="slds-size--1-of-2"/>
+                </div>
+            </aura:if>
+            
+            <aura:if isTrue="{!v.showContent}">
+                <div class="slds-align_absolute-center slds-m-top_x-small">
+                    <lightning:button variant="brand" label="Go To Line Record" onclick="{!c.goToOrderLine}" class="slds-size--1-of-2"/>
+                </div>
+            </aura:if>
+            
+            <div class="slds-align_absolute-center slds-m-top_x-small" onclick="{!c.scanLine}">
+                <greatwave2:Scan aura:id="scanner" name="{!v.scanButtonName}" class="slds-size--1-of-2" handlingComponent="greatwave2:PurchaseOrderLine" handlingComponentAttributes="{!v.attributes}" executeOnClick="false"/>
+            </div>
+            
+            <div class="slds-align_absolute-center slds-m-top_x-small">
+                <lightning:button variant="neutral" label="Cancel" onclick="{!c.cancel}" class="slds-size--1-of-2"/>
+            </div>
+        </footer>
+    </div>
+</aura:component>

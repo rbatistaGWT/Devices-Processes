@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>35.0</apiVersion>
+    <available>true</available>
+    <description>This template goes out daily for &quot;open&quot; PIR between start date and due dates.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>PIR Daily Emails</name>
+    <style>none</style>
+    <subject>Physical Inventory Notification</subject>
+    <type>visualforce</type>
+</EmailTemplate>

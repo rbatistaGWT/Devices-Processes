@@ -1,0 +1,197 @@
+<apex:page controller="greatwave2.Audit_Item_Filter_Ctrl" sidebar="false" applyHtmlTag="true" standardStylesheets="false" docType="html-5.0">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .confirmM3{
+            color:green;
+            border: 1px solid #013c01;
+            padding: 10px;
+            background-color: #c7efc7;
+        }
+        .errorM3{
+            border: 1px solid #9c0303;
+            padding: 10px;
+            background-color: #efccc7;
+        }
+        .requiredLoaderBG{
+            background-color: rgba(92, 173, 243, 0.22);
+            opacity:0.7;
+            filter:alpha(opacity=70);
+            background-image:url(/dashboards/img/landmark_spinner_1589EE.gif);
+            background-position: center center; 
+            background-repeat: no-repeat;
+            height: 100%;
+            left: 0;
+            position: fixed;
+            text-align: center;
+            top: 0;
+            width: 100%;
+            z-index: 1;
+            background-size: 7%;
+        }
+        html body.sfdcBody {
+            font-family: 'Helvetica';
+            color: #3c3d3e;
+            background: none transparent;
+            margin: 0;
+            padding: 0px !important;
+            height: 100%;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .btn-primary {
+            color: #fff !important;
+            background-color: #337ab7 !important;
+            border-color: #2e6da4 !important;
+        }
+        .btn {
+            display: inline-block !important;
+            padding: 6px 12px !important;
+            margin-bottom: 0 !important;
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            line-height: 1.42857143 !important;
+            text-align: center !important;
+            white-space: nowrap !important;
+            vertical-align: middle !important;
+            -ms-touch-action: manipulation !important;
+            touch-action: manipulation !important;
+            cursor: pointer !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+            background-image: none !important;
+            border: 1px solid transparent !important;
+            border-radius: 4px !important;
+        }
+    </style>
+    <script>
+        window.addEventListener("load", function() {
+            setTimeout(function() {
+                document.querySelector(".btn").focus();
+            }, 10);  
+        });
+        $(document).ready(function(){
+            $("#fId").click(function(){
+                $("#filId").toggle();
+                $('.arrowCls').toggle();                
+            });       
+        });
+    </script>
+    <apex:form >
+        <div id="headerclsId" style="height: 90px;
+                    width: 100%;
+                    background-color: #f7f9fb;                    
+                    padding: 13px;
+                    border-bottom: 1px solid rgba(0, 112, 210, 0.14)">   
+            <table>
+                <tr>
+                    <td align="right">
+                        <div>
+                            <img src="/img/icon/t4v35/custom/custom67_60.png" style="width: 75%;
+                                                                                background-color: #ff854b;
+                                                                                border: 2px solid #f77132;
+                                                                                border-radius: 10px;
+                                                                                box-shadow: 2px 3px 7px #f1966b"/>
+                        </div>
+                    </td>
+                    <td width="10px">
+                        &nbsp;
+                    </td>
+                    <td valign="top">
+                        <div style="color: #484848;
+                                    font-size: 13px;padding-top: 3px;">
+                            Audit Item
+                        </div>
+                        <div style="color:#000;
+                                    font-size: 20px;">
+                            Filter                
+                        </div>
+                    </td>
+                </tr>
+            </table>  
+        </div>
+        <div class="container" style="width:50%">
+        <apex:pageMessages id="errId"></apex:pageMessages>
+        <apex:outputPanel id="tblId">
+    
+        <table class="table" >
+        <thead>
+            <tr class="disable-onbeforeunload">                 
+                <th scope="col" width="33%">
+                    <p>Order</p>
+                </th>
+                <th scope="col" width="34%">
+                    <p>Audit Item Field</p>
+                </th>
+                <th scope="col" width="33%">
+                    <p>&nbsp;</p>
+                </th>                                            
+            </tr>
+        </thead>
+        <tbody>
+            <apex:variable value="{!0}" var="index"/>
+            <apex:repeat value="{!objAIF}" var="a">
+                <tr>                    
+                    <td>
+                        <apex:outputText value="{!index}" >
+                            <apex:param value="" assignTo="{!a.Order__c}" name="order"/>
+                        </apex:outputText>
+                        <!--apex:outputField value="{!a.Order__c}"/-->
+                    </td>
+                    <td>
+                        <apex:selectList value="{!a.Name}" size="1" style="border-left:4px solid red;">
+                                <apex:selectOptions value="{!objAIFields}"/>
+                        </apex:selectList>          
+                    </td> 
+                    <td>
+                        <a onclick="deleteRow({!index})" style="display:{!IF(objAIF.size==1,'none','')}">Remove</a>
+                        <apex:variable value="{!index+1}" var="index"/>
+                    </td>
+                    
+                </tr>
+                
+            </apex:repeat>
+        </tbody>
+        </table>
+    </apex:outputPanel>
+    <table class="table">
+        <thead>
+            <tr>
+                <td colspan="3">
+                    <a id="fId" style="text-decoration: none;">
+                    <span class="glyphicon glyphicon glyphicon-triangle-right arrowCls" id="rightId" style="display:{!IF(ISBlank(filter_logic),'','none')};color:#000 !important;"></span>
+                    <span class="glyphicon glyphicon glyphicon glyphicon-triangle-bottom arrowCls" id="downId" style="display:{!IF(ISBlank(filter_logic),'none','')};color:#000 !important;"></span>
+                    Filter Logic</a><br/>
+                    <div id="filId" style="display:{!IF(ISBlank(filter_logic),'none','')}">
+                        <apex:outputPanel id="fltrId">
+                            <apex:inputText value="{!filter_logic}" label="Filter Logic" style="width: 100%;border-left:4px solid red;" />
+                        </apex:outputPanel>
+                    </div>
+                </td>
+                <td>
+                    <apex:commandButton action="{!AddRow}" value="Add" style="padding:10px;" styleclass="btn-primary pull-right" reRender="tblId,errId,fltrId" status="ajaxStatus"/>
+                </td>
+            </tr>
+        </thead>
+    </table>    
+        
+    
+    
+    <div class="center-block" style="text-align: center;">
+        <apex:commandButton action="{!onSave}" value="Save" style="padding:10px;" styleclass="btn btn-primary" reRender="tblId,errId,fltrId" status="ajaxStatus"/>&nbsp;&nbsp;
+           
+    </div>
+            
+    <apex:actionFunction action="{!deleteRow}" name="deleteRow" reRender="tblId,errId,fltrId" status="ajaxStatus" >
+        <apex:param value="" assignTo="{!index}" name="remv"/>        
+    </apex:actionFunction>
+           
+    </div> 
+        <apex:actionstatus startStyleClass="requiredLoaderBG" id="ajaxStatus" />
+    </apex:form>
+</apex:page>

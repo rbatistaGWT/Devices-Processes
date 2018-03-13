@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>InsertUpdate_InsufficientAccess</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>InsertUpdate_InsufficientAccess</shortDescription>
+        <value>Insufficient access to create or update the record.</value>
+    </labels>
+    <labels>
+        <fullName>InventoryOrder_MissingOrderTypeDataSet</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>InventoryOrder_MissingOrderTypeDataSet</shortDescription>
+        <value>The Order_Type__c Custom Setting doesn&apos;t have a value for the selected Order Type. Go to Develop -&gt; Custom Settings -&gt; Order Type -&gt; Manage to add a new data set.</value>
+    </labels>
+    <labels>
+        <fullName>OrderLine_LotAndQuantityMissmatch</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OrderLine_LotAndQuantityMissmatch</shortDescription>
+        <value>The Lot Number must match the amount of the Quantity field.</value>
+    </labels>
+    <labels>
+        <fullName>OrderLine_SerialAndQuantityMissmatch</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OrderLine_SerialAndQuantityMissmatch</shortDescription>
+        <value>The Serial Number must match the amount of the Quantity field.</value>
+    </labels>
+    <labels>
+        <fullName>PI_InfoMessage_NoPIRequest</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PI_InfoMessage_NoPIRequest</shortDescription>
+        <value>There is no active Physical Inventory Request at this time.</value>
+    </labels>
+    <labels>
+        <fullName>PI_InfoMessage_OrdersShipped</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PI_InfoMessage_OrdersShipped</shortDescription>
+        <value>Your physical inventory can not be started while you have orders with a status of Shipped.</value>
+    </labels>
+    <labels>
+        <fullName>PI_InfoMessage_PICompleted</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PI_InfoMessage_PICompleted</shortDescription>
+        <value>Physical Inventory Request is marked as completed.</value>
+    </labels>
+    <labels>
+        <fullName>PI_InfoMessage_ProductsScanned</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PI_InfoMessage_ProductsScanned</shortDescription>
+        <value>All products have been scanned.</value>
+    </labels>
+    <labels>
+        <fullName>PI_InfoMessage_StartingMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PI_InfoMessage_StartingMessage</shortDescription>
+        <value>By clicking the scan button below, you will be committed to the physical inventory count. No new orders can be fulfilled until this count is complete.</value>
+    </labels>
+    <labels>
+        <fullName>PO_InfoMessage_InventoryItemDMLError</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PO_InfoMessage_InventoryItemDMLError</shortDescription>
+        <value>Error while updating the Inventory Item record.</value>
+    </labels>
+    <labels>
+        <fullName>PO_InfoMessage_NoOrderLineFound</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PO_InfoMessage_NoOrderLineFound</shortDescription>
+        <value>No Order Line found for the scanned barcode.</value>
+    </labels>
+    <labels>
+        <fullName>PO_InfoMessage_OrderLineDMLError</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PO_InfoMessage_OrderLineDMLError</shortDescription>
+        <value>Error while updating the Order Line record.</value>
+    </labels>
+    <labels>
+        <fullName>PO_InfoMessage_ProductScanned</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PO_InfoMessage_ProductScanned</shortDescription>
+        <value>This product has already been scanned.</value>
+    </labels>
+    <labels>
+        <fullName>PO_InfoMessage_StartingMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PO_InfoMessage_StartingMessage</shortDescription>
+        <value>Click the Scan button to launch the scanner.</value>
+    </labels>
+    <labels>
+        <fullName>Photo_Component_ErrorLoadingInitialData</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Photo_Component_ErrorLoadingInitialData</shortDescription>
+        <value>Error loading initial data</value>
+    </labels>
+    <labels>
+        <fullName>Photo_Component_ErrorValidatingField</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Photo_Component_ErrorValidatingField</shortDescription>
+        <value>Error trying to validate specified field</value>
+    </labels>
+    <labels>
+        <fullName>Photo_Component_ImageFIleNotSupported</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Photo_Component_ImageFIleNotSupported</shortDescription>
+        <value>Image file not supported</value>
+    </labels>
+    <labels>
+        <fullName>Photo_Component_PhotoUploaded</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Photo_Component_PhotoUploaded</shortDescription>
+        <value>Photo uploaded successfully</value>
+    </labels>
+    <labels>
+        <fullName>Photo_Component_errorReadingPhotoFile</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Photo_Component_errorReadingPhotoFile</shortDescription>
+        <value>Error while reading the photo file</value>
+    </labels>
+    <labels>
+        <fullName>Photo_Component_imageNotSupported</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Photo_Component_imageNotSupported</shortDescription>
+        <value>Image file not supported</value>
+    </labels>
+    <labels>
+        <fullName>Photo_Ctrl_CouldNotSavePhoto</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Photo_Ctrl_CouldNotSavePhoto</shortDescription>
+        <value>Could not save the Photo as a document</value>
+    </labels>
+    <labels>
+        <fullName>Photo_Ctrl_FileldNotAccessible</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Photo_Ctrl_FileldNotAccessible</shortDescription>
+        <value>The Field you&apos;re trying to access is not accessible</value>
+    </labels>
+    <labels>
+        <fullName>Photo_Ctrl_InvalidFieldValue</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Photo_Ctrl_InvalidFieldValue</shortDescription>
+        <value>Has to specify valid field values</value>
+    </labels>
+    <labels>
+        <fullName>Photo_Ctrl_ParentRecordNotFound</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Photo_Ctrl_ParentRecordNotFound</shortDescription>
+        <value>Parent Record class not found</value>
+    </labels>
+    <labels>
+        <fullName>Profiles_Allowed_to_Confirm_an_Order</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Profiles Allowed to Confirm an Order</shortDescription>
+        <value>00e280000012PTP</value>
+    </labels>
+    <labels>
+        <fullName>RequiredFieldValidation</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>RequiredFieldValidation</shortDescription>
+        <value>field is Required in order to sign.</value>
+    </labels>
+    <labels>
+        <fullName>Scan_GeneticItemScan_ErrorScanAction</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Scan_GeneticItemScan_ErrorScanAction</shortDescription>
+        <value>Error While validating Scan Action</value>
+    </labels>
+    <labels>
+        <fullName>Scan_GeneticItemScan_ParentNotFound</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Scan_GeneticItemScan_ParentNotFound</shortDescription>
+        <value>The parent record was not found. Make sure the Id is correct and you have access to the record.</value>
+    </labels>
+    <labels>
+        <fullName>Scan_GeneticItemScan_ParsingError</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Scan_GeneticItemScan_ParsingError</shortDescription>
+        <value>There was a problem parsing the code.</value>
+    </labels>
+    <labels>
+        <fullName>Scan_GeneticItemScan_ProductNotFound</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Scan_GeneticItemScan_ProductNotFound</shortDescription>
+        <value>No product found for the scanned barcode.</value>
+    </labels>
+    <labels>
+        <fullName>Scan_GeneticItemScan_RecordNotFound</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Scan_GeneticItemScan_RecordNotFound</shortDescription>
+        <value>No record found for the scanned barcode.</value>
+    </labels>
+    <labels>
+        <fullName>Scan_GeneticItemScan_UnkownError</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Scan_GeneticItemScan_UnkownError</shortDescription>
+        <value>An unknown error has occurred. Please, try again or contact your administrator.</value>
+    </labels>
+    <labels>
+        <fullName>UnkownError</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>UnkownError</shortDescription>
+        <value>An unknown error has occurred. Please, try again or contact your administrator.</value>
+    </labels>
+    <labels>
+        <fullName>emailPIRRequest</fullName>
+        <categories>PIR</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>emailPIRRequest</shortDescription>
+        <value>00X28000001Jpzm</value>
+    </labels>
+    <labels>
+        <fullName>pirDailyNotification</fullName>
+        <categories>PIR</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>pirDailyNotification</shortDescription>
+        <value>00X28000001Jpzl</value>
+    </labels>
+    <labels>
+        <fullName>pirNightlyNotification</fullName>
+        <categories>PIR</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>pirNightlyNotification</shortDescription>
+        <value>00X28000001Jpzk</value>
+    </labels>
+</CustomLabels>

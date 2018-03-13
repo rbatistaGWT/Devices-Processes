@@ -1,0 +1,31 @@
+<apex:page standardController="greatwave2__Job_Description__c" extensions="greatwave2.JobDescription_extn">
+    <apex:sectionHeader title="Job Description Edit" subtitle="{!IF(IsBlank(jdId),'New Job Description',objJD.Name)}"/>
+    <apex:form >
+        <apex:pageBlock mode="Edit" title="Job Description Edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!onSave}"/>
+                <apex:commandButton value="Save & New" action="{!onSaveAndNew}"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pagemessages id="msgId"/>
+            <apex:pageBlockSection collapsible="false" title="Information">
+                <apex:inputField value="{!objJD.Name}" required="true"/>
+                <!--apex:inputField value="{!objJD.greatwave2__Role__c}" required="true"/-->
+                <apex:pageBlockSectionItem >
+                    <apex:outputText value="Roles"/>
+                    <apex:outputPanel >
+                        <div class="requiredInput"><div class="requiredBlock"></div>
+                            <apex:selectList value="{!objJD.greatwave2__Role__c}" size="1" required="true">
+                                <!--apex:selectOption itemValue="" itemLabel="Select Role"></apex:selectOption-->
+                                <apex:selectOptions value="{!AllRoles}"/>
+                            </apex:selectList>                         
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!objJD.greatwave2__Department__c}"/>
+                <apex:inputField value="{!objJD.greatwave2__Category__c}"/>
+                <apex:inputField value="{!objJD.greatwave2__Location__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

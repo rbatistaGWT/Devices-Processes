@@ -1,0 +1,4 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId">
+	<aura:attribute name="recordId" type="String"/>
+    <greatwave2:Photo parentRecordId="{!v.recordId}" attachmentNamePrefix="invOrder"/> 
+</aura:component>

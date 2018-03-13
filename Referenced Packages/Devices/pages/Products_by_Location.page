@@ -1,0 +1,10 @@
+<apex:page standardController="Product2" extensions="greatwave2.prod2_chart_extn">
+
+   <apex:pageBlock mode="mainDetail"><!--title="locations with Product"-->
+        <apex:chart height="375" width="775" data="{!pieData}" resizable="true" >
+            <apex:pieSeries tips="true" dataField="data" labelField="location" />
+            <apex:legend position="right" />
+        </apex:chart>
+    </apex:pageBlock>
+
+</apex:page>

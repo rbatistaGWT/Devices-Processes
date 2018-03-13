@@ -1,0 +1,44 @@
+<apex:page standardController="greatwave2__Patient__c" extensions="greatwave2.PatientExt"  showheader="true" sidebar="true"  >
+    <apex:sectionHeader title="Patient Edit" subtitle="New Patient"/>
+    <apex:form >
+        <apex:pageMessages id="msg"></apex:pageMessages>
+        <apex:pageBlock title="Patient Edit" mode="edit">
+            <apex:pageBlockButtons >
+            <apex:actionStatus id="SaveStatus">
+            	<apex:facet name="stop">
+            	<apex:outputPanel >
+	                <apex:commandButton value="Save" action="{!save}" reRender="msg" status="SaveStatus"/>
+	                <apex:commandButton value="Save & New" action="{!saveAndNewExt}" reRender="msg" status="SaveStatus"/>
+	                <apex:commandButton value="Cancel" action="{!cancel}" status="SaveStatus"/>
+				</apex:outputPanel>
+                </apex:facet>
+            	<apex:facet name="start">
+            	<apex:outputPanel >
+	                <apex:commandButton value="Save" disabled="true"/>
+	                <apex:commandButton value="Save & New" disabled="true"/>
+	                <apex:commandButton value="Cancel" disabled="true"/>
+				</apex:outputPanel>
+                </apex:facet>
+			</apex:actionStatus>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Information">
+                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Status__c}"/><br/>
+                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__FirstName__c}" />
+                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__LastName__c}" />
+                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Patient_Phone_Number__c}"/>
+                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Patient_DOB__c}"/>
+                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Patient_Gender__c}" />
+              	<!--<apex:inputField value="{!Patient__c.Nevro_Comments__c}"/>--> <!-- Nevro References Removed   -->
+               
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Address">
+                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Address_Line_1__c}" />
+                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Address_Line_2__c}" />
+                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__City__c}" />
+                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__State__c}" />
+                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Postal_Code__c}" />
+                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Country__c}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

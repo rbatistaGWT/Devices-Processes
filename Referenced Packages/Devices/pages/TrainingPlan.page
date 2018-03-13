@@ -1,0 +1,123 @@
+<apex:page controller="greatwave2.TrainingPlan_ctrl" tabStyle="User">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <style>
+        textarea{
+            width:100%;
+            height:80px;
+        }
+    </style>
+    <apex:sectionHeader title="Training Plan" subtitle="{!objUser.Name}"/>
+    <apex:form id="frmId">
+        <apex:pageBlock mode="Edit">
+            <!-- apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!onSave}"/>
+                <apex:commandButton value="Cancel" action="{!onCancel}" immediate="true"/>
+            </apex:pageBlockButtons-->
+            <apex:pagemessages id="msgId"/>
+            <apex:outputPanel id="pnlId">        
+                <apex:pageBlockSection title="General Information">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Select User"/>
+                        <apex:outputPanel >
+                        <div class="requiredInput"><div class="requiredBlock"></div>
+                            <apex:inputField value="{!objstudent.greatwave2__Student_Name__c}" >
+                                <apex:actionSupport event="onchange" reRender="pnlId" oncomplete="onChangeUser();" immediate="true" status="ajaxStatus"/>
+                            </apex:inputField>
+                        </div>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                    <!--apex:inputField value="{!objUser.Firstname}" required="true"/>
+                    <apex:inputField value="{!objUser.Lastname}"/-->
+                    <apex:outputField value="{!objUser.Title}" rendered="{!!ISBlank(objstudent.greatwave2__Student_Name__c)}"/>
+                    <apex:outputField value="{!objUser.UserRoleId}" rendered="{!!ISBlank(objstudent.greatwave2__Student_Name__c)}"/>
+                    <apex:outputField value="{!objUser.Department}" rendered="{!!ISBlank(objstudent.greatwave2__Student_Name__c)}"/> 
+                    <apex:outputField value="{!objUser.ManagerId}" rendered="{!!ISBlank(objstudent.greatwave2__Student_Name__c)}"/>
+                    <apex:outputLabel ></apex:outputLabel>
+                    <!-- apex:inputField value="{!objUser.Experience__c}" rendered="{!!ISBlank(objstudent.greatwave2__Student_Name__c)}"/> 
+                    <apex:inputField value="{!objUser.Education__c}" rendered="{!!ISBlank(objstudent.greatwave2__Student_Name__c)}"/-->               
+                </apex:pageBlockSection>
+                <apex:pageBlockSection title="Course Certification" columns="1" rendered="{!!ISBlank(objstudent.greatwave2__Student_Name__c)}">
+                    <apex:pageBlockTable value="{!objTrainingPlanCourse}" var="c" id="ciId">
+                        <apex:column headerValue="Course Title">
+                            <a href="/{!c.objCourse.Id}">{!c.objCourse.Name}</a>
+                        </apex:column>
+                        <apex:column headerValue="Required Frequency (In Month)" >
+                            <apex:outputText value="{!c.objCourse.greatwave2__Required_Frequency__c}" rendered="{!!IsBlank(c.objCourse.greatwave2__Required_Frequency__c)}"/>
+                            <apex:outputText value="N/A" rendered="{!IsBlank(c.objCourse.greatwave2__Required_Frequency__c)}"/>
+                        </apex:column>
+                        <apex:column headerValue="Last Certified" >
+                            <apex:outputText value="{0,date,MM/dd/yyyy}" rendered="{!!IsBlank(c.lastTaken)}">
+                                   <apex:param value="{!c.lastTaken}" />
+                            </apex:outputText>
+                            <apex:outputText value="N/A" rendered="{!IsBlank(c.lastTaken)}"/>
+                        </apex:column>
+                        <!-- apex:column headerValue="Student Status" >
+                                <apex:outputText value="{!c.studentStatus}" rendered="{!!IsBlank(c.studentStatus)}"/>
+                                <apex:outputText value="N/A" rendered="{!IsNULL(c.studentStatus)}"/>
+                        </apex:column-->
+                        <apex:column headerValue="Next Due" style="background:{!IF(AND(NOT(IsBlank(c.nextDue)),(today() > c.nextDue)),'red','')};color:{!IF(AND(NOT(IsBlank(c.nextDue)),(today() > c.nextDue)),'white','')};">
+                            <apex:outputText value="{0,date,MM/dd/yyyy}" rendered="{!!IsBlank(c.nextDue)}">
+                                   <apex:param value="{!c.nextDue}" />
+                            </apex:outputText>
+                            <apex:outputText value="N/A" rendered="{!IsBlank(c.nextDue)}"/>
+                        </apex:column>
+                        <apex:facet name="footer"><apex:outputPanel rendered="{!IF(objTrainingPlanCourse.size == 0,true,false )}"> No records to display</apex:outputPanel>
+                        </apex:facet>
+                    </apex:pageBlockTable>
+                    <script>$(document).ready(function(){if($('[id$="ciId"] tr').length > 2){$('[id$="ciId"]').find('tfoot').hide();}})</script>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection title="Overdue Courses" columns="1" rendered="{!!ISBlank(objstudent.greatwave2__Student_Name__c)}">
+                    <apex:pageBlockTable value="{!TrainingPlanOverdueCourses}" var="c" id="tpId">
+                        <apex:column headerValue="Course Title" >
+                            <a href="/{!c.objCourse.Id}">{!c.objCourse.Name}</a>
+                        </apex:column>                        
+                        <apex:column headerValue="Due Date" >
+                            <apex:outputText value="{0,date,MM/dd/yyyy}" rendered="{!!IsBlank(c.nextDue)}">
+                                   <apex:param value="{!c.nextDue}" />
+                            </apex:outputText>
+                            <apex:outputText value="N/A" rendered="{!IsBlank(c.nextDue)}"/>                            
+                        </apex:column>
+                        <apex:facet name="footer"><apex:outputPanel rendered="{!IF(TrainingPlanOverdueCourses.size == 0,true,false )}"> No records to display</apex:outputPanel>
+                        </apex:facet>
+                    </apex:pageBlockTable>
+                    <script>$(document).ready(function(){if($('[id$="tpId"] tr').length > 2){$('[id$="tpId"]').find('tfoot').hide();}})</script>
+                </apex:pageBlockSection>
+                <!-- apex:pageBlockSection title="References" columns="1" rendered="{!!ISBlank(objstudent.greatwave2__Student_Name__c)}">
+                    <apex:pageBlockTable value="{!objRecordLink}" var="rl" id="orlId">
+                        <apex:column headerValue="Reference Name" >
+                            <a href="/{!rl.Id}">{!rl.Name}</a>
+                        </apex:column>                        
+                        <apex:column headerValue="Course">
+                            <a href="/{!rl.Course__c}">{!rl.Course__r.Name}</a>
+                        </apex:column>
+                        <apex:column headerValue="Job Description">
+                            <apex:outputField value="{!rl.Job_Description__c}"/>
+                        </apex:column>
+                        <apex:facet name="footer"><apex:outputPanel rendered="{!IF(objRecordLink.size == 0,true,false )}"> No records to display</apex:outputPanel>
+                        </apex:facet>
+                    </apex:pageBlockTable>
+                    <script>$(document).ready(function(){if($('[id$="orlId"] tr').length > 2){$('[id$="orlId"]').find('tfoot').hide();}})</script>
+                </apex:pageBlockSection-->
+            </apex:outputPanel>   
+            <apex:actionFunction action="{!init}" name="onChangeUser" reRender="frmId" status="ajaxStatus"/>
+        </apex:pageBlock>
+    </apex:form>
+    <style>
+        .requiredLoaderBG{
+            background-color: rgb(71,71,71);
+            opacity:0.7;
+            filter:alpha(opacity=70);
+            background-image:url({!URLFOR($Resource.greatwave2__ajaxLoadGif)});
+            background-position: center center; 
+            background-repeat: no-repeat;
+            height: 100%;
+            left: 0;
+            position: fixed;
+            text-align: center;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+        }  
+    </style>    
+    <apex:actionstatus startStyleClass="requiredLoaderBG" id="ajaxStatus" />
+</apex:page>

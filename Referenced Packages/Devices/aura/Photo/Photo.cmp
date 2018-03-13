@@ -1,0 +1,58 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId" access="global" 
+                controller="greatwave2.Photo_Ctrl">
+    
+    <aura:attribute name="parentRecordId" type="String" required="true" default="" access="global" description="stores the Id of the Record for which the user will be ataching the photo file."/>
+    <aura:attribute name="validateField" type="String" access="global" description="stores the ApiName of the field initial validations will run against"/>
+    <aura:attribute name="validFieldValues" type="String" access="global" description="stores a comma separated string of valid values that allows the user to proceed with capturing the photo process"/>
+    <aura:attribute name="unableToCaptureMessage" type="String" default="Currently the record does not meet the criteria for Photo Upload" access="global" description="stores the base phrase the user will be presented if validation fails"/>
+    <aura:attribute name="attachmentNamePrefix" type="String" access="global" description="stores the prefix for that will be added to the file created."/>
+    <aura:attribute name="useHandlingComponent" type="Boolean" access="global" description="decide whether or not to use handling component to manage the photo"/>
+    <aura:attribute name="handlingComponent" type="String" access="global" description="stores the name of the component which will handle the storage of the photo."/>
+    <aura:attribute name="takePhotoLabel" type="String" default="Take Photo:" access="global"/>
+    <aura:attribute name="baseQueryField" type="String" default="Id, Name" access="global"/>
+    <aura:attribute name="parentRecordName" type="String" access="private" description="stores the Id of the Record for which the user will be signing."/>
+    <aura:attribute name="validationMessage" type="String" access="private" description=""/>
+    <aura:attribute name="photoIsUploading" type="Boolean" default="false" access="private"/>
+    <aura:attribute name="files" type="Object[]" />
+	<aura:attribute name="image" type="String" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    
+    <div class="photo" > 
+		<center>       
+            <div>
+                <b>Record Name:&nbsp;</b> <ui:outputURL value="{!'/one/one.app?#/sObject/'+ v.parentRecordId + '/view'}" label="{!v.parentRecordName}"/>
+            </div> 
+            <aura:if isTrue="{!v.validationMessage}">
+                <div style="text-align: center;color: red;margin-top: 5px;">
+                    <ol style="list-style: inside !important;">
+                        <li>{!msg.validationMessage}</li>
+                    </ol>
+                </div>
+            </aura:if>
+            <br/>
+            
+            <lightning:input type="file" 
+                             multiple="false" 
+                             accept="image/*;capture=camera" 
+                             files="{!v.files}" 
+                             onchange="{!c.readImage}"/>
+            <br/>
+            <br/>
+            <ui:button aura:id="uploaPhotoBtn"
+                       label="Upload Photo"
+                       class="button slds-button_brand gwt_buttons_confirm disableUploadPhotoBtn" 
+                       press="{!c.savePhoto}"/>
+            
+            <br/>
+            <br/>
+            <img src="{!v.image}"/>
+            
+            <aura:if isTrue="{!v.photoIsUploading}">
+                <lightning:spinner size="large"/>
+            </aura:if>
+            
+        </center>  
+    </div>
+    
+</aura:component>

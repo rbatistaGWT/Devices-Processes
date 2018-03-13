@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>patientoverridesf1</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Address_Line_1__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Address Line 1</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Address_Line_2__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Address Line 2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>City__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>City</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Country__c</fullName>
+        <defaultValue>$User.Country</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Country</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>FirstName__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>First Name</label>
+        <length>80</length>
+        <required>true</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Indication_Comments__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Indication Comments</label>
+        <length>32768</length>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Indication__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Indication</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Predominant Leg</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Predominant Back</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>CRPS-upper</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>CRPS-lower</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Upper Extremity</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>L1__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Use for the creation of a Patient Id with 4 Letters - 4 Numbers</description>
+        <externalId>false</externalId>
+        <formula>CASE(VALUE(LEFT(RIGHT(Patient_ID__c,5),1)),0,&quot;A&quot;,1,&quot;B&quot;,2,&quot;C&quot;,3,&quot;E&quot;,4,&quot;D&quot;,5,&quot;E&quot;,6,&quot;F&quot;,7,&quot;G&quot;,8,&quot;H&quot;,&quot;I&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>L1</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>L2__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Use for the creation of a Patient Id with 4 Letters - 4 Numbers</description>
+        <externalId>false</externalId>
+        <formula>CASE(VALUE(LEFT(RIGHT(Patient_ID__c,6),1)),0,&quot;A&quot;,1,&quot;B&quot;,2,&quot;C&quot;,3,&quot;E&quot;,4,&quot;D&quot;,5,&quot;E&quot;,6,&quot;F&quot;,7,&quot;G&quot;,8,&quot;H&quot;,&quot;I&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>L2</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>L3__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Use for the creation of a Patient Id with 4 Letters - 4 Numbers</description>
+        <externalId>false</externalId>
+        <formula>CASE(VALUE(LEFT(RIGHT(Patient_ID__c,7),1)),0,&quot;A&quot;,1,&quot;B&quot;,2,&quot;C&quot;,3,&quot;E&quot;,4,&quot;D&quot;,5,&quot;E&quot;,6,&quot;F&quot;,7,&quot;G&quot;,8,&quot;H&quot;,&quot;I&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>L3</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>L4__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Use for the creation of a Patient Id with 4 Letters - 4 Number</description>
+        <externalId>false</externalId>
+        <formula>CASE(VALUE(LEFT(RIGHT(Patient_ID__c,8),1)),0,&quot;A&quot;,1,&quot;B&quot;,2,&quot;C&quot;,3,&quot;E&quot;,4,&quot;D&quot;,5,&quot;E&quot;,6,&quot;F&quot;,7,&quot;G&quot;,8,&quot;H&quot;,&quot;I&quot;)</formula>
+        <label>L4</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LastName__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Last Name</label>
+        <length>80</length>
+        <required>true</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Patient_Address__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Address_Line_1__c+&apos;, &apos;+IF(NOT(ISBLANK(Address_Line_2__c)),Address_Line_2__c+&apos;, &apos;,&apos;&apos;)+City__c+&apos;, &apos;+State__c+&apos;, &apos;+Postal_Code__c+&apos;, &apos;+Country__c</formula>
+        <label>Patient Address</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Patient_DOB__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Patient DOB</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Patient_Gender__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Patient Gender</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Female</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Male</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Patient_ID__c</fullName>
+        <deprecated>false</deprecated>
+        <displayFormat>P# {00000000}</displayFormat>
+        <externalId>false</externalId>
+        <label>Patient ID</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>Patient_Id2__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>L4__c+L3__c+L2__c+L1__c+&quot;-&quot;+RIGHT(Patient_ID__c,4)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Patient Id</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Patient_Phone_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Patient Phone Number</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Patient_Surname_Optional__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Patient Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Postal_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Postal Code</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SiteOwner__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>Site__r.Owner.FirstName+&apos; &apos;+Site__r.Owner.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>SiteOwner</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Site__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Site</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Patients</relationshipLabel>
+        <relationshipName>Patients</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>State__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>State</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Draft</fullName>
+                    <default>true</default>
+                </value>
+                <value>
+                    <fullName>Verified</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>external_ID__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>true</externalId>
+        <label>external ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Patient</label>
+    <listViews>
+        <fullName>ALL_Patients</fullName>
+        <columns>NAME</columns>
+        <columns>FirstName__c</columns>
+        <columns>LastName__c</columns>
+        <columns>Patient_Gender__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All Patients</label>
+    </listViews>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <listViews>
+        <fullName>FIN_Patients</fullName>
+        <booleanFilter>1 OR 2 OR 3</booleanFilter>
+        <columns>NAME</columns>
+        <columns>Patient_Surname_Optional__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>Indication__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OWNER.LAST_NAME</field>
+            <operation>equals</operation>
+            <value>Garry</value>
+        </filters>
+        <filters>
+            <field>OWNER.LAST_NAME</field>
+            <operation>equals</operation>
+            <value>Lam</value>
+        </filters>
+        <filters>
+            <field>OWNER.LAST_NAME</field>
+            <operation>equals</operation>
+            <value>Veitch</value>
+        </filters>
+        <label>Finance Patients</label>
+    </listViews>
+    <listViews>
+        <fullName>My_Patients</fullName>
+        <columns>NAME</columns>
+        <columns>Patient_Phone_Number__c</columns>
+        <columns>Site__c</columns>
+        <columns>SiteOwner__c</columns>
+        <columns>Status__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Patient_Gender__c</columns>
+        <filterScope>Mine</filterScope>
+        <label>My Patients</label>
+    </listViews>
+    <listViews>
+        <fullName>NR_Patients</fullName>
+        <columns>NAME</columns>
+        <columns>Patient_Surname_Optional__c</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>Indication__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>NonRep Patients</label>
+    </listViews>
+    <listViews>
+        <fullName>Sales_Support_Patient_Ownership</fullName>
+        <booleanFilter>1 OR 2 OR 3 OR 4</booleanFilter>
+        <columns>NAME</columns>
+        <columns>OWNER.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OWNER.ALIAS</field>
+            <operation>equals</operation>
+            <value>melling</value>
+        </filters>
+        <filters>
+            <field>OWNER.ALIAS</field>
+            <operation>equals</operation>
+            <value>wilding</value>
+        </filters>
+        <filters>
+            <field>OWNER.ALIAS</field>
+            <operation>equals</operation>
+            <value>kuehrer</value>
+        </filters>
+        <filters>
+            <field>OWNER.ALIAS</field>
+            <operation>equals</operation>
+            <value>vanquath</value>
+        </filters>
+        <label>Sales Support Patient Ownership</label>
+    </listViews>
+    <nameField>
+        <label>Patient Number</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Patients</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>DOB_Must_be_in_the_past</fullName>
+        <active>false</active>
+        <description>Prevents patient with a DOB on the future.</description>
+        <errorConditionFormula>Patient_DOB__c &gt;= TODAY() &amp;&amp; NOT(ISBLANK(Patient_DOB__c))</errorConditionFormula>
+        <errorDisplayField>Patient_DOB__c</errorDisplayField>
+        <errorMessage>Patient DOB must be in the past.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Patient_Number_cannot_change</fullName>
+        <active>false</active>
+        <description>Does not allow the user to change the Patient Number. This number is automatically populated via a Workflow rule</description>
+        <errorConditionFormula>ISCHANGED(Name)</errorConditionFormula>
+        <errorDisplayField>Name</errorDisplayField>
+        <errorMessage>You Cannot change the Patient Number.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Phone_Format</fullName>
+        <active>false</active>
+        <description>Ensures the format of the phone is (xxx) xxx-xxxx</description>
+        <errorConditionFormula>AND(NOT(ISBLANK(Patient_Phone_Number__c)),NOT(REGEX( Patient_Phone_Number__c , &quot;\\([0-9]{3}\\) [0-9]{3}\\-[0-9]{4}&quot;)))</errorConditionFormula>
+        <errorMessage>the Phone field should be in the following format : (xxx) xxx-xxxx</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Required_AddressLine1_on_Status_Verified</fullName>
+        <active>false</active>
+        <description>Enforces fields being required if the Status = &quot;Verified&quot;</description>
+        <errorConditionFormula>AND(ISPICKVAL(Status__c,&quot;Verified&quot;),ISBLANK(Address_Line_1__c))</errorConditionFormula>
+        <errorMessage>You must input the Patient’s Address Line 1</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Required_City_On_Status_Verified</fullName>
+        <active>false</active>
+        <description>Enforces required fields when Status = &quot;Verified&quot;</description>
+        <errorConditionFormula>AND(
+ISPICKVAL(Status__c,&quot;Verified&quot;),
+ISBLANK(City__c)
+)</errorConditionFormula>
+        <errorMessage>You must input the Patient’s City</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Required_Country_On_Status_Verified</fullName>
+        <active>false</active>
+        <description>AND(ISPICKVAL(Status__c,&quot;Verified&quot;),OR(
+ ISBLANK(Address_Line_1__c),
+ ISBLANK(City__c),
+ ISBLANK(State__c),</description>
+        <errorConditionFormula>AND(ISPICKVAL(Status__c,&quot;Verified&quot;),
+ ISBLANK(Country__c))</errorConditionFormula>
+        <errorMessage>You must input the Patient&apos;s Country</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Required_PatientGender_Status_Verified</fullName>
+        <active>false</active>
+        <description>Enforces required fields when Status = &quot;Verified&quot;</description>
+        <errorConditionFormula>AND(ISPICKVAL(Status__c,&quot;Verified&quot;),
+ ISBLANK(TEXT(Patient_Gender__c)))</errorConditionFormula>
+        <errorMessage>You must input the Patient&apos;s Gender.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Required_PatientNumber_Status_Verified</fullName>
+        <active>false</active>
+        <description>Enforces required fields when Status = &quot;Verified&quot;</description>
+        <errorConditionFormula>AND(ISPICKVAL(Status__c,&quot;Verified&quot;),
+ Patient_Phone_Number__c == &apos;&apos;)</errorConditionFormula>
+        <errorMessage>You must input Patient&apos;s Phone Number</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Required_PostalCode_Status_Verified</fullName>
+        <active>false</active>
+        <description>Enforces required fields when Status = &quot;Verified&quot;</description>
+        <errorConditionFormula>AND(ISPICKVAL(Status__c,&quot;Verified&quot;),
+ ISBLANK(Postal_Code__c))</errorConditionFormula>
+        <errorMessage>You must input the Patient&apos;s Postal Code</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Required_State_On_Status_Verified</fullName>
+        <active>false</active>
+        <description>Enforces required fields when Status = &quot;Verified&quot;</description>
+        <errorConditionFormula>AND(ISPICKVAL(Status__c,&quot;Verified&quot;),
+ ISBLANK(State__c))</errorConditionFormula>
+        <errorMessage>You must input the Patient&apos;s State</errorMessage>
+    </validationRules>
+</CustomObject>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Atlanta - GA</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Bostan - MA</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Bridgeport - NC</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Chandler - AZ</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Erehwon</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Newark</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Boston - MA</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>NY</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Oa</fullName>
+        <default>false</default>
+    </customValue>
+    <masterLabel>Location</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

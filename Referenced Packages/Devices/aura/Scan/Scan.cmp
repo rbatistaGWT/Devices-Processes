@@ -1,0 +1,13 @@
+<aura:component access="Global">
+    <aura:attribute name="handlingComponent" type="String" required="true" access="global" description="A String value that stores the name of the component which will handle the scanned item. Must have a 'code' attribute."/>
+    <aura:attribute name="handlingComponentAttributes" type="Map" access="global" description="Map with all the attributes that will be passed to the handlingComponent."/>
+    <aura:attribute name="name" type="String" default="Scan" access="global" description="Label that will be display on the button"/>
+    <aura:attribute name="isDisabled" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="class" type="String" access="global"/>
+    <aura:attribute name="variant" type="String" default="brand" access="global"/>
+    <aura:attribute name="executeOnClick" type="Boolean" default="true" access="global" description="Determines if the onClick action is executed."/>
+
+    <lightning:button variant="{!v.variant}" onclick="{!c.onClickAction}" disabled="{!v.isDisabled}" class="{!v.class}">{!v.name}</lightning:button>
+    
+    <aura:method name="launchScanner" action="{!c.scanBarcode}"/>
+</aura:component>

@@ -1,0 +1,3 @@
+<aura:event type="COMPONENT" description="Handling components fire this event to show the Scan Barcode button.">
+    <aura:attribute name="errorMessage" type="String"/>
+</aura:event>

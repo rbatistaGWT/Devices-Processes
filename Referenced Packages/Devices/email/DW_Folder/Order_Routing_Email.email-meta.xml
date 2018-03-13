@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Order Routing Email</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>DW_Letterhead</letterhead>
+    <name>Order Routing Email</name>
+    <style>freeForm</style>
+    <subject>New Order Request: Priority - {!Case.Priority}, {!Case.CaseNumber}, {!Case.Date_Requested__c}, , {!Case.ShipTo_Country__c}</subject>
+    <textOnly>Please see order request detail below.
+
+Order Number: {!Case.CaseNumber}
+Requested Delivery Date: {!Case.Date_Requested__c}
+Priority: {!Case.Priority}
+
+Shipping Information:
+Ship To: {!Case.ShipTo_Company__c}
+Name: {!Case.ShipTo_Name__c}
+Phone: {!Case.ShipTo_Phone__c}
+Email: {!Case.ShipTo_Email__c}
+Fax: {!Case.ShipTo_Fax__c}
+
+{!Case.ShipTo_Address1__c}
+{!Case.ShipTo_Address2__c}
+{!Case.ShipTo_City__c}
+{!Case.ShipTo_State__c}
+{!Case.ShipTo_Country__c}
+{!Case.WebZip__c}
+
+
+Main Kits:
+
+IPG Kit (NIPG1500):  {!Case.IPG_Kit_NIPG1500__c}
+Lead Kit, 30cm with 5mm Spacing (LEAD1058-30B): {!Case.Lead_Kit_30cm_with_5mm_Spacing__c}
+Lead Kit, 50cm with 5mm Spacing (LEAD1058-50B): {!Case.Lead_Kit_50cm_with_5mm_Spacing__c}
+Lead Kit, 70cm with 5mm Spacing (LEAD1058-70B): {!Case.Lead_Kit_70cm_with_5mm_Spacing__c}
+Lead Kit, 90cm with 5mm Spacing (LEAD1058-90B):
+{!Case.Lead_Kit_90cm_with_5mm_Spacing__c}
+Lead Extension Kit, 25cm (LEAD2008-25B): {!Case.Lead_Extension_Kit_25cm__c}
+Lead Extension Kit, 35cm (LEAD2008-35B): {!Case.Lead_Extension_Kit_35cm__c}
+Lead Extension Kit, 60cm (LEAD2008-60B): {!Case.Lead_Extension_Kit_60cm__c}
+M8 Lead Adaptor Kit, 25cm (MADP2008-25B): {!Case.M8_Lead_Adaptor_Kit_25cm__c}
+S8 Lead Adaptor Kit, 25cm (SADP2008-25B): {!Case.S8_Lead_Adaptor_Kit_25cm__c}
+Active Anchor Kit N300 (ACCK5300) [10 Pack]: {!Case.Active_Anchor_Kit_N300_10_pack__c}
+Patient Remote (Multi-Button) Kit (PTRC1000): {!Case.Patient_Remote_Multi_Button_Kit__c}
+Charger Kit (CHGR1000): {!Case.Charger_Kit__c}
+Patient Trial Kit (PTTK1000): {!Case.Patient_Trial_Kit__c}
+Trial Simulator Kit: (EXTS1000): {!Case.Trial_Stimulator_Kit__c}
+
+Spare Items to Main Kits:
+
+Spare Insertion Needle Kit, 4&quot; (10cm) (ACCK1010): {!Case.Spare_Insertion_Needle_Kit_4_10cm_1__c}
+Spare Coiled Lead Blank Kit (ACCK2000} [10 pack]: {!Case.Spare_Coiled_Lead_Blank_Kit__c}
+Spare Tunneling Tool Kit, 35 cm (ACCK3035) [10 pack]: {!Case.Spare_Tunneling_Tool_Kit_35_cm__c}
+Spare OR Cable Kit (ACCK4000) [10 pack]: {!Case.Spare_OR_Cable_Kit__c}
+Spare Lead Anchor Kit (ACCK5000) [10 pack]: {!Case.Spare_Lead_Anchor_Kit__c}
+MX Trial Adapter Cable (ACCK9050) [Single Unit]: {!Case.MX_Trial_Adapter_Cable_Single_Unit__c}
+Spare Torque Wrench Kit (ACCK6006) [10 pack]: {!Case.Spare_Torque_Wrench_Kit__c}
+Spare 0.012&quot; Diameter 30cm Stylet Kit (ACCK8012-30) [10 pack]:{!Case.Spare_0_012_Diameter_30cm_Stylet_Kit__c}
+Spare 0.012&quot; Diameter 50cm Stylet Kit (ACCK8012-50) [10 pack]: {!Case.Spare_0_012_Diameter_50cm_Stylet_Kit__c}
+Spare 0.012&quot; Diameter 70cm Stylet Kit (ACCK8012-70) [10 pack]: {!Case.Spare_0_012_Diameter_70cm_Stylet_Kit__c}
+Spare 0.012&quot; Diameter 90cm Stylet Kit (ACCK8012-90) [10 pack]: {!Case.Spare_0_012_Diameter_Stylet_Kit__c}
+
+Other Accessories:
+Programmer Kit (CLPG2000): {!Case.Other_Programmer_Kit__c}
+Programmer Wand Kit (CLPW1000): {!Case.Other_Programmer_Wand_Kit__c}
+Insertion Needle Kit, 6&quot; (15cm) (ACCK1015) [10 pack]: {!Case.Other_Insertion_Needle_Kit_6_15cm__c}
+Tunnelling Tool Kit, 50cm (ACCK3050) [10 pack]: {!Case.Other_Tunneling_Tool_Kit_50cm__c}
+IPG Port Plug Kit (ACCK7000) [10 pack]: {!Case.Other_IPG_Port_Plug_Kit__c}
+IPG Template (ACCK71000) [10 pack]: {!Case.Other_IPG_Template__c}
+
+General Notes and Comments:
+{!Case.Description}</textOnly>
+    <type>html</type>
+</EmailTemplate>

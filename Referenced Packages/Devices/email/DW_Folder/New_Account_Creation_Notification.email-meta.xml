@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Email template, alerting to newly created accounts pending approval.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>DW_Letterhead</letterhead>
+    <name>New Account Creation Notification</name>
+    <style>freeForm</style>
+    <subject>New Nevro Account Pending Approval: {!Account.Name} - {!Account.BillingCountry}</subject>
+    <textOnly>Please be advised, the following account has been created, and approved.
+
+Account: {!Account.Name}
+
+Direct Shipment: {!IF(Account.Direct_Shipment__c = TRUE, &quot;Yes&quot;, &quot;No&quot;)}
+
+Shipping Information:
+{!Account.ShippingAddress}
+{!Account.ShippingStreet}
+{!Account.ShippingCity}
+{!Account.ShippingState}
+{!Account.ShippingPostalCode}
+{!Account.ShippingCountry}
+
+For more information, please contact the account owner:
+{!Account.OwnerFullName}
+Phone: {!Account.OwnerPhone}
+Email: {!Account.OwnerEmail}</textOnly>
+    <type>html</type>
+</EmailTemplate>

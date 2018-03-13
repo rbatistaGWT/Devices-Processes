@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>DW_Letterhead</letterhead>
+    <name>PIR Overdue</name>
+    <style>freeForm</style>
+    <subject>Overdue PIR</subject>
+    <textOnly>Dear Admin,
+
+{!PIR__c.Name} has been changed to &lt;strong&gt;overdue&lt;/strong&gt;. You can click here to view more information.</textOnly>
+    <type>html</type>
+</EmailTemplate>

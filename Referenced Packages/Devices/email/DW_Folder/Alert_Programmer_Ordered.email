@@ -1,0 +1,7 @@
+Order:{!Order_Line__c.Link}. 
+CreateDate: {!Order_Line__c.CreatedDate}
+Owner: {!Inventory_Order__c.OwnerFullName} 
+
+Regards, 
+
+Nevro System

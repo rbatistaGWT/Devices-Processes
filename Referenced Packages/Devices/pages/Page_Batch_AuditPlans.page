@@ -1,0 +1,10 @@
+<apex:page controller="greatwave2.Execute_Batch_AuditPlans">
+    <apex:pageMessages escape="false" />
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:commandButton value="Process CSV to run Audit plan" action="{!onClick}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

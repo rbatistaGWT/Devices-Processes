@@ -1,0 +1,107 @@
+<apex:page standardController="greatwave2__Inventory_Order__c" extensions="greatwave2.NewOrder_ctrl">
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-1.8.js')}"/>
+    <div id="browserViewId">
+        <apex:sectionHeader title="Order Edit" subtitle="New Order"/>
+        <apex:form >
+            <apex:actionFunction name="rerenderTransferSection" rerender="transferSection">
+                <apex:param name="showSection" value="" assignTo="{!showTransferSection}" />
+            </apex:actionFunction>
+            
+            <apex:actionFunction name="rerenderPOSection" rerender="purchaseOrderSection">
+                <apex:param name="showSection" value="" assignTo="{!showPOSection}" />
+            </apex:actionFunction>
+            
+            <apex:pageBlock title="Order Edit" mode="edit">
+                <apex:pageBlockButtons >
+                    <apex:commandButton value="Save" action="{!onSave}" />
+                    <apex:commandButton value="Save & New" action="{!onSaveAndNew}"/>
+                    <apex:commandButton value="Cancel" action="{!onCancel}" immediate="true"/>
+                </apex:pageBlockButtons>
+                <apex:pageMessages ></apex:pageMessages>
+                <apex:pageBlockSection title="Information">
+                    <apex:inputfield value="{!objIO.greatwave2__Order_Type__c}" id="otId" onchange="onSelectOrderType(true, this.value);"/>
+                    
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Owner"/>
+                        <apex:outputPanel >
+                            {!$User.FirstName} {!$User.LastName}
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                    
+                    <apex:inputField value="{!objIO.greatwave2__Comments__c}"/>
+                </apex:pageBlockSection>
+                
+                <apex:inputHidden value="{!showPOSection}" id="showPOSection"/>
+                <apex:inputHidden value="{!showTransferSection}" id="showTransferSection"/>
+                
+                <apex:outputPanel id="transferSection">
+                    <apex:pageBlockSection title="Transfer Information" rendered="{!showTransferSection}">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Transfer From" id="transferFromIdlbl"/>
+                            <apex:outputPanel >
+                                <div class="requiredInput">
+                                    <div class="requiredBlock"></div>
+                                    <apex:inputfield value="{!objIO.greatwave2__From_Location__c}" id="transferFromIdtxt"/>
+                                </div>
+                            </apex:outputPanel>
+                        </apex:pageBlockSectionItem>                    
+                    </apex:pageBlockSection>
+                </apex:outputPanel>
+                
+                <apex:outputPanel id="purchaseOrderSection">
+                    <apex:PageBlockSection title="Purchase Order Information" rendered="{!showPOSection}">
+                        
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Vendor" id="vendorOutputField"/>
+                            <apex:outputPanel >
+                                <div class="requiredInput">
+                                    <div class="requiredBlock"></div>
+                                    <apex:inputfield value="{!objIO.greatwave2__Vendor__c}" id="vendorInputField"/>
+                                </div>
+                            </apex:outputPanel>
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Ship-To" id="shipToOutputField"/>
+                            <apex:inputfield value="{!objIO.greatwave2__Inventory_Location__c}" id="shipToInputField"/>
+                        </apex:pageBlockSectionItem>
+                        
+                    </apex:PageBlockSection>
+                </apex:outputPanel>
+            </apex:pageBlock>
+                
+        </apex:form>
+    </div>
+    <script>
+    function onSelectOrderType(clearValues, otval){
+        if(clearValues){
+            clearFieldValues();
+        }
+        rerenderSections(otval);
+    }
+    
+    function rerenderSections(otval){
+        if(otval == 'Transfer') {
+            rerenderPOSection(false);
+            rerenderTransferSection(true);
+        } else if(otval == 'Purchase Order'){
+            rerenderTransferSection(false);
+            rerenderPOSection(true);
+        } else {
+            rerenderTransferSection(false);
+            rerenderPOSection(false);
+        }
+    }
+    
+    function clearFieldValues(){
+        $('[id$="vendorInputField"]').val('');
+        $('[id$="transferFromIdtxt"]').val('');
+        $('[id$="shipToInputField"]').val('');
+    }
+    
+    function init(){
+        onSelectOrderType(false, $('[id$="otId"]').val());
+    }
+    init();
+    </script>
+</apex:page>

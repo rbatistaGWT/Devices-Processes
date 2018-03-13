@@ -1,0 +1,1830 @@
+<apex:page sidebar="false" controller="greatwave2.DeviceBilling_RegistrationForm_ctrl" showHeader="false"  applyHtmlTag="false" standardStylesheets="false" renderAs="PDF" >
+
+  <html>
+    <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+    <style type="text/css">
+        @page
+        {
+            size: A4 landscape;
+            padding-top:10px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+
+            @bottom-center
+            {
+                font-family:Arial, Helvetica, sans-serif;
+                /*content: "Page " counter(page);*/
+                font-size: 10pt;
+            }
+            @top-left{
+                content: element(pageHeader);
+            }
+        }
+
+        #pageHeader{
+            position:running(pageHeader);
+            display: block;
+            text-align:left;
+            width:100%;
+            padding-top:20px;
+            padding-right:20px;
+        }
+        body{
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            font-size: 10pt;
+            padding:10px;
+
+
+        }
+
+
+        @import url('https://themes.googleusercontent.com/fonts/css?kit=wAPX1HepqA24RkYW1AuHYA');
+        ol {
+            margin: 0;
+            padding: 0
+        }
+        .c39 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 63pt;
+            background-color: #ffffff;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 0pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 0pt
+        }
+        .c25 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 111.7pt;
+            background-color: #bfbfbf;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c21 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 10.8pt;
+            background-color: #ffffff;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c29 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 6.6pt;
+            background-color: #bfbfbf;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c17 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 22.8pt;
+            background-color: #bfbfbf;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c6 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 50.1pt;
+            background-color: #bfbfbf;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c43 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 50.1pt;
+            background-color: #ffffff;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c42 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 111.7pt;
+            background-color: #ffffff;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c35 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 13.2pt;
+            background-color: #bfbfbf;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c37 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 1.2pt;
+            background-color: #bfbfbf;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c54 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 28.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c83 {
+            border-bottom-width: 0pt;
+            border-top-style: solid;
+            width: 78.1pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c59 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 10.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c51 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 63pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c45 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 13.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c24 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 50.1pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c44 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 50.1pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c7 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 21.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c27 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 40.3pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c74 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 111.7pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c89 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 40.3pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c18 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 22.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c67 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 10.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c34 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 39.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c68 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 13.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 0pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c69 {
+            border-bottom-width: 0pt;
+            border-top-style: solid;
+            width: 63pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c66 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 1.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c96 {
+            border-bottom-width: 0pt;
+            border-top-style: solid;
+            width: 28.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c72 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 39.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c63 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 40.3pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c60 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 111.7pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c76 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 111.7pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c62 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 28.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c98 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 63pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 1pt
+        }
+        .c88 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 78.1pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 0pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c61 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 25.9pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c55 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 78.1pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c10 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 28.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c50 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 39.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c48 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 25.9pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c23 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 1.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 0pt
+        }
+        .c100 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 22.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 0pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c32 {
+            border-bottom-width: 0pt;
+            border-top-style: solid;
+            width: 111.7pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c56 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 63pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c85 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 21.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 0pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c52 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 6.6pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c47 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 6.6pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c101 {
+            border-bottom-width: 0pt;
+            border-top-style: solid;
+            width: 10.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c40 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 1.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c104 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 10.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 0pt
+        }
+        .c19 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 22.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c53 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 13.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c57 {
+            border-bottom-width: 0pt;
+            border-top-style: solid;
+            width: 13.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c75 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 39.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 1pt
+        }
+        .c2 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 21.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c106 {
+            border-bottom-width: 0pt;
+            border-top-style: solid;
+            width: 25.9pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c99 {
+            border-bottom-width: 0pt;
+            border-top-style: solid;
+            width: 6.6pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c97 {
+            border-bottom-width: 0pt;
+            border-top-style: solid;
+            width: 40.3pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c90 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 28.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 1pt
+        }
+        .c86 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 50.1pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 0pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c4 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 78.1pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c5 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 10.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c22 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 6.6pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c82 {
+            border-bottom-width: 0pt;
+            border-top-style: solid;
+            width: 50.1pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c30 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 21.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c28 {
+            border-bottom-width: 0pt;
+            border-top-style: solid;
+            width: 39.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c70 {
+            border-bottom-width: 0pt;
+            border-top-style: solid;
+            width: 22.8pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c20 {
+            border-bottom-width: 1pt;
+            border-top-style: solid;
+            width: 25.9pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: middle;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 1pt;
+            border-left-width: 1pt
+        }
+        .c33 {
+            border-bottom-width: 0pt;
+            border-top-style: solid;
+            width: 21.2pt;
+            border-right-style: solid;
+            padding: 0pt 5.8pt 0pt 5.8pt;
+            border-bottom-color: #000000;
+            border-top-width: 1pt;
+            border-bottom-style: solid;
+            vertical-align: top;
+            border-top-color: #000000;
+            border-left-color: #000000;
+            border-right-color: #000000;
+            border-left-style: solid;
+            border-right-width: 0pt;
+            border-left-width: 0pt
+        }
+        .c1 {
+            line-height: 1.0;
+            padding-top: 0pt;
+            widows: 2;
+            orphans: 2;
+            text-align: left;
+            direction: ltr;
+            padding-bottom: 0pt
+        }
+        .c16 {
+            vertical-align: baseline;
+            color: #000000;
+            font-size: 6pt;
+            font-style: normal;
+            font-family: "Calibri";
+            text-decoration: none;
+            font-weight: normal
+        }
+        .c87 {
+            line-height: 1.0;
+            padding-top: 0pt;
+            widows: 2;
+            orphans: 2;
+            text-align: right;
+            direction: ltr;
+            padding-bottom: 0pt
+        }
+        .c11 {
+            vertical-align: baseline;
+            color: #000000;
+            font-size: 12pt;
+            font-style: normal;
+            font-family: "Calibri";
+            text-decoration: none;
+            font-weight: bold
+        }
+        .c41 {
+            vertical-align: baseline;
+            color: #000000;
+            font-size: 12pt;
+            font-style: normal;
+            font-family: "Calibri";
+            text-decoration: none;
+            font-weight: normal
+        }
+        .c80 {
+            line-height: 1.0;
+            padding-top: 3pt;
+            widows: 2;
+            orphans: 2;
+            text-align: left;
+            direction: ltr;
+            padding-bottom: 0pt
+        }
+        .c12 {
+            line-height: 1.0;
+            padding-top: 0pt;
+            widows: 2;
+            orphans: 2;
+            text-align: center;
+            direction: ltr;
+            padding-bottom: 0pt
+        }
+        .c77 {
+            line-height: 1.1500000000000001;
+            padding-top: 0pt;
+            widows: 2;
+            orphans: 2;
+            text-align: left;
+            direction: ltr;
+            padding-bottom: 10pt
+        }
+        .c84 {
+            vertical-align: baseline;
+            color: #000000;
+            font-size: 11pt;
+            font-style: normal;
+            font-family: "Arial";
+            text-decoration: none;
+            font-weight: normal
+        }
+        .c3 {
+            vertical-align: baseline;
+            color: #000000;
+            font-size: 10pt;
+            font-style: normal;
+            font-family: "Calibri";
+            text-decoration: none;
+            font-weight: normal
+        }
+        .c8 {
+            vertical-align: baseline;
+            color: #000000;
+            font-size: 11pt;
+            font-style: normal;
+            font-family: "Calibri";
+            text-decoration: none;
+            font-weight: normal
+        }
+        .c0 {
+            line-height: 1.15;
+            padding-top: 0pt;
+            height: 11pt;
+            text-align: left;
+            direction: ltr;
+            padding-bottom: 0pt
+        }
+        .c95 {
+            line-height: 1.0;
+            padding-top: 0pt;
+            widows: 2;
+            orphans: 2;
+            direction: ltr;
+            padding-bottom: 0pt
+        }
+        .c73 {
+            vertical-align: baseline;
+            color: #000000;
+            font-style: normal;
+            font-family: "Calibri";
+            text-decoration: none
+        }
+        .c92 {
+            widows: 2;
+            orphans: 2;
+            direction: ltr;
+            padding-bottom: 6pt
+        }
+        .c13 {
+            margin-right: auto;
+            border-collapse: collapse;
+            /*margin-left: -5.8pt*/
+        }
+        .c31 {
+            font-size: 12pt;
+            font-weight: bold
+        }
+        .c81 {
+            max-width: 523.4pt;
+            padding: 21.6pt 36pt 14.4pt 36pt
+        }
+        .c36 {
+            text-decoration: underline
+        }
+        .c58 {
+            font-size: 8pt
+        }
+        .c9 {
+            font-size: 10pt
+        }
+        .c65 {
+            height: 15pt
+        }
+        .c71 {
+            height: 32pt
+        }
+        .c26 {
+            height: 36pt
+        }
+        .c46 {
+            background-color: #bfbfbf
+        }
+        .c108 {
+            height: 10pt
+        }
+        .c78 {
+            font-size: 9pt
+        }
+        .c93 {
+            vertical-align: super
+        }
+        .c105 {
+            font-size: 5pt
+        }
+        .c94 {
+            margin-left: 81pt
+        }
+        .c79 {
+            height: 27pt
+        }
+        .c103 {
+            height: 21pt
+        }
+        .c109 {
+            font-size: 17pt
+        }
+        .c102 {
+            height: 44pt
+        }
+        .c38 {
+            font-weight: bold
+        }
+        .c91 {
+            margin-right: -183.8pt
+        }
+        .c107 {
+            font-size: 1pt
+        }
+        .c49 {
+            background-color: #ffffff
+        }
+        .c15 {
+            height: 11pt
+        }
+        .c14 {
+            font-size: 16pt
+        }
+        .c64 {
+            height: 0pt
+        }
+        .title {
+            widows: 2;
+            padding-top: 24pt;
+            line-height: 1.1500000000000001;
+            orphans: 2;
+            text-align: left;
+            color: #000000;
+            font-size: 36pt;
+            font-family: "Calibri";
+            font-weight: bold;
+            padding-bottom: 6pt;
+            page-break-after: avoid
+        }
+        .subtitle {
+            widows: 2;
+            padding-top: 18pt;
+            line-height: 1.1500000000000001;
+            orphans: 2;
+            text-align: left;
+            color: #666666;
+            font-style: italic;
+            font-size: 24pt;
+            font-family: "Georgia";
+            padding-bottom: 4pt;
+            page-break-after: avoid
+        }
+        li {
+            color: #000000;
+            font-size: 11pt;
+            font-family: "Calibri"
+        }
+        p {
+            color: #000000;
+            font-size: 11pt;
+            margin: 0;
+            font-family: "Calibri"
+        }
+        h1 {
+            widows: 2;
+            padding-top: 24pt;
+            line-height: 1.1500000000000001;
+            orphans: 2;
+            text-align: left;
+            color: #000000;
+            font-size: 24pt;
+            font-family: "Calibri";
+            font-weight: bold;
+            padding-bottom: 6pt;
+            page-break-after: avoid
+        }
+        h2 {
+            widows: 2;
+            padding-top: 18pt;
+            line-height: 1.1500000000000001;
+            orphans: 2;
+            text-align: left;
+            color: #000000;
+            font-size: 18pt;
+            font-family: "Calibri";
+            font-weight: bold;
+            padding-bottom: 4pt;
+            page-break-after: avoid
+        }
+        h3 {
+            widows: 2;
+            padding-top: 14pt;
+            line-height: 1.1500000000000001;
+            orphans: 2;
+            text-align: left;
+            color: #000000;
+            font-size: 14pt;
+            font-family: "Calibri";
+            font-weight: bold;
+            padding-bottom: 4pt;
+            page-break-after: avoid
+        }
+        h4 {
+            widows: 2;
+            padding-top: 12pt;
+            line-height: 1.1500000000000001;
+            orphans: 2;
+            text-align: left;
+            color: #000000;
+            font-size: 12pt;
+            font-family: "Calibri";
+            font-weight: bold;
+            padding-bottom: 2pt;
+            page-break-after: avoid
+        }
+        h5 {
+            widows: 2;
+            padding-top: 11pt;
+            line-height: 1.1500000000000001;
+            orphans: 2;
+            text-align: left;
+            color: #000000;
+            font-size: 11pt;
+            font-family: "Calibri";
+            font-weight: bold;
+            padding-bottom: 2pt;
+            page-break-after: avoid
+        }
+        h6 {
+            widows: 2;
+            padding-top: 10pt;
+            line-height: 1.1500000000000001;
+            orphans: 2;
+            text-align: left;
+            color: #000000;
+            font-size: 10pt;
+            font-family: "Calibri";
+            font-weight: bold;
+            padding-bottom: 2pt;
+            page-break-after: avoid
+        }
+                .page-break {
+            //display:block;
+            page-break-before:always;
+            border:none;
+        }
+    </style>
+</head>
+
+<body class="c49 ">
+
+    <div>
+        <p class="c15 c95"><span></span>
+        </p>
+    </div>
+    <p class="c0"><span class="c84"></span>
+    </p>
+    <a href="#" name="ecdb2ea2afae56f8169c82293573ffc9711fab8e"></a>
+    <a href="#" name="0"></a>
+
+    <table cellpadding="0" cellspacing="0" class="c13,page-break" width="100%">
+        <tbody>
+            <tr class="c102">
+                <td class="c49" colspan="6" rowspan="1">
+
+                    <table width="100%">
+                        <tr>
+                            <!--
+                            <td width="40%" align="left">
+                                <span style=" margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 76.20px; height: 44.40px;">
+                                <img alt="nevro_logo_web_large.jpg" src="{!URLFOR($Resource.Nevro)}" style="background:gray;padding:10px;width: 76.20px; height: 44.40px; margin-left: -0.00px; margin-top: -0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""/></span>
+                            </td>
+                            -->
+                            <td width="60%" align="left">
+                                <span class="c38 c109">Device Billing &amp; <br/>Registration Form</span>
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+            </tr>
+            <tr class="c108">
+                 <td class="c44 c46" colspan="11" rowspan="1">
+                    <p class="c1"><span class="c11">Procedure Date: </span>
+                    </p>
+                </td>
+                <td class="c44 c46" colspan="11" rowspan="1">
+                    <p class="c1"><span class="c11">PO#: </span>
+                    </p>
+                </td>
+
+            </tr>
+            <tr class="c79">
+                <td class="c30 c49" colspan="11" rowspan="1">
+                    <apex:outputText value="{0,date,dd - MMM - yyyy}">
+                        <apex:param value="{!objDBRF.greatwave2__Procedure_Date__c}" />
+                    </apex:outputText>
+                    <span class="c38"><br/></span>
+                </td>
+                <td class="c52 c49" colspan="11" rowspan="1">
+                    <p class="c1">&nbsp;&nbsp;{!objDBRF.PO_Number__c}
+                    </p>
+                </td>
+            </tr>
+            <tr class="c108">
+                <td class="c44 c46" colspan="11" rowspan="1">
+                    <p class="c1"><span class="c11">Patient </span>
+                    </p>
+                </td>
+                <td class="c22 c46" colspan="4" rowspan="1">
+                    <p class="c1"><span class="c11">Comments Optional(): </span>
+                    </p>
+                </td>
+            </tr>
+            <tr class="c79">
+                <td class="c43" colspan="6" rowspan="1">
+                    <p class="c1"><span class="c9"><b>Patient Name:</b>&nbsp;&nbsp;<apex:outputField value="{!objDBRF.Patient__r.greatwave2__FirstName__c}"/>&nbsp;<apex:outputField value="{!objDBRF.Patient__r.greatwave2__LastName__c}"/></span>
+                    </p><br/>
+                    <p class="c1"><span class="c9"><b>Patient ID:</b>&nbsp;&nbsp;<apex:outputField value="{!objDBRF.Patient__r.Name}"/></span>
+                    </p><br/>
+                    <p class="c1"><span class="c3"><b>Phone Number:</b></span>&nbsp;&nbsp;<apex:outputField value="{!objDBRF.Patient__r.greatwave2__Patient_Phone_Number__c}"/>
+                    </p><br/>
+                    <!--<p class="c1"><span class="c9"><b>Patient Address:</b>&nbsp;&nbsp;<apex:outputField value="{!objDBRF.Patient__r.Patient_Address__c}"/></span>
+                    </p><br/>-->
+                </td>
+                <td class="c30 c49" colspan="5" rowspan="1">
+                    <p class="c1"><span class="c3"><b>Gender:</b></span>&nbsp;&nbsp;<apex:outputField value="{!objDBRF.Patient__r.greatwave2__Patient_Gender__c}"/>
+                    </p><br/>
+                    <p class="c1"><span class="c3"><b>DOB:</b></span>&nbsp;&nbsp;<apex:outputField value="{!objDBRF.Patient__r.greatwave2__Patient_DOB__c}"/>
+                    </p><br/>
+                    <p class="c1"><span class="c3"><b>Pain Location:</b></span>&nbsp;&nbsp;<apex:outputField value="{!objDBRF.greatwave2__Pain_Location__c}"/>
+                    </p><br/>
+                </td>
+                <td class="c22" colspan="4" rowspan="1">
+                    <p><span><apex:outputField value="{!objDBRF.greatwave2__Comments__c}"/></span></p>
+                </td>
+            </tr>
+             <tr class="c108">
+                 <td class="c44 c46" colspan="22" rowspan="1">
+                    <p class="c1"><span class="c11">DBRF Type: </span>
+                    </p>
+                </td>
+            </tr>
+            <tr class="c79">
+                <td class="c22" colspan="11" rowspan="1">
+                    <p class="c1"><span><img src="/img/checkbox_checked.gif" alt="Checked" width="21" height="16" class="checkImg" title="Checked"/></span>&nbsp;&nbsp;
+                        <apex:outputField value="{!objDBRF.Opportunity__r.Type}"/>
+                    </p>
+                </td>
+                <td class="c22" colspan="11" rowspan="1">
+                    <p class="c1"><span><apex:outputField value="{!objDBRF.greatwave2__Clinical_Chk__c}"/></span>&nbsp;&nbsp;Clinical Study &nbsp; <span class="c36"><apex:outputField value="{!objDBRF.greatwave2__Clinical__c}"/></span>
+                    </p>
+                </td>
+            </tr>
+            <tr class="c64">
+                <td class="c44 c46" colspan="15" rowspan="1">
+                    <p class="c1"><span class="c11">Hospital </span>
+                    </p>
+                </td>
+            </tr>
+            <tr class="c64" >
+                <td class="c44" colspan="5" rowspan="1" style="padding: 10px !important;">
+                    <p class="c1"><span class="c3"><b>Hospital Name:</b></span>&nbsp;&nbsp;<apex:outputField value="{!objDBRF.Opportunity__r.Account.Name}"/>
+                    </p>
+
+                </td>
+                <td class="c98 c22" colspan="5" rowspan="1">
+                    <p class="c1"><span class="c3">
+                        <b>City/Region:</b></span>&nbsp;&nbsp;
+                        <apex:outputField value="{!objDBRF.Opportunity__r.Account.BillingCity}"/>/
+                        <apex:outputField value="{!objDBRF.Opportunity__r.Account.BillingState}"/>
+                    </p>
+                </td>
+                <td class="c61 c22" colspan="5" rowspan="1">
+                    <p class="c1"><span class="c3"><b>Country:</b></span>&nbsp;&nbsp;<apex:outputField value="{!objDBRF.Opportunity__r.Account.BillingCountry}"/>
+                    </p>
+                </td>
+            </tr>
+            <tr class="c64">
+                <td class="c44 c46" colspan="15" rowspan="1">
+                    <p class="c1"><span class="c31">Physician</span>
+                    </p>
+                </td>
+            </tr>
+            <tr class="c64">
+                <td class="c44" colspan="16" rowspan="1" style="padding: 10px !important;">
+                    <p class="c1"><span class="c3"><b>Name:</b> </span>&nbsp;&nbsp;<apex:outputField value="{!objDBRF.Opportunity__r.Implant_Physician__r.Name}"/>
+                    </p>
+                </td>
+            </tr>
+            <tr class="c64">
+                <td class="c44 c46" colspan="15" rowspan="1">
+                    <p class="c1"><span class="c31">&nbsp;Medical Device Equipment</span>
+                    </p>
+                </td>
+            </tr>
+            <tr class="c64">
+                <td class="c44" colspan="1" rowspan="1">
+                    <p class="c1"><span class="c3">Quantity</span>
+                    </p>
+                </td>
+                <td class="c55" colspan="1" rowspan="1">
+                    <p class="c1"><span class="c3">Model Number</span>
+                    </p>
+                </td>
+                <td class="c30" colspan="5" rowspan="1">
+                    <p class="c1"><span class="c3">Part Description</span>
+                    </p>
+                </td>
+                <td class="c62" colspan="6" rowspan="1">
+                    <p class="c1"><span class="c3">Lot/Serial Number</span>
+                    </p>
+                </td>
+                <td class="c60" colspan="2" rowspan="1">
+                    <p class="c1"><span class="c3">Use Type: check one box</span>
+                    </p>
+                </td>
+            </tr>
+            <apex:repeat value="{!objDBRF.DBRF_Lines__r}" var="dl" >
+
+                <tr class="c26" >
+                    <td class="c24" colspan="1" rowspan="1">
+                        <p class="c1 c15"><span class="c3"></span>1.00
+                        </p>
+                        <p class="c1 c15"><span class="c3"></span>
+                        </p>
+                    </td>
+                    <td class="c4" colspan="1" rowspan="1">
+                        <p class="c1 c15"><span class="c3"></span>
+                            <apex:outputField value="{!dl.greatwave2__Product__c}" rendered="{!dl.greatwave2__Product__c != null}"/>
+                            <apex:outputText value="Product information not available."  rendered="{!dl.greatwave2__Product__c == null}"/>
+                        </p>
+                    </td>
+                    <td class="c7" colspan="5" rowspan="1">
+                        <p class="c1 c15"><span class="c3"></span>
+                            <apex:outputField value="{!dl.greatwave2__Product_Description__c}" rendered="{!dl.greatwave2__Product_Description__c != null}"/>
+                            <apex:outputText value="Product Description not available."  rendered="{!dl.greatwave2__Product_Description__c== null}"/>
+                        </p>
+                    </td>
+                    <td class="c10" colspan="6" rowspan="1">
+                        <p class="c12">
+                            <span class="c9 c38">
+                                <apex:outputText value="Lot:" rendered="{!dl.greatwave2__Lot__c != null}"/>
+                                <apex:outputField value="{!dl.greatwave2__Lot__c}"  rendered="{!dl.greatwave2__Lot__c != null}"/>
+                                <apex:outputText value="/"  rendered="{!AND(dl.greatwave2__Serial__c != null,dl.greatwave2__Lot__c != null)}"/>
+                                <apex:outputText value="Serial:" rendered="{!dl.greatwave2__Serial__c != null}"/>
+                                <apex:outputField value="{!dl.greatwave2__Serial__c}"  rendered="{!dl.greatwave2__Serial__c != null}"/>
+                            </span>
+                            <apex:outputText value="Serial Number not available."  rendered="{!dl.greatwave2__Serial__c == null}"/>
+                        </p>
+                    </td>
+                    <td class="c74" colspan="2" rowspan="1">
+                        <p class="c1"><span class="c14"><img src="/img/checkbox_checked.gif" alt="Checked" width="21" height="16" class="checkImg" title="Checked"/></span><span>&nbsp; </span><span class="c9"><apex:outputField value="{!dl.greatwave2__Use_Type__c}"/></span>
+                        </p>
+                    </td>
+                </tr>
+            </apex:repeat>
+            <tr class="c64">
+                <td class="c6" colspan="6" rowspan="1">
+                    <p class="c12"><span class="c11">Representative</span><!--removed after discussed with Alex on 12/9/15 at 9:55AM on Skype {!$Organization.Name}-->
+                    </p>
+                </td>
+                <!--<td class="c6" colspan="6" rowspan="1">
+                    <p class="c12"><span class="c11">Site Representative</span>
+                    </p>
+                </td>-->
+                <td class="c34 c46" colspan="10" rowspan="1">
+                    <p class="c12"><span class="c11">Site Signature/Date</span>
+                    </p>
+                </td>
+            </tr>
+            <tr class="c79">
+                <td class="c44" colspan="6" rowspan="1">
+                    <p class="c1"><span class="c3"><b>Name:</b> </span>&nbsp;&nbsp;<apex:outputField value="{!objDBRF.OwnerId}"/>
+                    </p>
+                </td>
+                <!--<td class="c44" colspan="6" rowspan="1">
+                    <p class="c1"><span class="c3"><b>Name:</b> </span>&nbsp;&nbsp;<apex:outputField value="{!objDBRF.Site_Representative__c}"/>
+                    </p>
+                </td>-->
+                <td class="c75 c44" colspan="10" rowspan="1" align="center" style="border-right-width: 1pt !important;">
+                    <center>
+                        <!--<apex:image value="/sfc/servlet.shepherd/version/renditionDownload?rendition=THUMB720BY480&versionId={!$CurrentPage.parameters.sid}" style="height:71px;width:230px;margin-top:5px;"/>-->
+                        <p><apex:outputText value="{!objDBRF.greatwave2__SignatureImg__c}" escape="false"  /></p>
+                        <p>{!objDBRF.Signer__r.Name}</p>
+                        <p><apex:outputText value="{0,date,MM/dd/YYYY}"><apex:param value="{!objDBRF.greatwave2__Sign_Date__c}"/> </apex:outputText></p>
+                    </center>
+                </td>
+            </tr>
+            <tr class="c71">
+                <td class="c70" colspan="6" rowspan="1">
+                    <p class="c12"><span class="c16">{!$Organization.Name}</span>
+                    </p>
+                    <p class="c12"><span class="c16">{!$Organization.Street}</span>
+                    </p>
+                    <p class="c12">
+                        <a name="h.gjdgxs"></a><span class="c16">{!$Organization.City}, {!$Organization.State} {!$Organization.PostalCode} {!$Organization.Country}</span>
+                    </p>
+                    <p class="c12"><span class="c16">TEL: {!$Organization.Phone} &nbsp; | &nbsp;FAX: {!$Organization.Fax}</span>
+                    </p>
+                </td>
+                <!--
+                <td class="c101" colspan="6" rowspan="1">
+                    <p class="c87"><span class="c16">&copy; {!$Organization.Name} 2010</span>
+                    </p>
+                    <p class="c87"><span class="c16">10221-01 Rev. F</span>
+                    </p>
+                </td>
+                -->
+            </tr>
+        </tbody>
+    </table>
+    <p class="c15 c92"><span class="c107"></span>
+    </p>
+</body>
+</html>
+</apex:page>

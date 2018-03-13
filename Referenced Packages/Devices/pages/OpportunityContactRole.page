@@ -1,0 +1,96 @@
+<apex:page docType="html-5.0" showHeader="false" standardStylesheets="true" StandardController="Opportunity" extensions="greatwave2.OpportunityContactRole_ctrl" sidebar="false" id="thePage">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css" />
+        <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="//code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
+        <style>
+            .ui-page{
+                background-color:#f0f1f2 !important;
+            }
+        </style>
+        <apex:stylesheet value="{!URLFOR($Resource.greatwave2__OneStarter,'icons.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.greatwave2__OneStarter,'styles.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.greatwave2__OneStarter,'OneStarter.css')}"/>
+
+<!-- JavaScript files -->
+<apex:includeScript value="{!URLFOR($Resource.greatwave2__JqueryLib)}"/>
+<apex:includeScript value="{!URLFOR($Resource.greatwave2__TouchSwipe,'jquery.touchSwipe.min.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.greatwave2__OneStarter,'jquery.onestarter.js')}"/>
+<apex:includeScript value="/canvas/sdk/js/publisher.js"/>
+<script>
+
+    Sfdc.canvas.publisher.subscribe({name: "publisher.showPanel",
+        onData:function(e) {
+              var check ='yes';
+
+              testMe('yes');
+
+            Sfdc.canvas.publisher.publish({name:"publisher.setValidForSubmit", payload:"true"});
+    }});
+    Sfdc.canvas.publisher.subscribe({ name: "publisher.post",
+        onData: function(e) {
+            //alert("call some remote action here");
+            testSave();
+
+
+            Sfdc.canvas.publisher.publish({ name: "publisher.close",
+                payload:{ refresh:"true" }});
+    }});
+</script>
+<link rel="stylesheet" href="{!URLFOR($Resource.style)}" type="text/css" media="all"/>
+    </head>
+    <div id="one-app">
+    <apex:form >
+        <apex:pageMessages id="errMsgId" ></apex:pageMessages>
+
+        <table style="width:100%">
+            <tr>
+                <td style="white-space:nowrap;">
+                    <apex:inputhidden value="{!objOpportunityContactRole.contactId}" id="hdnId"/>
+                    <!--Contact<b>*</b>
+                    <apex:inputField value="{!objOpportunityContactRole.contactId}"/>
+                    <apex:inputText value="{!objOpportunityContactRole.contactId}"/-->
+                    <section>
+                    <!--label class="field-label">Contact*</label-->
+
+
+
+                    <div onclick="toLeadLookup();">
+                    <label class="size-full icon-utility-search pos-abs label--lookup">
+                        <span class="dn">Lookup To User</span>
+                    </label>
+                    <apex:actionFunction name="toLeadLookup" status="counterStatus1" action="{!toLeadorContact}"/>
+                  <input type="text" id="inputForUserLookUp" placeholder="Opportunity Contact Role"
+                  class="size-full plm prx pvm input input--default input--ph-1 input--focus-1" disabled="true" />
+                  <script>
+                       var abc = '{!nameFromLookup}';
+                        var abcd = '{!nameFromLookupId}';
+                        //alert(abcd);
+                        //alert(abc)
+                         document.getElementById('inputForUserLookUp').value = abc;
+                            //document('{!$component.hdnId}').value =
+                    </script>
+                </div>
+                </section>
+
+
+                </td>
+            </tr>
+            <tr>
+                <td style="white-space:nowrap;" align="center" colspan="2">
+                    <apex:commandButton value="Save" action="{!onSave}"/>&nbsp;
+                    <apex:commandButton value="Cancel" action="{!onCancel}"/>
+                </td>
+            </tr>
+        </table>
+    </apex:form>
+    </div>
+    <apex:outputPanel id="load">
+<script>
+$(document).ready(function() {
+     $('div#one-app').oneStarter('app');
+});
+</script>
+</apex:outputPanel>
+</apex:page>

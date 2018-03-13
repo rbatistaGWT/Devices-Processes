@@ -1,0 +1,36 @@
+<apex:page standardController="greatwave2__Quality_Event__c" extensions="greatwave2.EditQualityEvent_extn">
+    <head>
+        <title><apex:outputText value="{!IF(qeId != null,'Quality Event Edit: '+objQualityEvent.Name,'New Quality Event')}"></apex:outputText></title>
+    </head>
+    <apex:sectionHeader title="Quality Event Edit" subtitle="{!IF(qeId != null,objQualityEvent.Name,'New Quality Event')}"/>
+    <apex:form >
+        <apex:pageBlock title="Quality Event Edit" mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!onSave}"/>
+                <apex:commandButton value="Save & New" action="{!onSaveAndNew}"/>
+                <apex:commandButton value="New CAPA" action="{!onNewCAPA}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages />
+            <apex:pageBlockSection title="Information">
+                <apex:outputField value="{!objQualityEvent.Name}" rendered="{!!IsBlank(qeId)}"/>
+                <apex:outputField value="{!objQualityEvent.OwnerId}" rendered="{!!IsBlank(qeId)}"/>
+                <apex:inputField value="{!objQualityEvent.greatwave2__Subject__c}" required="true"/>
+                <apex:inputField value="{!objQualityEvent.greatwave2__Request_Assignment_From__c}"/>
+                <apex:inputField value="{!objQualityEvent.greatwave2__Status__c}"/>
+                <apex:inputField value="{!objQualityEvent.greatwave2__Account__c}"/>
+                <apex:inputField value="{!objQualityEvent.greatwave2__Due_Date__c}"/>
+                <apex:inputField value="{!objQualityEvent.greatwave2__Who__c}"/>
+                <apex:inputField value="{!objQualityEvent.greatwave2__Type__c}"/>
+                <apex:inputField value="{!objQualityEvent.greatwave2__When__c}" required="true"/>
+                <apex:inputField value="{!objQualityEvent.greatwave2__Category__c}"/>
+                <apex:inputField value="{!objQualityEvent.greatwave2__Location__c}"/>
+                <apex:inputField value="{!objQualityEvent.greatwave2__Severity__c}"/>
+                <apex:inputField value="{!objQualityEvent.greatwave2__Department__c}"/>              
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Description" columns="1">
+                <apex:inputfield value="{!objQualityEvent.greatwave2__What__c}" required="true"/> 
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

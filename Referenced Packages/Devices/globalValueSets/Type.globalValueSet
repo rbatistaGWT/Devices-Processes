@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Credit</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Compliance</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Capacity</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Collateral</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Post Close</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Prefund</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <customValue>
+        <fullName>Servicing</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+    </customValue>
+    <masterLabel>Type</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

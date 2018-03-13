@@ -1,0 +1,47 @@
+<messaging:emailTemplate subject="Please confirm an Order: {!relatedTo.Name}" recipientType="User" relatedToType="greatwave2__Inventory_Order__c">
+    <messaging:htmlEmailBody >
+        <html>
+            <style>
+                table.temp{
+                    border:1px solid gray;
+                }
+                th.temp{
+                    border:1px solid gray;
+                }
+                td.temp{
+                    border:1px solid gray;
+                }
+            </style>
+            <body>
+                <p> This confirmation was created by the Transfer Order from: {!relatedTo.Transfer_To__r.Name}</p>
+                <p>Please confirm that you transferred from your inventory the following items:  Click here to
+                    <a href="https://login.salesforce.com/apex/greatwave2__OrderConfirmation?id={!relatedTo.Id}">Confirm</a>
+                    <br/>
+                    If you did not transfer this inventory, forward this email to "{!$Setup.DeviceWave_Settings__c.Master_Email__c}".
+                </p>
+                <table class="temp" style="border:1px solid gray;">
+                    <tr>
+                        <th style="border:1px solid gray;">Order Line Number</th>
+                        <th style="border:1px solid gray;">Product Code</th>
+                        <th style="border:1px solid gray;">Lot Number</th>
+                        <th style="border:1px solid gray;">Serial Number</th>
+                        <th style="border:1px solid gray;">Quantity</th>
+                    </tr>
+                    <apex:repeat value="{!relatedTo.Order_Lines__r}" var="ol">
+                        <tr>
+                            <td style="border:1px solid gray;">
+                                <a href="https://login.salesforce.com/{!ol.id}">{!ol.Name}</a>
+                            </td>
+                            <td style="border:1px solid gray;">{!ol.greatwave2__Product_Code__c}</td>
+                            <td style="border:1px solid gray;">
+                                {!ol.greatwave2__Lot_Number__c}
+                            </td>
+                            <td style="border:1px solid gray;">{!ol.greatwave2__Serial_Number__c}</td>
+                            <td style="border:1px solid gray;">{!ol.greatwave2__Quantity__c}</td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </body>
+        </html>
+    </messaging:htmlEmailBody>
+</messaging:emailTemplate>

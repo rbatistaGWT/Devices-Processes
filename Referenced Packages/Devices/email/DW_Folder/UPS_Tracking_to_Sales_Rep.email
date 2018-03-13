@@ -1,0 +1,16 @@
+<table border="0" cellpadding="5" width="550" cellspacing="5" height="400" >
+<tr valign="top" height="400" >
+<td tEditID="c1r1" style=" background-color:#FFFFFF; color:#000000; bEditID:r3st1; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r1" locked="0" >
+<![CDATA[<p class="p1"><span class="s1">Your order number:&nbsp;{!Inventory_Order__c.Name}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Dear {!Inventory_Order__c.OwnerFullName},&nbsp;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">You can track this package through our carriers' website or by clicking on the following link: {!Inventory_Order__c.Track__c}&nbsp;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Please allow 24 hours for tracking number(s) to become active.&nbsp;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">If you have any questions please contact support at:&nbsp;{!$Setup.DeviceWave_Settings__c.Master_Email__c}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">Thank you!</span></p>]]></td>
+</tr>
+</table>

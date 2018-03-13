@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Settings and options for Device Wave.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>DBRF_PDF_Page__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Name of the Visualforce page to use for DBRF PDF generation.</description>
+        <externalId>false</externalId>
+        <label>DBRF PDF Page</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>GS1_Config__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>GS1 Configuration</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>GS1_RegEx__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>GS1 RegEx</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Master_Email__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Master Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Profiles_Allowed_to_Confirm_an_Order__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Profiles_Allowed_to_Confirm_an_Order</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Salesforce1_URL__c</fullName>
+        <deprecated>false</deprecated>
+        <description>URL for sites Salesforce1 interface</description>
+        <externalId>false</externalId>
+        <inlineHelpText>URL should be without HTTP or HTTPS for Example &quot;ap2.salesforce.com&quot;</inlineHelpText>
+        <label>Salesforce1 URL</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Scanner_Configuration__c</fullName>
+        <deprecated>false</deprecated>
+        <description>JSON configuration for barcode scanning. Leave blank to use external scanner app.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>JSON configuration for barcode scanning. Leave blank to use external scanner app.</inlineHelpText>
+        <label>Scanner Configuration</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Visualforce_URL__c</fullName>
+        <deprecated>false</deprecated>
+        <description>URL for sites Visualforce pages.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>URL should be without HTTP or HTTPS for Example &quot;greatwave2.ap2.visual.force.com&quot;</inlineHelpText>
+        <label>Visualforce URL</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>emailPIRRequest__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>emailPIRRequest</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pirDailyNotification__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>pirDailyNotification</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pirNightlyNotification__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>pirNightlyNotification</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Devices</label>
+    <visibility>Public</visibility>
+</CustomObject>

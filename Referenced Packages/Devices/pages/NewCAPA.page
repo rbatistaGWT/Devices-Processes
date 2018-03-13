@@ -1,0 +1,147 @@
+<apex:page standardController="greatwave2__CAPA__c" extensions="greatwave2.CAPA_extn" id="pgId">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <apex:sectionHeader title="CAPA {!IF(capaId != null,'','Edit')}" subtitle="{!IF(capaId != null,objCAPA.Name,'New CAPA')}"/>
+    <apex:form id="frmId">
+        <apex:pageBlock mode="edit" id="pgId">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Withdraw" action="{!onWithdrawn}" rendered="{!IF(AND (capaId != null,AND(StatusMap[objCAPA.greatwave2__Status__c] >= 0,StatusMap[objCAPA.greatwave2__Status__c] != 10)),true,false)}"/>
+                <apex:commandButton value="Request Rework" rendered="{!IF(AND (capaId != null,StatusMap[objCAPA.greatwave2__Status__c] > 6),true,false)}" action="{!onRequestRework}"/>
+                <!-- apex:commandButton value="New" action="{!onNew}"  rendered="{!IF(capaId != null,true,false)}"/-->
+                <apex:commandButton value="Save" action="{!onSave}"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+                <apex:commandButton value="Request Assignment" action="{!onAwaitingAssignment}" rendered="{!IF(AND (capaId != null,StatusMap[objCAPA.greatwave2__Status__c] == 0),true,false)}"/>
+                <apex:commandButton value="Assign" oncomplete="assign();" rendered="{!IF(AND($User.Id == objCAPA.Request_Assignment_From__r.Id, StatusMap[objCAPA.greatwave2__Status__c] == 1),true,false)}"/>
+                <apex:commandButton value="Record Root Cause Analysis" action="{!onARCA}" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] == 2,true,false)}"/>
+                <apex:commandButton value="Record Root Cause Complete" action="{!onRootCauseComplete}" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] == 3,true,false)}"/>
+                <apex:commandButton value="Propose Solution" action="{!onSolutionSubmitted}" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] == 4,true,false)}"/>
+                <apex:commandButton value="Solution Approve" action="{!onSolutionApproved}" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] == 5,true,false)}"/>
+                <apex:commandButton value="Solution Reject" action="{!rejectRecord}" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] == 5,true,false)}"/>
+                <apex:commandButton value="Implemented" action="{!onImplemented}" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] == 6,true,false)}"/>
+                <!--apex:commandButton value="Request Verification" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] == 6,true,false)}"/-->
+                <apex:commandButton value="Verify as Effective" action="{!onVerifiedEffective}" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] == 7,true,false)}"/>
+                <apex:commandButton value="Verify as Ineffective" action="{!onVerifiedIneffective}" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] == 7,true,false)}"/><!--rendered="{!IF(StatusMap[objCAPA.Status__c] == 8,true,false)}"/-->
+                <!--apex:commandButton value="Withdrawn" action="{!onWithdrawn}" rendered="{!IF(StatusMap[objCAPA.Status__c] == 9,true,false)}"/>
+                <apex:commandButton value="Save" action="{!onSave}" rendered="{!IF(StatusMap[objCAPA.Status__c] >= 1,true,false)}"/>
+                <apex:commandButton value="Save & Close" rendered="{!IF(StatusMap[objCAPA.Status__c] >= 1,true,false)}"/>
+                <apex:commandButton value="Root Cause Complete" action="{!onRootCauseComplete}" rendered="{!IF(StatusMap[objCAPA.Status__c] >= 1,true,false)}"/>
+                <apex:commandButton value="Implemented" action="{!onImplemented}" />
+                <apex:commandButton value="Solution Approved" action="{!onSolutionApproved}"/>
+                <apex:commandButton value="Withdraw" action="{!onWithdrawn}"/>
+                <input type="button" class="btn" value="Assign" onclick="assign();"/-->
+            </apex:pageBlockButtons>
+            <apex:outputPanel id="pnlId">
+                <apex:pagemessages id="msgId"/>
+                <apex:pageBlockSection title="Approval/Reject Comment" collapsible="false" id="arciId" columns="1" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] == 5,true,false)}">
+                     <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="Comment"/>
+                        <apex:inputTextarea value="{!approvalRejectComment}" style="width:99%;height:140px;"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection title="General Information" collapsible="false" id="giId">
+                    <apex:repeat value="{!$ObjectType.greatwave2__CAPA__c.fieldSets.greatwave2__General_Information}" var="f">
+                        <apex:outputField value="{!objCAPA[f]}" rendered="{!f=='greatwave2__Status__c'}"/>
+                        <apex:inputField value="{!objCAPA[f]}" required="{!OR(f.required, f.dbrequired)}" rendered="{!f!='greatwave2__Status__c'}"/>
+                    </apex:repeat>
+                    <!--apex:pageBlockSectionItem >
+                        <apex:outputLabel value="CAPA Title"/>
+                        <apex:inputField value="{!objCAPA.Name}" required="true"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:outputField value="{!objCAPA.Status__c}"/>
+                    <apex:inputField value="{!objCAPA.Request_Assignment_From__c}" id="rafId" required="true"/>
+                    <apex:inputField value="{!objCAPA.Department__c}" required="true"/>
+                    <apex:outputField value="{!objCAPA.createdById}" rendered="{!!isBlank(objCAPA.createdById)}"/>
+                    <apex:inputField value="{!objCAPA.Location__c}" required="true"/>
+                    <apex:outputField value="{!objCAPA.createdDate}" rendered="{!!isBlank(objCAPA.createdDate)}"/>
+                    <apex:inputField value="{!objCAPA.Due_Date__c}" required="true"/>
+                    <apex:pageBlockSectionItem rendered="{!IF(StatusMap[objCAPA.Status__c] >= 2,true,false)}">
+                        <apex:outputLabel value="Assigned To"/>
+                        <apex:outputField value="{!objCAPA.OwnerId}"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:inputField value="{!objCAPA.Investigations__c}" required="true"/-->
+                </apex:pageBlockSection>
+                <apex:pageBlockSection title="Problem" collapsible="false" columns="1">
+                    <apex:repeat value="{!$ObjectType.greatwave2__CAPA__c.fieldSets.greatwave2__Problem}" var="f">
+                        <apex:inputField value="{!objCAPA[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                    <!--apex:inputField value="{!objCAPA.Problem_Category__c}"/>
+                    <apex:inputField value="{!objCAPA.Problem__c}"/-->
+                </apex:pageBlockSection>
+                <apex:pageBlockSection title="Immediate Action" columns="1" collapsible="false" >
+                    <apex:repeat value="{!$ObjectType.greatwave2__CAPA__c.fieldSets.greatwave2__Immediate_Action}" var="f">
+                        <apex:inputField value="{!objCAPA[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                    <!--apex:inputField value="{!objCAPA.Immediate_Action__c}"/-->
+                </apex:pageBlockSection>
+                <apex:pageBlockSection title="Root Cause" collapsible="false" columns="2" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] >= 3,true,false)}">
+                    <apex:repeat value="{!$ObjectType.greatwave2__CAPA__c.fieldSets.greatwave2__Root_Cause}" var="f">
+                        <apex:inputField value="{!objCAPA[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                    <!--apex:inputField value="{!objCAPA.Root_Cause_Category__c}"/>
+                    <apex:inputField value="{!objCAPA.Root_Cause_Hours__c}"/-->
+                </apex:pageBlockSection>
+                <apex:pageBlockSection collapsible="false" columns="1" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] >= 3,true,false)}">
+                    <apex:repeat value="{!$ObjectType.greatwave2__CAPA__c.fieldSets.greatwave2__Root_Cause_Analysis}" var="f">
+                        <apex:inputField value="{!objCAPA[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                    <!--apex:inputField value="{!objCAPA.Root_Cause_Analysis__c}"/-->
+                </apex:pageBlockSection>
+                <apex:pageBlockSection title="Solution" collapsible="false" columns="1" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] >= 5,true,false)}">
+                    <apex:repeat value="{!$ObjectType.greatwave2__CAPA__c.fieldSets.greatwave2__Solution}" var="f">
+                        <apex:inputField value="{!objCAPA[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                    <!--apex:outputField value="{!objCAPA.Solution_Approved_Date__c}"/-->
+                    <!--apex:inputField value="{!objCAPA.Solution__c}"/-->
+                </apex:pageBlockSection>
+                <apex:pageBlockSection title="Implementation" columns="2" collapsible="false" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] >=7,true,false)}">
+                    <apex:repeat value="{!$ObjectType.greatwave2__CAPA__c.fieldSets.greatwave2__Implementation}" var="f">
+                        <apex:inputField value="{!objCAPA[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                    <!--apex:inputField value="{!objCAPA.Implementation_Date__c}"/>
+                    <apex:inputField value="{!objCAPA.Implementer__c}"/-->
+                </apex:pageBlockSection>
+                <apex:pageBlockSection columns="1" collapsible="false" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] >=7,true,false)}">
+                    <apex:repeat value="{!$ObjectType.greatwave2__CAPA__c.fieldSets.greatwave2__Implementation_Text_Area}" var="f">
+                        <apex:inputField value="{!objCAPA[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                    <!--apex:inputField value="{!objCAPA.Implementation__c}"/-->
+                </apex:pageBlockSection>
+                <apex:pageBlockSection title="Withdrawn" collapsible="false" columns="1" rendered="{!IF(StatusMap[objCAPA.greatwave2__Status__c] >= 10,true,false)}">
+                    <apex:repeat value="{!$ObjectType.greatwave2__CAPA__c.fieldSets.greatwave2__Withdrawn}" var="f">
+                        <apex:inputField value="{!objCAPA[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                    <!--apex:inputField value="{!objCAPA.Withdrawl_Date__c}"/>
+                    <apex:inputField value="{!objCAPA.Withdraw_Comments__c}"/-->
+                </apex:pageBlockSection>
+                <!--
+                <apex:pageBlockSection title="Other Information" collapsible="false" columns="1" rendered="true">
+                    <apex:inputField value="{!objCAPA.Due_Date__c}"/>
+                    <apex:inputField value="{!objCAPA.Investigations__c}"/>
+                </apex:pageBlockSection>
+                -->
+            </apex:outputPanel>
+         </apex:pageBlock>
+    </apex:form>
+    <script>
+        var newwindow;
+        function assign(){
+            var url ="/apex/AssignCAPA?id="+"{!JSENCODE(objCAPA.Id)}";
+            /*'/_ui/common/data/LookupPage?lkfm=pgId%3AfrmId&lknm=pgId%3AfrmId%3ApgId%3AAssigneeUserId&lktp=StandardUserLookup&lksrch='*/
+            newwindow=window.open(url,'name','height=300,width=450');
+            if (window.focus) {newwindow.focus();}
+            return true;
+        }
+        function closeAssigneeLookUp(){
+            alert(2);
+            newwindow.close()
+        }
+        $(document).ready(function(){
+            //$('.pbTitle').hide();
+        });
+        /*
+        $(document).ready(function(){
+            $("[id$='AssigneeUserId_lkid']").on('change paste copy',function() {
+              alert(1);
+            });
+        });*/
+    </script>
+</apex:page>

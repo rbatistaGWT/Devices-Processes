@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>DW_Letterhead</letterhead>
+    <name>UPS Tracking to Sales Rep</name>
+    <style>freeForm</style>
+    <subject>Your order has shipped!</subject>
+    <textOnly>Your order number: {!Inventory_Order__c.Name} 
+
+Dear {!Inventory_Order__c.OwnerFullName}, 
+
+You can track this package through our carriers&apos; website or by clicking on the following link: {!Inventory_Order__c.Track__c}
+
+Please allow 24 hours for tracking number(s) to become active. 
+
+If you have any questions please contact support at:{!$Setup.DeviceWave_Settings__c.Master_Email__c}
+
+Thank you!</textOnly>
+    <type>html</type>
+</EmailTemplate>

@@ -1,0 +1,266 @@
+<apex:page standardController="greatwave2__Patient__c" extensions="greatwave2.PatientExt" applyHtmlTag="false" showheader="false" sidebar="false" docType="HTML-5.0" standardStylesheets="false">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <head>
+    <title>Picture List View Template</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1,  minimum-scale=1, maximum-scale=1, user-scalable=no"/>
+    <apex:stylesheet value="{!URLFOR($Resource.greatwave2__Mobile_Design_Templates, 'Mobile-Design-Templates-master/common/css/app.min.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.greatwave2__Mobile_Design_Templates, 'Mobile-Design-Templates-master/common/js/jQuery2.0.2.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.greatwave2__Mobile_Design_Templates, 'Mobile-Design-Templates-master/common/js/jquery.touchwipe.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.greatwave2__Mobile_Design_Templates, 'Mobile-Design-Templates-master/common/js/main.min.js')}"/>
+    </head>
+
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-1.8.js')}"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.js')}"/>
+    <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.css')}"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQueryMobile,'/jquery.mobile/jquery.mobile-1.4.4.min.js')}"/>
+        <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQueryMobile,'/jquery.mobile/jquery.mobile-1.4.4.min.css')}"/>
+
+    <style type="text/css">
+        .ui-autocomplete-loading {
+            background: white url("{!$Resource.greatwave2__ajaxLoad}") right center no-repeat;
+        }
+        .autocomplete{
+            width: 234px !important;
+        }
+
+    </style>
+    <apex:form >
+        <apex:actionFunction name="save" action="{!saveExt}" reRender="msg,PatientId" oncomplete="sforce.one.navigateToSObject(j$('[id$=PatientId]').val());"/>
+        <!--<apex:actionFunction name="cancel" action="{!cancel}" reRender="msg"/>-->
+        <apex:inputText value="{!greatwave2__Patient__c.greatwave2__Site__c}" id="siteID-input" style="display:none;" />
+        <apex:inputText value="{!siteID}" id="siteId" style="display:none;"/>
+        <apex:inputText value="{!PatientId}" id="PatientId" style="display:none;"/>
+        <div class="app-wrapper">
+            <div data-role="header">
+                <h1>Patient</h1>
+                <a onclick="validate();" data-role="button" data-inline="true" data-theme="a" data-icon="plus" class="main-menu-button-right ui-btn-right">Save</a>
+                <a onclick="sforce.one.navigateToURL('/{!$ObjectType.Patient__c.keyPrefix}');" data-role="button" data-inline="true" data-theme="a" data-icon="delete" class="main-menu-button-right ui-btn-left">Cancel</a>
+            </div>
+            <div class="app-content">
+                <apex:pageMessages id="msg"/>
+                <p id="errorMessages" style="color:#B5362D"></p>
+                <section class="border-bottom">
+                    <div class="content">
+                         <h3>Status *</h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Status__c}" id="patientStatus"/>
+                            </div>
+                        </div>
+                        <h3>FirstName *<apex:outputText value="{!IF('{Patient__c.Status__c}' != 'Draft','',' *')}"/></h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__FirstName__c}" styleClass="required"/>
+                            </div>
+                        </div>
+                         <h3>LastName *<apex:outputText value="{!IF('{Patient__c.Status__c}' != 'Draft','',' *')}"/></h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__LastName__c}" styleClass="required"/>
+                            </div>
+                        </div>
+                        <h3>Patient Phone Number <apex:outputText value="{!IF('{Patient__c.Status__c}' != 'Draft','',' *')}"/></h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Patient_Phone_Number__c}"  type="tel" styleClass="required" id="patientPhone"/>
+                            </div>
+                        </div>
+                        <h3>Patient Address Line 1<apex:outputText value="{!IF('{Patient__c.Status__c}' != 'Draft','',' *')}"/></h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Address_Line_1__c}" styleClass="required" />
+                            </div>
+                        </div>
+                        <h3>Patient Address Line 2<apex:outputText value="{!IF('{Patient__c.Status__c}' != 'Draft','',' *')}"/></h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Address_Line_2__c}"  />
+                            </div>
+                        </div>
+                        <h3>Patient City<apex:outputText value="{!IF('{Patient__c.Status__c}' != 'Draft','',' *')}"/></h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__City__c}" styleClass="required" />
+                            </div>
+                        </div>
+                        <h3>Patient State<apex:outputText value="{!IF('{Patient__c.Status__c}' != 'Draft','',' *')}"/></h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__State__c}" styleClass="required" />
+                            </div>
+                        </div>
+                        <h3>Patient Postal Code<apex:outputText value="{!IF('{Patient__c.Status__c}' != 'Draft','',' *')}"/></h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Postal_Code__c}" styleClass="required" />
+                            </div>
+                        </div>
+                        <h3>Patient Country<apex:outputText value="{!IF('{Patient__c.Status__c}' != 'Draft','',' *')}"/></h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Country__c}" styleClass="required" />
+                            </div>
+                        </div>
+                        <h3>Patient DOB <apex:outputText value="{!IF('{Patient__c.Status__c}' != 'Draft','',' *')}"/></h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Patient_DOB__c}" type="date" styleClass="required" id="patientDOB"/>
+                            </div>
+                        </div>
+                        <h3>Patient Gender</h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                                <apex:inputField value="{!greatwave2__Patient__c.greatwave2__Patient_Gender__c}" styleClass="requirecPicklist"/>
+                            </div>
+                        </div>
+                        <!--<h3>Indication</h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                                <apex:inputField value="{!Patient__c.Indication__c}"/>
+                            </div>
+                        </div>-->
+                        <h3>Comments</h3>
+                        <div class="form-control-group">
+                            <div class="form-control form-control-text">
+                               <!-- <apex:inputField value="{!Patient__c.Nevro_Comments__c}"/> --> 
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var j$ = jQuery.noConflict();            
+            var dblClick=false;
+
+            j$( document ).ready( function() {
+
+                if ( (typeof sforce == 'undefined') || (sforce == null) )
+                    window.open('/apex/PatientOverride?retURL=%2F{!$ObjectType.Patient__c.keyPrefix}%2Fo',"_self")
+
+                //Auto complete textbox component
+                var autoCompleteTextBoxId = j$('[id$=autocomplete_textbox]');
+                var queryTerm;
+
+                //auto complete method
+                j$(autoCompleteTextBoxId).autocomplete({
+                    minLength: 2,
+                    source: function(request, response) {
+                                queryTerm = request.term;
+                                var sObjects;
+                                var searchText = j$(autoCompleteTextBoxId).val();
+                                patientExt.getRecords(searchText,function(result, event){
+                                    if(event.type == 'exception') {
+                                          alert(event.message);
+                                    } else {
+                                         sObjects = result;
+                                         response(sObjects);
+                                    }
+                                });
+                           },
+                    focus: function( event, ui ) {
+                            j$(autoCompleteTextBoxId).val( ui.item.Name );
+                            j$("input[id$='siteID-input']").val(ui.item.Id.substring(0,15));
+                            j$("input[id$='siteID']").val(ui.item.Id.substring(0,15));
+                            //alert(ui.item.Id.substring(0,15));
+                            return false;
+                            },
+                    select: function( event, ui ) {
+
+                                j$(autoCompleteTextBoxId).val( ui.item.Name );
+                                j$("input[id$='siteID-input']").val(ui.item.Id.substring(0,15));
+
+                                j$("input[id$='siteId']").val(ui.item.Id.substring(0,15));
+                                //alert(j$("input[id$='siteId']").val())
+                                return false;
+                            },
+                 })
+                 .data( "autocomplete" )._renderItem = function( ul, item ) {
+                    var entry = "<a>" + item.Name;
+                    j$.each("".split(",") , function(key, value) {
+                        entry = entry;
+                    });
+                    entry = entry + "</a>";
+                    entry = entry.replace(queryTerm, "<b>" + queryTerm + "</b>");
+                    return j$( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( entry )
+                        .appendTo( ul );
+                };
+            });
+
+            function validate()
+            {
+                var isValid = true;
+                j$(".requireText").each(function(){
+                    j$(this).remove();
+                })
+
+
+                var thisField = j$('[id$=patientPhone]');
+                var fieldValue = thisField.val();
+                if(fieldValue != '' && !(fieldValue.match(/\d{3}[- ]\d{3}\-\d{4}/g)) && !(fieldValue.match(/\(\d{3}\)[- ]\d{3}\-\d{4}/g))){
+                    isValid=false;
+                    thisField.css("background-color","#F6E4E4");
+                    thisField.css("border", "1px solid #B5362D");
+                    thisField.parent().parent().append('<p style="color:#B5362D" class="requireText">Phone must be in the following format: (xxx) xxx-xxxx</p>');
+                }
+
+                var dobField = j$('[id$=patientDOB]');
+                var dobValue = dobField.val().split('-');
+                var now = new Date();
+                var dobDateValue = new Date(dobValue[0], dobValue[1] - 1, dobValue[2]);
+                if(dobDateValue.getFullYear() > now.getFullYear() ||
+                    (dobDateValue.getFullYear() == now.getFullYear() && dobDateValue.getMonth() > now.getMonth() ) ||
+                    (dobDateValue.getFullYear() == now.getFullYear() && dobDateValue.getMonth() == now.getMonth() && dobDateValue.getDate() >= now.getDate()))
+                {
+                    dobField.css("background-color", "#F6E4E4");
+                    dobField.css("border", "1px solid #B5362D");
+                    dobField.parent().parent().append('<p style="color:#B5362D" class="requireText">Date must be in the past</p>');
+                    j$('#errorMessages').html("**Unable to save the Patient, please verify error messages on the screen");
+                    isValid=false;
+                }
+
+                j$(".requirecPicklist").each(function(){
+                    var thisField = j$(this);
+                    if(thisField.html() == '--None--'  && j$('[id$=patientStatus]').val() == 'Verified' )
+                    {
+                        thisField.css("background-color", "#F6E4E4");
+                        thisField.css("border", "1px solid #B5362D");
+                        thisField.parent().parent().append('<p style="color:#B5362D" class="requireText">Complete this field</p>');
+                        j$('#errorMessages').html("**Unable to save the Patient, please verify error messages on the screen");
+                        isValid=false;
+                    }
+                })
+
+
+                j$(".required").each(function(){
+
+                    var thisField = j$(this);
+                    if((thisField.val() == '' && j$('[id$=patientStatus]').val() == 'Verified' ) ) {
+                        //alert('val '+thisField.val());
+                        //alert('html '+thisField.html());
+                        thisField.css("background-color", "#F6E4E4");
+                        thisField.css("border", "1px solid #B5362D");
+                        thisField.parent().parent().append('<p style="color:#B5362D" class="requireText">Complete this field</p>');
+                        j$('#errorMessages').html("**Unable to save the Patient, please verify error messages on the screen");
+                        isValid=false;
+                    }else{
+                        thisField.css("background-color", "#FFF");
+                        thisField.css("border", "0px");
+                    }
+                });
+                if(isValid){
+                	if(dblClick==false) {
+                		dblClick=true;
+                    	save();
+                    }
+                }
+            }
+
+
+        </script>
+    </apex:form>
+</apex:page>

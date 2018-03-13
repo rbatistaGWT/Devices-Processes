@@ -1,0 +1,4 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId">
+    <aura:attribute name="recordId" type="String"/>
+    <greatwave2:PurchaseOrderLine parentRecordId="{!v.recordId}"/>
+</aura:component>

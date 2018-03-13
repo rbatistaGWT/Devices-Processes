@@ -1,0 +1,35 @@
+<apex:page standardController="greatwave2__Audit_Checklist_Item__c" extensions="greatwave2.EditAuditChecklistItem_extn">
+    <apex:form >
+        <apex:sectionHeader title="Audit Checklist Item Edit" subtitle="{!IF(aclId !=null,objAudiChecklistItem.Name,'New Audit Checklist Item')}"/>
+        <apex:pageBlock mode="Edit" title="Audit Checklist Item Edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!Save}"/>
+                <apex:commandButton value="Save & Next" action="{!onSaveAndNext}" disabled="{!isNextVisible}" />
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:pageBlockSection title="Information" collapsible="false">
+             <apex:inputfield value="{!objAudiChecklistItem.greatwave2__Audit_Plan__c}"/>
+             <apex:repeat value="{!$ObjectType.greatwave2__Audit_Checklist_Item__c.fieldSets.greatwave2__ACI_General}" var="f">
+                <apex:inputField value="{!greatwave2__Audit_Checklist_Item__c[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                <!--apex:outputfield value="{!objAudiChecklistItem.Name}" rendered="{!IF(aclId !=null,true,false)}"/>
+                
+                <apex:inputfield value="{!objAudiChecklistItem.gt_Department__c}"/>
+                <apex:inputfield value="{!objAudiChecklistItem.Audit_Item__c}"/>
+                <apex:inputfield value="{!objAudiChecklistItem.gt_Standard__c}"/>
+                <apex:inputfield value="{!objAudiChecklistItem.gw_Category__c}"/>
+                <apex:inputfield value="{!objAudiChecklistItem.Result__c}"/>
+                <apex:inputfield value="{!objAudiChecklistItem.gt_Location__c}"/-->
+                </apex:repeat>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1">
+                <apex:repeat value="{!$ObjectType.greatwave2__Audit_Checklist_Item__c.fieldSets.greatwave2__AIC_RichTextArea}" var="f">
+                    <apex:inputField value="{!greatwave2__Audit_Checklist_Item__c[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                </apex:repeat> 
+                <!--apex:inputfield value="{!objAudiChecklistItem.Evidence__c}"/>
+                <apex:inputfield value="{!objAudiChecklistItem.Audit_Question__c}"/>
+                <apex:inputfield value="{!objAudiChecklistItem.Suggested_Answer__c}"/-->
+            </apex:pageBlockSection>    
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,11 @@
+<messaging:emailTemplate subject="Physical Inventory Notification" recipientType="User" relatedToType="greatwave2__PIR__c">
+<messaging:htmlEmailBody >
+Dear {!recipient.Name}<br/><br/>
+
+This is a reminder that you have an active Physical Inventory Request due on <apex:outputText value="{0,Date, MM/dd/YYYY}"><apex:param value="{!RelatedTo.greatwave2__Due_Date__c}"/></apex:outputText>. Click [<apex:outputLink value="https://{!$Setup.DeviceWave_Settings__c.Salesforce1_URL__c}/one/one.app" id="theLink">HERE</apex:outputLink>] to open your mobile Salesforce application and select "PI Request" from the left hand menu.
+<br/><br/>
+
+The following products are related to the Physical Inventory Request:<br/>
+<c:findPIPs Pic_Id="{!RelatedTo.greatwave2__Physical_Inventory__c}"/>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

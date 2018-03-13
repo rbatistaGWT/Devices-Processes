@@ -1,0 +1,15 @@
+<messaging:emailTemplate subject="Physical Inventory Notification" recipientType="User" relatedToType="greatwave2__PIR__c" >
+<messaging:htmlEmailBody >
+Dear {!Recipient.Name},<br/><br/>
+This is a reminder that you have an active Physical Inventory Request which will start on <apex:outputText value="{0,Date, MM/dd/YYYY}"><apex:param value="{!RelatedTo.greatwave2__Start_Date__c}"/></apex:outputText>. 
+On that date, you will be able to access your Physical Inventory Request by clicking [<apex:outputLink value="https://{!$Setup.DeviceWave_Settings__c.Salesforce1_URL__c}/one/one.app" id="theLink">HERE</apex:outputLink>] and selecting "PI Request" from the left hand menu.
+<br/><br/>
+
+Order enough product in advance of the count start date to leave time to scan it all into your inventory location. You will not be able to start your count with a replenishment order that is not “Received” 
+<br/><br/>
+The following products are related to the Physical Inventory Request:<br/>
+<strong><c:findPIPs Pic_Id="{!RelatedTo.greatwave2__Physical_Inventory__c}"/></strong>
+
+
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

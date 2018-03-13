@@ -1,0 +1,64 @@
+<apex:page standardController="greatwave2__Audit_Plan__c" extensions="greatwave2.ResultStatisticChart_extn" sidebar="false" showHeader="false" readOnly="true">
+    <apex:stylesheet value="/sCSS/21.0/sprites/1297816277000/Theme3/default/gc/versioning.css" /> 
+    <style>
+        #vfext4-ext-gen1026 {
+            width:100% !important;
+            height:420px !important;
+            padding: 5px !important;
+        }
+        #topPane{
+            padding: 0px !important
+        }
+        .theTabPanel {
+             margin-top: 0px !important;
+         }
+         #tooltip-1010_header {
+             width:210px !important;
+         }
+    </style>  
+    <script>
+            myChart.on('beforeconfig', function(config) {
+            config.axes[0].margin=-10; 
+        });
+    </script>
+        <center> 
+            <apex:tabPanel style="height:450px !important;" switchType="server" id="panel" styleClass="theTabPanel"  contentClass="tabContent"  tabClass="theTabPanel" activeTabClass="activeTab" inactiveTabClass="inactiveTab">                
+                <apex:tab label="Pie chart" id="tab4">
+                    <center>
+                        <apex:chart height="350" width="60%" data="{!pieData}" >
+                            <apex:pieSeries dataField="data" labelField="name"  tips="true">
+                                <apex:chartLabel display="none" orientation="vertical"/>
+                            </apex:pieSeries>
+                            <apex:legend position="right" />
+                        </apex:chart>
+                    </center>
+                </apex:tab>
+                <!--apex:tab label="Guage chart" id="tab3">
+                    <center>
+                        <apex:chart name="myChart1" height="350" width="60%" animate="true" data="{!piedata}" >
+                            <apex:axis type="Gauge" position="gauge" title="Audit Checklist Items Score"  minimum="0" maximum="{!objAps[0].Audit_Checklist_Items__r.size}" steps="10"/>
+                            <apex:gaugeSeries dataField="data" donut="50" colorSet="#78c953,#ddd"/>
+                        </apex:chart>
+                    </center>
+                </apex:tab-->
+                <apex:tab label="Radar chart" id="tab1">
+                    <center>
+                        <apex:chart name="myChart" height="400px" width="80%" legend="false" data="{!pieData}">
+                            <apex:legend position="left" />
+                            <apex:axis type="Radial" position="radial" />
+                            <apex:radarSeries title="Audit Score" xField="name" yField="data" tips="true" opacity="0.6"/>
+                        </apex:chart>
+                    </center>
+                </apex:tab>
+                <apex:tab label="Bar chart" id="tab2">
+                    <center>
+                        <apex:chart height="300" width="80%" data="{!pieData}" > 
+                            <apex:axis type="Numeric" position="left" fields="data" title="Audit Check List Item Values"/>    
+                            <apex:axis type="Category" position="bottom" fields="name" title="Audit Check List Item Score"/>            
+                            <apex:barSeries orientation="vertical" axis="left" xField="name" yField="data"/> 
+                        </apex:chart>
+                    </center>
+                </apex:tab>
+            </apex:tabPanel>
+        </center>
+</apex:page>

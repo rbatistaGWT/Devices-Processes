@@ -1,0 +1,64 @@
+<apex:page standardController="Opportunity" extensions="greatwave2.OpportunityContactRole_ctrl" sidebar="false" showHeader="false">
+<meta name="viewport" content="width=device-width, initial-scale=1"/> 
+        <link rel="stylesheet" href="//code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css" />
+        
+        <style>
+            .ui-page{
+                background-color:#f0f1f2 !important;
+            }
+        </style>
+        <apex:stylesheet value="{!URLFOR($Resource.greatwave2__OneStarter,'icons.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.greatwave2__OneStarter,'styles.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.greatwave2__OneStarter,'OneStarter.css')}"/>
+
+<!-- JavaScript files -->
+<apex:includeScript value="{!URLFOR($Resource.greatwave2__JqueryLib)}"/>
+<apex:includeScript value="{!URLFOR($Resource.greatwave2__TouchSwipe,'jquery.touchSwipe.min.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.greatwave2__OneStarter,'jquery.onestarter.js')}"/>
+<apex:includeScript value="/canvas/sdk/js/publisher.js"/>
+<head>
+<script>
+$(document).ready(function() {        
+     $('div#one-app').oneStarter('app');
+});
+</script>
+</head>
+  <div id="one-app">  
+ <apex:outputPanel >
+
+  <ol style="width:95%">
+      <apex:form id="test1">
+      <div id="basic-list">
+                      <input type="text" id="searchtxt"/><input type="button" class="btn" value="Search" onclick="onSearch(document.getElementById('searchtxt').value)"/>
+                <apex:outputPanel id="opId">
+                 
+     <script>       
+     $('div#one-app').oneStarter('app');
+
+</script>
+                <apex:repeat value="{!objContacts }" var="op">
+         
+                <ul class="list-simple">
+                    
+                    
+                    <li class="list-simple"><apex:commandLink value="{!op.Name}" action="{!onCheck1}" reRender="">
+                                                <apex:param assignTo="{!nameFromLookup}" value="{!op.name}" name="as"  />
+                                                <apex:param assignTo="{!nameFromLookupId}" value="{!op.id}" name="asd"  />
+                                            </apex:commandLink>
+                    </li>
+                   
+                </ul>
+
+            
+         </apex:repeat>
+         </apex:outputPanel>
+</div>
+<apex:actionFunction action="{!onSearch}" name="onSearch" reRender="opId">
+    <apex:param assignTo="{!searchContact}" name="sval" value=""/>
+</apex:actionFunction>
+      </apex:form>
+</ol>
+</apex:outputPanel>
+</div>
+        <script src="//code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
+</apex:page>

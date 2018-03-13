@@ -1,0 +1,95 @@
+<apex:page standardController="greatwave2__Audit_Checklist_Item__c" extensions="greatwave2.New_CAPA_ACI_extn" id="pgId">
+<style>
+
+</style>
+<script type='text/javascript' src='/canvas/sdk/js/publisher.js'></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <!--apex:sectionHeader title="CAPA {!IF(capaId != null,'','Edit')}" subtitle="{!IF(capaId != null,objCAPA.Name,'New CAPA')}"/-->
+    <apex:form id="frmId" enctype="multipart/form-data">
+        <div class="tc" id="tc" style="display:none; position: fixed; top: 45%; left:55%; transform:scale(2,2);">
+            <img src="/dashboards/img/landmark_spinner_1589EE.gif" alt="Loading" align="middle" class="sq-20 dib" style="height:30%; width:30%;"/>
+        </div>
+    <div class="all" id="all"  style="display:block">
+            <div style="max-width: 200px;" >
+                
+               <button class="btn bg-primary-btn btn--primary pvs size-full brm no-border" onclick="jsnotesave()" style="display:none;">  <span class="text-color-5 f3 fw-semibold" >save1</span></button>
+              <apex:actionFunction action="{!onSave}" name="jsnotesave"></apex:actionFunction>
+            </div>
+        <apex:pageBlock mode="edit" id="pgId"> 
+            <apex:outputPanel id="pnlId">
+                <apex:pagemessages id="msgId"/>
+                <apex:pageBlockSection columns="1" title="General Information" collapsible="false" id="giId">
+                    <apex:repeat value="{!$ObjectType.greatwave2__CAPA__c.fieldSets.greatwave2__General_Information_ACI}" var="f">
+                        <apex:outputField value="{!objCAPA[f]}" rendered="{!f=='greatwave2__Status__c'}"/>
+                        <apex:inputField value="{!objCAPA[f]}" required="{!OR(f.required, f.dbrequired)}" rendered="{!f!='greatwave2__Status__c'}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection title="Problem" collapsible="false" columns="1">
+                    <apex:repeat value="{!$ObjectType.greatwave2__CAPA__c.fieldSets.greatwave2__Problem}" var="f">
+                        <apex:inputField value="{!objCAPA[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection title="Immediate Action" columns="1" collapsible="false" >
+                    <apex:repeat value="{!$ObjectType.greatwave2__CAPA__c.fieldSets.greatwave2__Immediate_Action}" var="f">
+                        <apex:inputField value="{!objCAPA[f]}" required="{!OR(f.required, f.dbrequired)}"/>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+         </apex:pageBlock>
+         </div>
+    </apex:form>
+    <script type="text/javascript">
+        Sfdc.canvas.publisher.subscribe({name: "publisher.showPanel",
+        onData:function(e) {
+            Sfdc.canvas.publisher.publish({name:"publisher.setValidForSubmit", payload:"true"});
+        }});
+        Sfdc.canvas.publisher.subscribe({ name: "publisher.post",
+        onData: function(e) {
+            toggle_visibility('tc');
+            toggle_visibility('all');
+            jsnotesave();
+            //alert('Receipt Uploaded Successfully!');
+            setTimeout(function(){ reload1();sforce.one.navigateToSObject("{!JSENCODE('capaId')}");
+            }, 4000);
+        }}); 
+        
+     function reload1(){
+        if("JSENCONDE({!waitnow})" == "FU"){
+                Sfdc.canvas.publisher.publish({ name: "publisher.close",
+                payload:{ refresh:"true" }});
+                toggle_visibility('all');
+        }
+     }
+     
+        
+        function toggle_visibility(id) {
+           var e = document.getElementById(id);
+           if(e.style.display == 'block')
+              e.style.display = 'none';
+           else
+              e.style.display = 'block';
+        }
+        
+        var newwindow;
+        function assign(){
+            var url ="/apex/AssignCAPA?id="+"{!JSENCODE(objCAPA.Id)}";
+            /*'/_ui/common/data/LookupPage?lkfm=pgId%3AfrmId&lknm=pgId%3AfrmId%3ApgId%3AAssigneeUserId&lktp=StandardUserLookup&lksrch='*/
+            newwindow=window.open(url,'name','height=300,width=450');
+            if (window.focus) {newwindow.focus();}
+            return true;
+        }
+        function closeAssigneeLookUp(){
+            //alert(2);
+            newwindow.close()
+        }
+        $(document).ready(function(){
+            //$('.pbTitle').hide();
+        });
+        /*
+        $(document).ready(function(){
+            $("[id$='AssigneeUserId_lkid']").on('change paste copy',function() {
+              alert(1);
+            });
+        });*/
+    </script>
+</apex:page>

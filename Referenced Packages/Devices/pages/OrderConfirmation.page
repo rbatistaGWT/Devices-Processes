@@ -1,0 +1,58 @@
+<apex:page standardController="greatwave2__Inventory_Order__c" extensions="greatwave2.OrderConfirmation_ctrl" id="pgId" showHeader="false" sidebar="false" standardStylesheets="true" cache="false" doctype="html-5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-1.8.js')}"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.js')}"/>
+    <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.css')}"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
+    <style>
+        .ui-icon-loading{
+            display:none !important;
+        }
+        .dateFormat{
+             display:none !important;
+        }
+        .ui-link{
+            display:none !important;
+
+        }
+        .errorMsg{
+            color:red !important;
+        }
+        input{
+            margin: 4px 20px !important;
+        }
+    </style>
+    <apex:form id="confirmForm">
+        <br/>
+        <center style="padding: 10px !important;">
+            <apex:outputPanel rendered="{!IF(order != null,true,false)}">
+                <h1>Do you really want to confirm this Transfer Order: <b style="color:blue">{!order.Name}</b>? </h1>
+            </apex:outputPanel>
+            <apex:pageMessages id="msgId"/><br/>
+            <apex:outputPanel rendered="{!isPermission2Confirm}" >
+                <apex:commandButton value="Click here" action="{!onConfirm}" style="margin: 4px 20px !important;" reRender="confirmForm"/>&nbsp;
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!!isPermission2Confirm}" >
+                <apex:commandButton value="Review Transfer Order {!order.Name}" oncomplete="reviewOrder();" style="margin: 4px 20px !important;" rendered="{!IF(order != null,true,false)}"/>&nbsp;
+            </apex:outputPanel>
+            <!--input type="button" name="Close" value="Close" class="btn" onclick="closeit();" /-->
+        </center>
+    </apex:form>
+    <script>
+        var win;
+        function closeit() {
+            //win.close();
+            window.open("#", "_self").close();
+        }
+        function reviewOrder(){
+        	var oId = '{!JSENCODE(order.Id)}'
+            if( (typeof sforce != 'undefined') && (sforce != null) )  {
+                sforce.one.navigateToSObject(oId);
+                sforce.one.navigateToSObject(oId.substring(0, 15));
+            } else {
+                window.location="/" + oId;
+            }
+        }
+    </script>
+</apex:page>

@@ -1,0 +1,1 @@
+You have been invited to Class: {!Student__c.Course_Title__c} <a href='https://login.salesforce.com/apex/greatwave2__StudentInvitationConfirmation?id={!Student__c.Id}'>Accept Invitation</a>

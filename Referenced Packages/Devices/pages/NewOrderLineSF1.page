@@ -1,0 +1,238 @@
+<apex:page standardController="greatwave2__Inventory_Order__c" extensions="greatwave2.ScanBarcodeOnOrder_extn" showHeader="false" standardStylesheets="false" cache="false" doctype="html-5.0">
+    <apex:outputPanel rendered="{!isMessage}">
+        <apex:pageMessage severity="error" strength="3" summary="Error: Order has either been submitted, or is a Transfer Order. New Order Lines are not allowed." />
+    </apex:outputPanel>
+
+    <apex:remoteObjects >
+        <apex:remoteObjectModel name="greatwave2__Order_Line__c" jsShorthand="inventoryItem"
+            fields="Name,Id,greatwave2__Serial_Number__c">
+        </apex:remoteObjectModel>
+    </apex:remoteObjects>
+    <apex:outputPanel rendered="{!!isMessage}">
+    <style>
+#canvas_container
+{
+    background: #fff;
+    border: 1px solid #aaa;
+    border-radius: 15px;
+    height: 240px;
+    /*margin: 20px 20px;*/
+    overflow: hidden;
+    width: 320px; /*288px;*/
+    margin-left: auto;
+    margin-right: auto;
+
+    /* this fixes the overflow:hidden in Chrome/Opera */
+    -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+}
+#container_container
+{
+    position: relative;
+    left: -19px;
+    width: calc(100% + 30px + 3px);
+    /*border: 1px solid #f00;*/
+}
+[title='Product Lookup (New Window)']{
+Display:none !important;
+}
+.ui-content1{
+  padding-left: 1em;
+  padding-right: 1em;
+  /*padding-bottom: 1em;*/
+}
+</style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <head>
+        <title>BarcodeReader</title>
+        <apex:stylesheet value="{!URLFOR($Resource.greatwave2__alertify, 'alertify.js-0.3.11/themes/alertify.core.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.greatwave2__alertify, 'alertify.js-0.3.11/themes/alertify.default.css')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.greatwave2__alertify, 'alertify.js-0.3.11/lib/alertify.min.js')}"/>
+
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js"></script>
+        <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-1.8.js')}"/>
+        <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.js')}"/>
+
+        <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.css')}"/>
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
+
+    </head>
+    <apex:form >
+    <apex:inputText value="{!retryCount}" id="retryCount" style="display:none;"/>
+    <apex:inputText value="{!decodedString}" id="decodedString" style="display:none;"/>
+    <apex:inputText value="{!productId}" id="inventoryItemId-input" style="display:none;" />
+    <apex:actionFunction name="incrementRetry" action="{!incrementRetry}"/>
+    <apex:actionFunction name="reset" action="{!reset}"/>
+    <apex:actionFunction name="sendMismatchEmail" action="{!sendMismatchEmail}" reRender="nothing"/>
+    <apex:actionFunction name="saveLine" action="{!addNewLine}" reRender="nothing" oncomplete="redirectToOrderOFNewOLDetail();"/>
+    <apex:actionFunction name="saveAndNew" action="{!addNewLineAndNew}" reRender="nothing" onComplete="redirectToNewOL();"/>
+    <body>
+        <div data-role="page"  id="manualEntry">
+            <div data-role="header" data-position="fixed"  data-theme="b">
+                <h1>New Order Line</h1>
+            </div>
+            <div class="ui-content1">
+                <apex:pageMessages id="msgId"/>
+            </div>
+            <div data-role="content">
+                <input type="button" data-role="button" data-icon="plus" onclick="add_line();" value="Save" id="saveBtn"/>
+                <input type="button" data-role="button" data-icon="forward" onclick="add_and_new();" value="Save & New" id="savenewBtn"/>
+                <label for="orderId"><strong>Inventory Order Name</strong></label>
+                <div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset" style="padding: 8px;">
+                    <span id="orderId"><apex:outputField value="{!greatwave2__Inventory_Order__c.Name}" /></span>
+                </div>
+                <label for="selectProduct"><strong>Select Product</strong></label>
+                <span id="selectProduct"><apex:inputField value="{!tempObjOrderLine.greatwave2__Product__c}" id="autocomplete_textbox"/></span>
+                <span id="productCode" style="display:nonel"></span>
+                <label for="selectQuantity1"><strong>Quantity</strong></label>
+                <span id="selectQuantity1"><apex:inputField id="ifQuantity" value="{!objOrderLine.greatwave2__Quantity__c}"/></span><div style="padding:1px"/>
+            </div>
+
+        </div>
+        <script type="text/javascript">
+            var j$ = jQuery.noConflict();
+
+            j$( document ).on( "pageinit", "#manualEntry", function() {
+                try{
+                
+                    //alert('autoCompleteInit')
+                    //Auto complete textbox component
+                    var autoCompleteTextBoxId = j$('[id$=autocomplete_textbox]');
+                    //alert(autoCompleteTextBoxId.val())
+                    var queryTerm;
+    
+                    //auto complete method
+                    j$(autoCompleteTextBoxId).autocomplete({
+                        minLength: 2,
+                        source: function(request, response) {
+                                    queryTerm = request.term;
+                                    var sObjects;
+                                    var searchText = j$(autoCompleteTextBoxId).val();
+                                    greatwave2.ScanBarcodeOnOrder_extn.getRecords(searchText,function(result, event){
+                                        if(event.type == 'exception') {
+                                              alert(event.message);
+                                        } else {
+                                             sObjects = result;
+                                             response(sObjects);
+                                        }
+                                    });
+                               },
+                        focus: function( event, ui ) {
+                                j$(autoCompleteTextBoxId).val( htmlDecode(ui.item.Name.split('~')[0]) );
+                                return false;
+                                },
+                        select: function( event, ui ) {
+                                    if(ui.item.Id!=null) {
+                                        j$('#productCode').html(ui.item.Name.split('~')[1]);
+                                        j$('#productCode').show();
+                                        j$(autoCompleteTextBoxId).val( htmlDecode(ui.item.Name.split('~')[0]) );
+                                        j$("input[id$='inventoryItemId-input']").val(ui.item.Id);
+                                    } else {
+                                        j$('#productCode').hide();
+                                        j$(autoCompleteTextBoxId).val(null);
+                                        j$("input[id$='inventoryItemId-input']").val(null);
+                                    }
+                                    return false;
+                                },
+                     })
+                     .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+                        var entry = "<a>" + item.Name;
+                        j$.each("".split(",") , function(key, value) {
+                            if(entry==null) {
+                                entry="No match Found in ";
+                            } else {
+                                entry=entry.split('~')[0]+" "+entry.split('~')[1];
+                            }
+                        });
+                        entry = entry + "</a>";
+                        entry = entry.replace(queryTerm, "<b>" + queryTerm + "</b>");
+                        return j$( "<li></li>" )
+                            .data( "item.autocomplete", item )
+                            .append( entry )
+                            .appendTo( ul );
+                    };
+                }catch(e){
+                    //alert(e);
+                }
+            });
+            function htmlDecode(input){
+              // Deprecated
+              return input;
+            }
+
+            function redirectToNewOL(){
+                if(j$('[id$=autocomplete_textbox]').val() != "" && j$('[id$=selectQuantity1] input').val() != "" && "{!JSENCODE(orderType)}" != 'Trunk Stock Replenishment'){
+                    if( (typeof sforce != 'undefined') && (sforce != null) )  {
+                        sforce.one.navigateToURL('/apex/NewOrderLineSF1?id={!JSENCODE(orderId)}');
+                    } else {
+                        window.location="/apex/NewOrderLineSF1?id=" + '{!JSENCODE(orderId)}';
+                    }
+                }
+            }
+
+            function redirectToOrderOFNewOLDetail(){
+           			var oId = '{!JSENCODE(orderId)}';
+                //if(j$('[id$=autocomplete_textbox]').val() != "" && j$('[id$=selectQuantity1] input').val() != "" && "{!JSENCODE(orderType)}" != 'Trunk Stock Replenishment'){
+                    if( (typeof sforce != 'undefined') && (sforce != null) )  {
+                        sforce.one.navigateToSObject(oId);
+                        sforce.one.navigateToSObject(oId.substring(0, 15)); 
+                    } else {
+                        window.location="/" + oId;
+                    }
+                //}
+             }
+            function add_line() {
+                if(
+                    (j$('[id$=autocomplete_textbox]').val()!=null&&j$('[id$=autocomplete_textbox]').val()!='')&&
+                    (j$('[id$=selectQuantity1] input').val()!=null&&j$('[id$=selectQuantity1] input').val()!=''&&
+                    !(isNaN(j$('[id$=selectQuantity1] input').val()))&&(parseInt(j$('[id$=selectQuantity1] input').val())>0))
+                ) {
+                    j$('#saveBtn').prop('disabled', true);j$('#savenewBtn').prop('disabled', true);
+                    greatwave2.ScanBarcodeOnOrder_extn.getProdQty(j$('[id$=autocomplete_textbox]').val(),function(result, event) {
+                        if(event.type == 'exception') {
+                              alert(event.message);
+                              j$('#saveBtn').prop('disabled', false);j$('#savenewBtn').prop('disabled', false);
+                        } else {
+                            if(result>=parseInt(j$('[id$=selectQuantity1] input').val())) {
+                                saveLine();
+                            } else {
+                                alertify.error('Quantity can not exceed product maximum ['+result+'].');
+                                j$('#saveBtn').prop('disabled', false);j$('#savenewBtn').prop('disabled', false);
+                            }
+                        }
+                    });
+                } else {
+                    alertify.error('Please enter both a product and quantity greater then zero.');
+                }
+            }
+            function add_and_new() {
+                if(
+                    (j$('[id$=autocomplete_textbox]').val()!=null&&j$('[id$=autocomplete_textbox]').val()!='')&&
+                    (j$('[id$=selectQuantity1] input').val()!=null&&j$('[id$=selectQuantity1] input').val()!=''&&!(isNaN(j$('[id$=selectQuantity1] input').val()))&&(parseInt(j$('[id$=selectQuantity1] input').val())>0) )
+                ) {
+                    j$('#saveBtn').prop('disabled', true);j$('#savenewBtn').prop('disabled', true);
+                    greatwave2.ScanBarcodeOnOrder_extn.getProdQty(j$('[id$=autocomplete_textbox]').val(),function(result, event){
+                        if(event.type == 'exception') {
+                              alert(event.message);
+                              j$('#saveBtn').prop('disabled', false);j$('#savenewBtn').prop('disabled', false);
+                        } else {
+                            if(result>=parseInt(j$('[id$=selectQuantity1] input').val())) {
+                                saveAndNew();
+                            } else {
+                                alertify.error('Quantity can not exceed product maximum ['+result+'].');
+                                j$('#saveBtn').prop('disabled', false);j$('#savenewBtn').prop('disabled', false);
+                            }
+                        }
+                    });
+
+                } else {
+                    alertify.error('Please enter both a product and quantity greater then zero.');
+                }
+            }
+        </script>
+    </body>
+    </apex:form>
+    </apex:outputPanel>
+ </apex:page>

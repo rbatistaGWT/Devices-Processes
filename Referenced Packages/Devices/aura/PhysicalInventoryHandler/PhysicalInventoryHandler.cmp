@@ -1,0 +1,37 @@
+<aura:component controller="greatwave2.PhysicalInventoryHandlerController">
+    <aura:attribute name="code" type="String" access="public"/>
+    <aura:attribute name="physicalInventory" type="greatwave2__PIR__c" access="public"/>
+    <!--aura:attribute name="namespace" type="String" default="greatwave2__" access="private"/-->
+    <aura:attribute name="result" type="Map" access="private"/>
+    
+    <aura:registerEvent name="infoMessageEvent" type="greatwave2:PIInfoMessageEvent"/>
+    <aura:registerEvent name="stopLoading" type="greatwave2:PIStopLoadingEvent"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div class="slds-grid slds-grid_align-space slds-p-around_large slds-p-left_small slds-theme_default">
+        <div class="slds-col slds-m-right_xx-large">
+            <span class="slds-form-element__label">Product Name</span>
+            <div class="slds-form-element__control">
+                <span class="slds-form-element__static">{!v.result.productName}</span>
+            </div>
+            <span class="slds-form-element__label">Scanned Count</span>
+            <div class="slds-form-element__control">
+                <span class="slds-form-element__static">{!v.result.scannedCount}</span>
+            </div>
+        </div>
+        <div class="slds-col">
+            <aura:if isTrue="{!v.result.lotNumber != 'NA'}">
+                <span class="slds-form-element__label">Lot Number</span>
+                <div class="slds-form-element__control">
+                    <span class="slds-form-element__static">{!v.result.lotNumber}</span>
+                </div>
+                <aura:set attribute="else">
+                    <span class="slds-form-element__label">Serial Number</span>
+                    <div class="slds-form-element__control">
+                        <span class="slds-form-element__static">{!v.result.serialNumber}</span>
+                    </div>
+                </aura:set>
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

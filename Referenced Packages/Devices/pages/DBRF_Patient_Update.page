@@ -1,0 +1,106 @@
+<apex:page standardController="greatwave2__DBRF__c" extensions="greatwave2.DBRF_NewLine_Extension" applyHtmlTag="false" showheader="false" sidebar="false" docType="HTML-5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-1.8.js')}"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.js')}"/>
+    <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.css')}"/>
+    <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQueryMobile,'/jquery.mobile/jquery.mobile-1.4.4.min.js')}"/>
+    <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQueryMobile,'/jquery.mobile/jquery.mobile-1.4.4.min.css')}"/>
+    
+    <apex:pageMessages ></apex:pageMessages>
+    <apex:outputPanel rendered="{!NOT(CanSetPatient)}">
+    <!--You may not modifiy the Patient unless the DBRF is of status "New" or "Draft".-->
+    </apex:outputPanel>
+    <apex:form rendered="{!CanSetPatient}">
+    <apex:actionFunction action="{!saveDBRF}" name="saveDBRF"/>
+    <div data-role="page" data-theme="a" id="homePage">
+        <div data-role="header" data-position="fixed">
+            <h1>Patient Search</h1>
+        </div><!-- /header -->
+        <div data-role="content">
+                      <!--  <apex:commandButton action="{!saveDBRF}" value="Save" onComplete="toDBRF();"/><br/> -->
+                      <input type="button" data-role="button" data-icon="plus" onclick="toDBRF();" value="Save"/>
+            <label for="dbrf-pt" class="lookupInput">Patient Name</label>
+            <apex:inputField value="{!greatwave2__DBRF__c.greatwave2__Patient__c}" html-name="dbrf-pt" html-data-mini="true" styleClass="transferFromIdtxtcls lookupInput" id="autocomplete_textbox" />
+            <div id="unverified" style="display:none;">
+            The patient you selected is <b>unverified</b>. Click [<span style="color:blue;cursor:pointer;" onClick="toPatient();">here</span>] to review the patient record.
+            </div>
+        </div>
+    </div><!-- /content -->
+    </apex:form>
+        <script type="text/javascript">
+            var j$ = jQuery.noConflict();
+
+            j$(document).ready(function() {
+                var autoCompleteTextBoxId = j$('[id$=autocomplete_textbox]');
+                var queryTerm;
+
+                //auto complete method
+                j$(autoCompleteTextBoxId).autocomplete({
+                    minLength: 2,
+                    source: function(request, response) {
+                                queryTerm = request.term;
+                                var sObjects;
+                                var searchText = j$(autoCompleteTextBoxId).val();
+                                greatwave2.DBRF_NewLine_Extension.getPatients(searchText,function(result, event){
+                                    if(event.type == 'exception') {
+                                          alert(event.message);
+                                    } else {
+                                         sObjects = result;
+                                         response(sObjects);
+                                    }
+                                });
+                           },
+                    focus: function( event, ui ) {
+                            j$(autoCompleteTextBoxId).val( htmlDecode(ui.item.Name.split('~')[0]) );
+                            return false;
+                            },
+                    select: function( event, ui ) {
+                                j$(autoCompleteTextBoxId).val( htmlDecode(ui.item.Name.split('~')[0]) );
+                                j$("[id$='autocomplete_textbox_lkid']").val(ui.item.Id);
+                                j$("[id$='autocomplete_textbox_lkold']").val(ui.item.Name.split('~')[1]);
+                                if(ui.item.Name.split('~')[2]=='Verified') {
+                                    j$("#unverified").hide();
+                                } else {
+                                    j$("#unverified").show();
+                                }
+                                return false;
+                            },
+                 }).data( "autocomplete" )._renderItem = function( ul, item ) {
+                    var entry = "<a>" + item.Name;
+                    j$.each("".split(",") , function(key, value) {
+                        if(entry==null) {
+                            entry="No match Found in ";
+                        } else {
+                            entry=entry.split('~')[0]+" ["+entry.split('~')[3]+"]";
+                        }
+                        entry+=" <b> Patient </b>";
+                        //entry = (entry == null?"No match Found in ":entry) + " <b> Patient </b>";
+                    });
+                    entry = entry + "</a>";
+                    entry = entry.replace(queryTerm, "<b>" + queryTerm + "</b>");
+                    return j$( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( entry )
+                        .appendTo( ul );
+                };
+                j$(autoCompleteTextBoxId).val('');
+            });
+            function htmlDecode(input){
+                // Deprecated
+                return input;
+            }
+            function toDBRF() {
+                //sforce.one.navigateToSObject('{!JSENCODE(parentDBRF)}');
+                saveDBRF(); 
+                var dbrfId = '{!JSENCODE(parentDBRF)}';
+                sforce.one.navigateToSObject(dbrfId);
+                sforce.one.navigateToSObject(dbrfId.substring(0, 15));
+                
+                //sforce.one.back(true);
+            }
+            function toPatient() {
+               sforce.one.navigateToSObject(j$("[id$='autocomplete_textbox_lkid']").val());
+               sforce.one.navigateToSObject(j$("[id$='autocomplete_textbox_lkid']").val().substring(0, 15));
+            }
+        </script>
+</apex:page>

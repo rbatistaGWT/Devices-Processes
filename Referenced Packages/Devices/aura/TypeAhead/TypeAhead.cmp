@@ -1,0 +1,77 @@
+<aura:component controller="greatwave2.TypeAheadController">
+    <aura:attribute name="name" type="String" default="" access="global"/>
+    <aura:attribute name="label" type="String" default="" access="global"/>
+    <aura:attribute name="value" type="String" default="" access="global"/>
+	<aura:attribute name="placeholder" type="String" default="" access="global"/>
+    <aura:attribute name="isFocused" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="fullSearch" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="objectName" type="String" required="true" access="global"/>
+    <aura:attribute name="displayField" type="String" default="Name" access="global"/>
+    <aura:attribute name="selectedRecord" type="greatwave2.ResultSet" access="global"/>
+    <aura:attribute name="searchResults" type="greatwave2.ResultSet[]" access="global"/>
+    <aura:attribute name="required" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="iconName" type="String" access="global"/>
+    <aura:attribute name="iconPosition" type="String" default="right" access="global"/>
+    <aura:attribute name="errorList" type="List" access="global"/>
+    <aura:attribute name="dropDownHeight" type="String" default="2.3" access="global"/>
+    <aura:attribute name="filters" type="String" default="" access="global"/>
+    <aura:attribute name="limit" type="String" default="100" access="global"/>
+    
+    <div class="slds-form-element">
+        <label class="slds-form-element__label" for="combobox-unique-id">
+            <aura:if isTrue="{!v.required}">
+            	<abbr class="slds-required" title="required">*</abbr>
+            </aura:if>
+            {!v.label}
+        </label>
+        <div class="slds-form-element__control">
+            <div class="slds-combobox_container">
+                <div aura:id="inputDiv" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="{!v.isFocused}" aria-haspopup="listbox" role="combobox">
+                    <div class="{!'slds-combobox__form-element slds-input-has-icon slds-input-has-icon_' + v.iconPosition}" role="none">
+                        <aura:if isTrue="{!!v.selectedRecord}">
+                            <ui:inputText aura:id="searchInput" class="slds-input slds-combobox__input" keyup="{!c.handleKeyUp}" updateOn="keyup" label="" value="{!v.value}" placeholder="{!v.placeholder}" focus="{!c.handleOnFocus}" blur="{!c.handleOnBlur}" onError="{!c.handleError}" onClearErrors="{!c.handleClearError}" required="true"/>
+                            <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_left">
+                                <lightning:icon iconName="utility:search" alternativeText="Search" size="x-small" />
+                            </span>
+                            <aura:set attribute="else">
+                                <span class="slds-icon_container slds-combobox__input-entity-icon">
+                                    <lightning:icon iconName="{!v.iconName}" alternativeText="icon" size="x-small" />
+                                </span>
+                                <ui:outputText aura:id="searchInput" class="slds-input slds-combobox__input" value="{!v.selectedRecord.DisplayField}" title="{!v.selectedRecord.DisplayField}"/>
+                                <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right" onclick="{!c.clearInput}" title="Remove selected option">
+                                    <lightning:icon iconName="utility:close" alternativeText="Close" size="x-small" />
+                                    <span class="slds-assistive-text">Remove selected option</span>
+                                </button>
+                            </aura:set>
+                        </aura:if>                        
+                    </div>
+                    
+                    <div id="listbox-unique-id" role="listbox">
+                        <ul style="{!'height:' + v.dropDownHeight + 'rem;'}" class="slds-scrollable slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid" role="presentation">
+                            <aura:iteration items="{!v.searchResults}" var="record">
+                                <li onclick="{!c.selectOption}" data-recordId="{!record.Id}" data-displayfield="{!record.DisplayField}" role="presentation" class="slds-listbox__item">
+                                    <span id="listbox-option-unique-id-01" class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option">
+                                        <aura:if isTrue="{!v.iconName}">
+                                            <span class="iconClass">
+                                                <span class="slds-icon_container">
+                                                    <lightning:icon iconName="{!v.iconName}" alternativeText="icon" size="x-small" variant="inverse"/>
+                                                </span>
+                                            </span>
+                                        </aura:if>
+                                        <span class="slds-media__body" title="{!record.DisplayField}">
+                                            <ui:outputText class="slds-listbox__option-text slds-listbox__option-text_entity" value="{!record.DisplayField}"/>
+                                        </span>
+                                    </span>
+                                </li>
+                            </aura:iteration>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <ui:inputDefaultError aura:id="erroList" value="{!v.errorList}"/>
+        </div>
+    </div>  
+    <aura:method name="clearInput" action="{!c.clearInput}"> 
+        <aura:attribute name="component" type="Object"/>  
+    </aura:method>
+</aura:component>

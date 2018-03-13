@@ -1,0 +1,154 @@
+<apex:page showHeader="false" standardController="greatwave2__PIR__c" cache="false" extensions="greatwave2.PI_ResultsTable"> 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+
+<style type="text/css">
+
+  table.t1 {
+    width: 90%;
+    margin: 1em auto;
+    border-collapse: collapse;
+    font-family: Arial, Helvetica, sans-serif;
+    border-left: 1px solid #95b3d7;
+  }
+  .t1 th, .t1 td {
+    padding: 4px 8px;
+  }
+  .t1 thead th {
+    background: #4f81bd;
+    text-transform: lowercase;
+    text-align: left;
+    font-size: 15px;
+    color: #fff;
+  }
+  .t1 tr {
+    border-right: 1px solid #95b3d7;
+  }
+  .t1 tbody tr {
+    border-bottom: 1px solid #95b3d7;
+  }
+  .t1 tbody tr:nth-child(odd) {
+    background: #dbe5f0;
+  }
+  .t1 tbody th, .t1 tbody tr:nth-child(even) td {
+    border-right: 1px solid #95b3d7;
+  }
+  .t1 tbody th, .t1 tbody tr:nth-child(odd) td {
+    border-right: 1px solid #95b3d7;
+  }
+  .t1 tfoot th {
+    background: #4f81bd;
+    text-align: left;
+    font-weight: normal;
+    font-size: 10px;
+    color: #fff;
+  }
+  .t1 tr *:nth-child(3), .t1 tr *:nth-child(4) {
+    text-align: right;
+  }
+  .under {
+    color:#FF0000;
+  }
+  .over {
+    color:#FF0000;
+  }
+  .ok {
+    color:#28CD00;
+  }
+  .mismatch {
+    color:#FF0000 !important;
+  }
+</style>
+<apex:form id="PIResults">
+    <apex:actionFunction name="piRecount" action="{!reCount}" rerender=""/>
+    <apex:actionFunction name="piSubmit" action="{!submitCount}" rerender=""/>
+    
+    <table class="t1" id="piTable">
+        <caption>Physical Inventory Results</caption>
+        <thead>
+        <tr><th>Location</th><th>Product</th><th>Scanned</th></tr>
+        </thead>
+        <tfoot>
+        <tr><th colspan="4"><input type="button" value="Submit Count" onClick="submitPI();"/>&nbsp;&nbsp;<input type="button" value="Recount Selected" onClick="recountPI()"/>&nbsp;&nbsp;<input style="float: right;" type="button" value="Exit" onClick="goHome();"/></th></tr>
+        </tfoot>
+        <tbody>
+        <apex:repeat value="{!lines}" var="l" id="theLines">
+        <tr><th>{!l.line.PIR__r.User__r.Name}</th><td><!--<apex:outputText value="{!l.chk}" escape="false"/>--><apex:inputField value="{!l.line.greatwave2__Scanned__c}"/>{!l.line.greatwave2__Product_Name__c} ({!l.line.greatwave2__Product_Code__c})</td><td><span class="{!l.cls}"> {!l.line.greatwave2__Scanned_Count__c}</span></td></tr>
+        </apex:repeat>
+        </tbody>
+    </table>
+    <div style="margin-left:5%;">
+    * Red numbers indicate a quantity or lot/serial mismatch.<br/>
+    * Submit Count will submit all lines and complete the Physical Inventory.<br/>
+    * Recount Selected will submit a final count for all unchecked lines and allow you to rescan checked lines<br/>
+    </div>
+    <div id="confirmDlg" title="Confirmation Required"></div>
+</apex:form>
+<script>
+    var sfInstance = [];
+    sfInstance[0]="{!JSENCODE($Setup.DeviceWave_Settings__c.Visualforce_URL__c)}"; // Visual Force
+    sfInstance[1]="{!JSENCODE($Setup.DeviceWave_Settings__c.Salesforce1_URL__c)}"; // one.app
+    var clicked=false;
+    
+    $(document).ready(function() {
+        $('.t1 tr').click(function(event) {
+            if (event.target.type !== 'checkbox') {
+                $(':checkbox', this).trigger('click');
+            }
+        });
+        $("#confirmDlg").dialog({
+            autoOpen: false,
+            modal: true
+        });
+    });
+
+    function goHome() {
+        if((typeof sforce != 'undefined') && (sforce != null)) {
+            //sforce.one.navigateToFeed('{!$User.Id}',"NEWS");
+            window.top.location="https://"+sfInstance[1]+"/one/one.app";
+        } else {
+            window.top.location="https://"+sfInstance[1]+"/one/one.app";
+        }
+    }
+    function recountPI() {
+        $("#confirmDlg").html("Are you sure you want to recount the selected lines? Unchecked lines will be submitted.")
+        $("#confirmDlg").dialog({
+            buttons : {
+                "Confirm" : function() {
+                    if(clicked==false) {
+                        piRecount();
+                        clicked=true;
+                    }
+                },
+                "Cancel" : function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#confirmDlg").dialog("open");
+    }
+    function submitPI() {
+        $("#confirmDlg").html("Are you sure you want to submit all lines, regardless if lines are checked or not?")
+        $("#confirmDlg").dialog({
+            buttons : {
+                "Confirm" : function() {
+                    if(clicked==false) {
+                        piSubmit();
+                        clicked=true;
+                    }
+                },
+                "Cancel" : function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#confirmDlg").dialog("open");
+    }
+    function getRetId() {
+        retId='{!JSENCODE(pirId)}';
+        return retId;
+    }
+</script>
+
+</apex:page>

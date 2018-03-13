@@ -1,0 +1,392 @@
+<apex:page standardController="greatwave2__Inventory_Order__c" extensions="greatwave2.ScanBarcodeOnOrder_extn" showHeader="false" standardStylesheets="false" cache="false" doctype="html-5.0">
+    <apex:remoteObjects >
+        <apex:remoteObjectModel name="greatwave2__Order_Line__c"
+            jsShorthand="inventoryItem"
+            fields="Name,Id,greatwave2__Serial_Number__c,greatwave2__Lot_Number__c,greatwave2__Product__c,greatwave2__Order_Line_Scanned__c,greatwave2__Product_Name__c,greatwave2__Order__c"
+        />
+    </apex:remoteObjects>
+    <style>
+[title='Product Lookup (New Window)']{
+Display:none !important;
+}
+#canvas_container
+{
+    background: #fff;
+    border: 1px solid #aaa;
+    border-radius: 15px;
+    height: 240px;
+    /*margin: 20px 20px;*/
+    overflow: hidden;
+    width: 320px; /*288px;*/
+    margin-left: auto;
+    margin-right: auto;
+
+    /* this fixes the overflow:hidden in Chrome/Opera */
+    -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+}
+#container_container
+{
+    position: relative;
+    left: -19px;
+    width: calc(100% + 30px + 3px);
+    /*border: 1px solid #f00;*/
+}
+</style>
+<script type="text/javascript">
+    var scanCode="";
+    var lineId="";
+    var tryCount=0;
+</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <head>
+        <title>BarcodeReader</title>
+        <apex:stylesheet value="{!URLFOR($Resource.greatwave2__alertify, 'alertify.js-0.3.11/themes/alertify.core.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.greatwave2__alertify, 'alertify.js-0.3.11/themes/alertify.default.css')}"/>
+        <apex:includeScript value="{!URLFOR($Resource.greatwave2__alertify, 'alertify.js-0.3.11/lib/alertify.min.js')}"/>
+
+
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js"></script>
+        <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-1.8.js')}"/>
+        <apex:includeScript value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.js')}"/>
+
+        <apex:stylesheet value="{!UrlFor($Resource.greatwave2__jQuery181,'/jquery/jquery-ui.css')}"/>
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
+
+    </head>
+    <apex:form >
+    <apex:inputText value="{!retryCount}" id="retryCount" style="display:none;"/>
+    <apex:inputText value="{!decodedString}" id="decodedString" style="display:none;"/>
+    <apex:inputText value="{!productId}" id="inventoryItemId-input" style="display:none;" />
+    <apex:actionFunction name="incrementRetry" action="{!incrementRetry}"/>
+    <apex:actionFunction name="reset" action="{!reset}"/>
+    <apex:actionFunction name="sendMismatchEmail" action="{!sendMismatchEmail}" reRender="nothing"/>
+    <body>
+        <div data-role="page" data-theme="a" id="homePage">
+            <div data-role="header" data-position="fixed" data-theme="b">
+                <h1>Barcode Input</h1>
+            </div>
+            <apex:pageMessages id="msgId"/>
+            <div data-role="content">
+                <input type="button" data-theme="b" data-role="button" data-icon="plus" onclick="scan();" value="Scan"/>
+                <!--
+                <a href="#manualEntry" data-theme="b" data-role="button" data-icon="plus">Manual Entry</a>
+                -->
+            </div>
+        </div>
+        <div data-role="page" data-theme="a" id="resultsPage">
+            <apex:ActionFunction name="addOrderLine" action="{!addNewLine}" oncomplete="alertify.error(result);"/>
+            <div data-role="header" data-theme="b" data-position="fixed">
+                <h1>Scan Order Line</h1>
+            </div>
+            <div data-role="content">
+                <p id="textbit" style="display:none"></p>
+                <p id="Result"></p>
+                <p id="productName"></p>
+                <p id="serialNumber"></p>
+                <p id="lotNumber"></p>
+                <p id="orderLineScanned"></p>
+                <span id="selecttrffrom">Transfer From<apex:inputField value="{!greatwave2__Inventory_Order__c.greatwave2__From_Location__c}" id="autocomplete_textbox1" html-placeholder="Tranfer From"/></span>
+                <!--
+                <span id="selecttrfto">Tranfer To<apex:inputField value="{!Inventory_Order__c.To_Location__c}" id="autocomplete_textbox2" html-placeholder="Tranfer To"/></span>
+                -->
+                <a href="#Revieworder" data-theme="b" data-role="button" data-icon="info" onclick="gotoOrder();">Review Order</a>
+                <input type="button" data-theme="b" data-role="button" data-icon="plus" onclick="scan();" value="Scan Another Order Line Item"/>
+                <a data-role="button" data-theme="b" data-icon="grid"  id="navigate" style="display:none;" onclick="gotoLine();">Go To Order Line Record</a>
+            </div>
+        </div>
+        <div data-role="page" data-theme="a" id="productNotFound">
+            <div data-role="header" data-theme="b" data-position="fixed">
+                <h1>No Record Found</h1>
+            </div>
+            <div data-role="content">
+                <input type="button" data-theme="b" data-role="button" data-icon="plus" onclick="scan();" value="Retry" id="retryScan"/>
+                <a href="#homePage" data-theme="b" data-role="button" data-icon="grid" onclick="reset();return false;" id="scanAnothercode" style="visibility:hidden">Scan another code</a>
+                <input type="button" data-role="button" data-icon="grid" onclick="gotoOrder();" value="Cancel"/>
+            </div>
+        </div>
+        <div data-role="page" data-theme="a" id="manualEntry">
+            <div data-role="header" data-theme="b" data-position="fixed">
+                <h1>Manual Entry</h1>
+            </div>
+            <div data-role="content">
+                <label for="selectProduct"><strong>Select Product</strong></label>
+                <span id="selectProduct"><apex:inputField value="{!tempObjOrderLine.greatwave2__Product__c}" id="autocomplete_textbox"/></span>
+                <label for="selectQuantity"><strong>Quantity</strong></label>
+                <span id="selectQuantity"><apex:inputField value="{!objOrderLine.greatwave2__Quantity__c}"/></span>
+                <apex:commandbutton html-data-theme="b" action="{!addNewLine}" html-data-role="button" html-data-icon="forward" value="Add Line"/>
+            </div>
+        </div>
+        <div data-role="page" data-theme="a" id="blankPage">
+
+        </div>
+        <!-- Autosuggest product  -->
+        <script type="text/javascript">
+            var j$ = jQuery.noConflict();
+            var inSF1=false;
+            var sfInstance = [];
+            sfInstance[0]="{!JSENCODE($Setup.greatwave2__DeviceWave_Settings__c.greatwave2__Visualforce_URL__c)}"; // Visual Force
+            sfInstance[1]="{!JSENCODE($Setup.greatwave2__DeviceWave_Settings__c.greatwave2__Salesforce1_URL__c)}"; // one.app
+
+            j$( document ).on( "pageinit", "#manualEntry", function() {
+
+                //alert('autoCompleteInit')
+                //Auto complete textbox component
+                var autoCompleteTextBoxId = j$('[id$=autocomplete_textbox]');
+                //alert(autoCompleteTextBoxId.val())
+                var queryTerm;
+
+                //auto complete method
+                j$(autoCompleteTextBoxId).autocomplete({
+                    minLength: 2,
+                    source: function(request, response) {
+                                queryTerm = request.term;
+                                var sObjects;
+                                var searchText = j$(autoCompleteTextBoxId).val();
+                                greatwave2.ScanBarcodeOnOrder_extn.getRecords(searchText,function(result, event){
+                                    if(event.type == 'exception') {
+                                          alert(event.message);
+                                    } else {
+                                         sObjects = result;
+                                         response(sObjects);
+                                    }
+                                });
+                           },
+                    focus: function( event, ui ) {
+                            j$(autoCompleteTextBoxId).val( htmlDecode(ui.item.Name) );
+                            return false;
+                            },
+                    select: function( event, ui ) {
+
+                                j$(autoCompleteTextBoxId).val( htmlDecode(ui.item.Name) );
+                                j$("input[id$='inventoryItemId-input']").val(ui.item.Id);
+                                //alert(j$(autoCompleteTextBoxId).val());  //returns value of selected item
+                                //alert(ui.item.Id);  //returns item.id from SFDC
+
+                                return false;
+                            },
+                 })
+                 .data( "autocomplete" )._renderItem = function( ul, item ) {
+                    var entry = "<a>" + item.Name;
+                    j$.each("".split(",") , function(key, value) {
+                        entry = entry + " <b> Product </b>";
+                    });
+                    entry = entry + "</a>";
+                    entry = entry.replace(queryTerm, "<b>" + queryTerm + "</b>");
+                    return j$( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( entry )
+                        .appendTo( ul );
+                };
+            });
+            function htmlDecode(input){
+              // Deprecated
+              return input;
+            }
+        </script>
+        <!-- transferring from autom complete  -->
+        <script type="text/javascript">
+
+            j$( document ).on( "pageinit", "#manualEntry", function() {
+
+                //alert('autoCompleteInit')
+                //Auto complete textbox component
+                var autoCompleteTextBoxId = j$('[id$="autocomplete_textbox1"]');
+                //alert(autoCompleteTextBoxId.val())
+                var queryTerm;
+
+                //auto complete method
+                j$(autoCompleteTextBoxId).autocomplete({
+                    minLength: 2,
+                    source: function(request, response) {
+                                queryTerm = request.term;
+                                var sObjects;
+                                var searchText = j$(autoCompleteTextBoxId).val();
+                                greatwave2.ScanBarcodeOnOrder_extn.getUsers(searchText,function(result, event){
+                                    if(event.type == 'exception') {
+                                          alert(event.message);
+                                    } else {
+                                         sObjects = result;
+                                         response(sObjects);
+                                    }
+                                });
+                           },
+                    focus: function( event, ui ) {
+                            j$(autoCompleteTextBoxId).val( htmlDecode(ui.item.Name) );
+                            return false;
+                            },
+                    select: function( event, ui ) {
+
+                                j$(autoCompleteTextBoxId).val( htmlDecode(ui.item.Name) );
+                                j$("input[id$='inventoryItemId-input']").val(ui.item.Id);
+                                //alert(j$(autoCompleteTextBoxId).val());  //returns value of selected item
+                                //alert(ui.item.Id);  //returns item.id from SFDC
+
+                                return false;
+                            },
+                 })
+                 .data( "autocomplete" )._renderItem = function( ul, item ) {
+                    var entry = "<a>" + item.Name;
+                    j$.each("".split(",") , function(key, value) {
+                        entry = entry + " <b> User </b>";
+                    });
+                    entry = entry + "</a>";
+                    entry = entry.replace(queryTerm, "<b>" + queryTerm + "</b>");
+                    return j$( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( entry )
+                        .appendTo( ul );
+                };
+            });
+        </script>
+
+        <script type="text/javascript">
+
+        function getParameterByName(name) {
+            var url = location.search;
+            name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+            var regexS = "[\\?&]"+name+"=([^&#]*)";
+            var regex = new RegExp( regexS );
+            var results = regex.exec( url );
+            return results == null ? null : results[1];
+        }
+        function scan() {
+            scanUrl = "ilu://x-callback-url/scanner-go?x-source=com.salesforce.salesforce1";
+            if(navigator.userAgent.toLowerCase().indexOf("android") > -1) {
+                scanUrl="zxing://scan/?ret=https%3A%2F%2F"+sfInstance[0]+"%2Fapex%2FScanBarcodeOnOrder4Transfer%3Fid%3D"+getRetId()+"%26code%3D%7BRAWCODE%7D";
+                window.top.location=scanUrl;
+            } else {
+                if(inSF1) {
+                    scanUrl += "&x-success=https://"+sfInstance[0]+"/apex/ScanBarcodeOnOrder4Transfer";
+                    scanUrl += "?id="+getParameterByName('id');
+                    scanUrl += "&ot=1";
+                    scanUrl += "&count="+tryCount;
+                    scanUrl += "&sg-result=code&sg-history=NO";
+                    scanUrl += "&x-cancel=com.salesforce.salesforce1://entity/view?entityId="+getRetId();
+                    scanUrl += "&x-error=com.salesforce.salesforce1://entity/view?entityId="+getRetId();
+                    //window.open(scanUrl);
+                    //window.close();
+                    openClose(scanUrl);
+                } else {
+                    scanUrl += "&x-success=https://"+sfInstance[0]+"/apex/ScanBarcodeOnOrder4Transfer?id="+getRetId();
+                    scanUrl += "&sg-result=code&sg-history=NO";
+                    scanUrl += "&x-cancel=https://"+sfInstance[1]+"/one/one.app";
+                    scanUrl += "&x-error=https://"+sfInstance[1]+"/one/one.app";
+                    location.hash="#blankPage";
+                    window.top.location=scanUrl;
+                }
+            }
+        }
+        function getRetId() {
+            retId=getParameterByName('id');
+            if(retId.length==18) retId=retId.substring(0,15);
+            return retId;
+        }
+
+        j$( document ).ready(function() {
+            //$( "p" ).text( getParameterByName("code") );
+            scanCode=getParameterByName("code");
+            if(scanCode!=null&&scanCode!="") {
+                location.hash="#resultsPage";
+                var orderId = getParameterByName('id');
+                greatwave2.ScanBarcodeOnOrder_extn.getRecordFromBarcode_GS1(scanCode ,"1",orderId, recordRetrieved, {escape: false});
+            }
+            tryCount=parseInt(getParameterByName("count")) || 0;
+            if(tryCount>=2) {
+                location.hash="#blankPage";
+                alert("Retry threashold reached");
+                sendMismatchEmail();
+            } else {
+                tryCount++;
+            }
+        });
+
+        function gotoLine() {
+            if(inSF1) {
+                openClose("com.salesforce.salesforce1://entity/view?entityId="+lineId);
+            } else {
+                window.location="https://"+sfInstance[1]+"/one/one.app#/sObject/"+lineId+"/view";
+            }
+        }
+        function gotoOrder() {
+            if(inSF1) {
+                openClose("com.salesforce.salesforce1://entity/view?entityId="+getRetId());
+            } else {
+                window.location="https://"+sfInstance[1]+"/one/one.app#/sObject/"+getRetId()+"/view";
+            }
+        }
+
+        function openClose(uri){
+            /*location.hash="#blankPage";
+            var anchor = document.createElement('a');
+            anchor.setAttribute('href', uri);
+
+            var dispatch = document.createEvent('HTMLEvents')
+            dispatch.initEvent('click', true, true);
+
+            anchor.dispatchEvent(dispatch);
+            */
+            window.open(uri);
+            var win = window.open('','_self');
+            win.close();
+        }
+
+        function recordRetrieved(result, event) {
+            if ( (!event) || (event.status) ) {
+                console.log(result);
+                if (result != null && result != 'undefined' && -1!=result.indexOf('Error')) {
+                    location.hash="#productNotFound";
+                } else {
+                    tryCount=0;
+                    // notify the user and render the button
+                    alertify.success("Found Asset");
+                    j$("#navigate").show();
+                    lineId=result;
+                    InventoryItemId=result;
+                    fetchInventoryItems();
+                    location.hash="#resultsPage";
+                }
+            } else if (event.type === 'exception') {
+                alertify.error(result);
+            }
+        }
+        var orderId;
+        function fetchInventoryItems(){
+            // Create a new Remote Object
+            var invItem= new SObjectModel.inventoryItem();
+
+            // Use the Remote Object to query for 10 warehouse records
+            invItem.retrieve(
+                            { where: {
+                                 Id: {eq:InventoryItemId}
+                              }
+                            }, function(err, records, event){
+                if(err) {
+                    alert(err.message);
+                }
+                else {
+                    records.forEach(function(record) {
+                        // Build the text for a warehouse line item
+                        jQuery('#productName').text("Product Name: "+record.get("greatwave2__Product_Name__c"));
+                        jQuery('#serialNumber').text("Serial Number: "+record.get("greatwave2__Serial_Number__c"));
+                        jQuery('#lotNumber').text(" Lot Number: "+record.get("greatwave2__Lot_Number__c"));
+                        
+                        jQuery('#orderLineScanned').empty();
+                        jQuery('#orderLineScanned').text("Order Line Scanned: ");
+                        var chk = jQuery( '<input />' );
+                        chk.attr( 'type', 'checkbox' );
+                        chk.attr( 'checked', record.get("greatwave2__Order_Line_Scanned__c") );
+                        chk.attr( 'disabled', true );                       
+                        jQuery( '#orderLineScanned' ).append( chk );          
+                                  
+                        orderId = record.get("greatwave2__Order__c");
+                        console.log(orderId);
+                        jQuery('[id$=inventoryItemId-input]').val(InventoryItemId);
+                    });
+                }
+            });
+        };
+        </script>
+    </body>
+    </apex:form>
+ </apex:page>

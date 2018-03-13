@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>ECOA</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>FHA</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>TILA</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>OFAC</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>FNM</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>VA</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>FRD</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Privacy</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Homeowner’s Protection Act</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>FHA-HECM</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>FinCEN</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Fannie Mae</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Freddie Mac</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>HPA</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>RESPA</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>TRID.</fullName>
+        <default>false</default>
+    </customValue>
+    <masterLabel>Regulation Source</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
